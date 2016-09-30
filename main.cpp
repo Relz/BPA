@@ -28,13 +28,18 @@ bool isValidHeight(float height)
     return (height >= 0 && height <= MAX_HEIGHT);
 }
 
+bool askMaxHeightInConsole(int &maxHeight)
+{
+    printf("Максимальная высота прыжка: ");
+    return (scanf("%d", &maxHeight) != 0);
+}
+
 int main(int, char *[])
 {
     setlocale(LC_ALL, "rus");
     int maxHeight;
 
-    printf("Максимальная высота прыжка: ");
-    if (0 == scanf("%d", &maxHeight))
+    if (!askMaxHeightInConsole(maxHeight))
     {
         printf("\nТребуется ввести целое число\n");
         return 1;
@@ -50,13 +55,13 @@ int main(int, char *[])
     printf("Время, при которой достигается максимальная высота = %f\n", timeAtMaxHeight);
 
     float initialSpeed, currHeight;
-    bool flag = false;
+    bool isMaxHeight = false;
 
     for (float currTime = 0; currTime < timeAtMaxHeight * 2; currTime += 0.1f)
     {
-        if (currTime > timeAtMaxHeight && !flag)
+        if (currTime > timeAtMaxHeight && !isMaxHeight)
         {
-            flag = true;
+            isMaxHeight = true;
             initialSpeed = G * timeAtMaxHeight;
             currHeight = initialSpeed * timeAtMaxHeight - 0.5f * G * pow(timeAtMaxHeight, 2);
             printf("Время, при которой достигается максимальная высота = %f, текущая высота = %f\n", timeAtMaxHeight,
