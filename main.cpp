@@ -34,6 +34,28 @@ bool askMaxHeightInConsole(int &maxHeight)
     return (scanf("%d", &maxHeight) != 0);
 }
 
+void processJump(const float &timeAtMaxHeight)
+{
+    float currentHeight;
+    float initialSpeed = G * timeAtMaxHeight;
+    bool isMaxHeight = false;
+
+    for (float currentTime = 0; currentTime < timeAtMaxHeight * 2; currentTime += 0.1f)
+    {
+        if (!isMaxHeight && currentTime > timeAtMaxHeight)
+        {
+            isMaxHeight = true;
+            currentHeight = initialSpeed * timeAtMaxHeight - 0.5f * G * pow(timeAtMaxHeight, 2);
+            printf("Время, при которой достигается максимальная высота = %f, текущая высота = %f\n", timeAtMaxHeight, currentHeight);
+        }
+        currentHeight = initialSpeed * currentTime - 0.5f * G * pow(currentTime, 2);
+        printf("Текущее время = %f, текущая высота = %f\n", currentTime, currentHeight);
+    }
+
+    currentHeight = initialSpeed * (timeAtMaxHeight * 2) - 0.5f * G * pow(timeAtMaxHeight * 2, 2);
+    printf("Время, при которой достигается максимальная высота = %f, текущая высота = %f\n", timeAtMaxHeight * 2, currentHeight);
+}
+
 int main(int, char *[])
 {
     setlocale(LC_ALL, "rus");
@@ -54,24 +76,6 @@ int main(int, char *[])
     float timeAtMaxHeight = sqrt(maxHeight * 2 / G);
     printf("Время, при которой достигается максимальная высота = %f\n", timeAtMaxHeight);
 
-    float initialSpeed = G * timeAtMaxHeight;
-    float currentHeight;
-    bool isMaxHeight = false;
-
-    for (float currentTime = 0; currentTime < timeAtMaxHeight * 2; currentTime += 0.1f)
-    {
-        if (!isMaxHeight && currentTime > timeAtMaxHeight)
-        {
-            isMaxHeight = true;
-            currentHeight = initialSpeed * timeAtMaxHeight - 0.5f * G * pow(timeAtMaxHeight, 2);
-            printf("Время, при которой достигается максимальная высота = %f, текущая высота = %f\n", timeAtMaxHeight, currentHeight);
-        }
-        currentHeight = initialSpeed * currentTime - 0.5f * G * pow(currentTime, 2);
-        printf("Текущее время = %f, текущая высота = %f\n", currentTime, currentHeight);
-    }
-
-    currentHeight = initialSpeed * (timeAtMaxHeight * 2) - 0.5f * G * pow(timeAtMaxHeight * 2, 2);
-    printf("Время, при которой достигается максимальная высота = %f, текущая высота = %f\n", timeAtMaxHeight * 2, currentHeight);
-
+    processJump(timeAtMaxHeight);
     return 0;
 }
