@@ -20,7 +20,7 @@
 #include <math.h>
 #include <climits>
 
-static const float G = 9.8;
+static const float G = 9.8f;
 static const int MAX_HEIGHT = INT_MAX;
 
 bool isValidHeight(const int &height)
