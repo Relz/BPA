@@ -9,29 +9,26 @@ const int screenHeight = 600;
 const int clockCircleThickness = 2;
 const int clockCircleSize = 250;
 const float PI = 3.1415927f;
+const int hourDotRadius = 3;
+const int aroundHourDotRadius = 1;
+const Color dotColor = Color::Black;
 
+//Инициализация точек окружности часов
 void initializeDots(const RenderWindow &window, CircleShape *dots)
 {
     int x, y;
     float angle = 0.0f;
-    for (int i=0; i<60; i++)
+    for (int i = 0; i < 60; i++)
     {
-        x = (clockCircleSize - 10) * cos(angle);
-        y = (clockCircleSize - 10) * sin(angle);
+        x = (int)((clockCircleSize - 10) * cos(angle));
+        y = (int)((clockCircleSize - 10) * sin(angle));
 
-        if (i%5 == 0)
-        {
-            dots[i] = CircleShape(3);
-        }
-        else
-        {
-            dots[i] = CircleShape(1);
-        }
-        dots[i].setFillColor(Color::Black);
+        dots[i] = (i % 5 == 0) ? CircleShape(hourDotRadius) : CircleShape(aroundHourDotRadius);
+        dots[i].setFillColor(dotColor);
         dots[i].setOrigin(dots[i].getGlobalBounds().width / 2, dots[i].getGlobalBounds().height / 2);
         dots[i].setPosition(x + window.getSize().x / 2, y + window.getSize().y / 2);
 
-        angle = angle + ((2 * PI)/60 );
+        angle = angle + ((2 * PI) / 60 );
     }
 }
 
