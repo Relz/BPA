@@ -1,86 +1,77 @@
-////////////////////////////////////////////////////////////
-// Headers:
-// ctime for getting system time and
-// cmath for sin and cos functions
-////////////////////////////////////////////////////////////
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
-#include <ctime>
 #include <math.h>
 
+using namespace sf;
 
-////////////////////////////////////////////////////////////
-/// Entry point of application
-///
-/// \return Application exit code
-///
-////////////////////////////////////////////////////////////
-int main()
+const int screenWidth = 800;
+const int screenHeight = 600;
+const int clockCircleThickness = 2;
+const int clockCircleSize = 250;
+const float PI = 3.1415927f;
+
+void initializeDots(const RenderWindow &window, CircleShape *dots)
 {
-    // Define some variables and constants
-    const int screenWidth = 800;
-    const int screenHeight = 600;
-    const float PI = 3.1415927;
-    const int clockCircleSize = 250;
-    const int clockCircleThickness = 2;
     int x, y;
-    float angle = 0.0;
-
-    // Set multisampling level
-    sf::ContextSettings settings;
-    settings.antialiasingLevel = 8;
-
-    // Create the window of the application
-    sf::RenderWindow window(sf::VideoMode(screenWidth, screenHeight), "SFML Analog Clock", sf::Style::Close, settings);
-
-    // Define windowCenter which gets the center of the window here, right after creating window
-    sf::Vector2f windowCenter = sf::Vector2f(window.getSize().x / 2.0f, window.getSize().y / 2.0f);
-
-    // Create a list for clock's dots
-    sf::CircleShape dot[60];
-
-    // Create dots and place them to very right positions
+    float angle = 0.0f;
     for (int i=0; i<60; i++)
     {
         x = (clockCircleSize - 10) * cos(angle);
         y = (clockCircleSize - 10) * sin(angle);
 
         if (i%5 == 0)
-            dot[i] = sf::CircleShape(3);
+        {
+            dots[i] = CircleShape(3);
+        }
         else
-            dot[i] = sf::CircleShape(1);
-        dot[i].setFillColor(sf::Color::Black);
-        dot[i].setOrigin(dot[i].getGlobalBounds().width / 2, dot[i].getGlobalBounds().height / 2);
-        dot[i].setPosition(x + window.getSize().x / 2, y + window.getSize().y / 2);
+        {
+            dots[i] = CircleShape(1);
+        }
+        dots[i].setFillColor(Color::Black);
+        dots[i].setOrigin(dots[i].getGlobalBounds().width / 2, dots[i].getGlobalBounds().height / 2);
+        dots[i].setPosition(x + window.getSize().x / 2, y + window.getSize().y / 2);
 
         angle = angle + ((2 * PI)/60 );
     }
+}
+
+int main()
+{
+    ContextSettings settings;
+    settings.antialiasingLevel = 8;
+
+    RenderWindow window(VideoMode(screenWidth, screenHeight), "SFML Analog Clock", Style::Close, settings);
+
+    Vector2f windowCenter = Vector2f(window.getSize().x / 2.0f, window.getSize().y / 2.0f);
+
+    CircleShape dots[60];
+    initializeDots(window, dots);
 
     // Create outline of the clock
-    sf::CircleShape clockCircle(clockCircleSize);
+    CircleShape clockCircle(clockCircleSize);
 
     clockCircle.setPointCount(100);
     clockCircle.setOutlineThickness(clockCircleThickness);
-    clockCircle.setOutlineColor(sf::Color::Black);
+    clockCircle.setOutlineColor(Color::Black);
     clockCircle.setOrigin(clockCircle.getGlobalBounds().width / 2, clockCircle.getGlobalBounds().height / 2);
     clockCircle.setPosition(window.getSize().x / 2 + clockCircleThickness, window.getSize().y / 2 + clockCircleThickness);
 
     // Crate another circle for center
-    sf::CircleShape centerCircle(10);
+    CircleShape centerCircle(10);
 
     centerCircle.setPointCount(100);
-    centerCircle.setFillColor(sf::Color::Red);
+    centerCircle.setFillColor(Color::Red);
     centerCircle.setOrigin(centerCircle.getGlobalBounds().width / 2, centerCircle.getGlobalBounds().height / 2);
     centerCircle.setPosition(windowCenter);
 
     // Create hour, minute, and seconds hands
-    sf::RectangleShape hourHand(sf::Vector2f(5, 180));
-    sf::RectangleShape minuteHand(sf::Vector2f(3, 240));
-    sf::RectangleShape secondsHand(sf::Vector2f(2, 250));
+    RectangleShape hourHand(Vector2f(5, 180));
+    RectangleShape minuteHand(Vector2f(3, 240));
+    RectangleShape secondsHand(Vector2f(2, 250));
 
-    hourHand.setFillColor(sf::Color::Black);
-    minuteHand.setFillColor(sf::Color::Black);
-    secondsHand.setFillColor(sf::Color::Red);
+    hourHand.setFillColor(Color::Black);
+    minuteHand.setFillColor(Color::Black);
+    secondsHand.setFillColor(Color::Red);
 
     hourHand.setOrigin(hourHand.getGlobalBounds().width / 2, hourHand.getGlobalBounds().height - 25);
     minuteHand.setOrigin(minuteHand.getGlobalBounds().width / 2, minuteHand.getGlobalBounds().height - 25);
@@ -91,20 +82,22 @@ int main()
     secondsHand.setPosition(windowCenter);
 
     // Create sound effect
-    sf::Music clockTick;
+    Music clockTick;
     if (!clockTick.openFromFile("resources/clock-1.wav"))
+    {
         return 1;
+    }
     clockTick.setLoop(true);
     clockTick.play();
 
     // Use a part of SFML logo as clock brand
-    sf::Texture clockBrand;
+    Texture clockBrand;
     if (!clockBrand.loadFromFile("resources/clock-brand.png"))
     {
         return 1;
     }
 
-    sf::Sprite clockBrandSprite;
+    Sprite clockBrandSprite;
     clockBrandSprite.setTexture(clockBrand);
     clockBrandSprite.setOrigin(clockBrandSprite.getTextureRect().left + clockBrandSprite.getTextureRect().width/2.0f,
                                clockBrandSprite.getTextureRect().top + clockBrandSprite.getTextureRect().height/2.0f);
@@ -113,23 +106,23 @@ int main()
 
 
     // Create clock background
-    sf::Texture clockImage;
+    Texture clockImage;
     if (!clockImage.loadFromFile("resources/clock-image.png"))
     {
         return 1;
     }
 
     clockCircle.setTexture(&clockImage);
-    clockCircle.setTextureRect(sf::IntRect(40, 0, 500, 500));
+    clockCircle.setTextureRect(IntRect(40, 0, 500, 500));
 
     while (window.isOpen())
     {
         // Handle events
-        sf::Event event;
+        Event event;
         while (window.pollEvent(event))
         {
             // Window closed: exit
-            if (event.type == sf::Event::Closed)
+            if (event.type == Event::Closed)
                 window.close();
         }
 
@@ -142,15 +135,12 @@ int main()
         minuteHand.setRotation(ptm->tm_min*6 + (ptm->tm_sec/12) );
         secondsHand.setRotation(ptm->tm_sec*6);
 
-        // Clear the window
-        window.clear(sf::Color::White);
-
-        // Draw all parts of clock
+        window.clear(Color::White);
         window.draw(clockCircle);
 
         for (int i=0; i<60; i++)
         {
-            window.draw(dot[i]);
+            window.draw(dots[i]);
         }
 
         window.draw(clockBrandSprite);
@@ -159,7 +149,6 @@ int main()
         window.draw(secondsHand);
         window.draw(centerCircle);
 
-        // Display things on screen
         window.display();
     }
 
