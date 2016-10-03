@@ -8,13 +8,20 @@ const int screenWidth = 800;
 const int screenHeight = 600;
 const int clockCircleThickness = 2;
 const int clockCircleSize = 250;
+const Color clockCircleColor = Color::Black;
+const int clockCirclePointNumber = 100;
 const float PI = 3.1415927f;
 const int hourDotRadius = 3;
 const int aroundHourDotRadius = 1;
 const Color dotColor = Color::Black;
+const int centerCircleRadius = 10;
+const Color centerCircleColor = Color::Red;
+const int centerCirclePointNumber = 100;
+
+void initializeClockCircle();
 
 //Инициализация точек окружности часов
-void initializeDots(const RenderWindow &window, CircleShape *dots)
+void initializeDots(CircleShape *dots)
 {
     int x, y;
     float angle = 0.0f;
@@ -26,10 +33,29 @@ void initializeDots(const RenderWindow &window, CircleShape *dots)
         dots[i] = (i % 5 == 0) ? CircleShape(hourDotRadius) : CircleShape(aroundHourDotRadius);
         dots[i].setFillColor(dotColor);
         dots[i].setOrigin(dots[i].getGlobalBounds().width / 2, dots[i].getGlobalBounds().height / 2);
-        dots[i].setPosition(x + window.getSize().x / 2, y + window.getSize().y / 2);
+        dots[i].setPosition(x + screenWidth / 2, y + screenHeight / 2);
 
         angle = angle + ((2 * PI) / 60 );
     }
+}
+
+//Инициализация внешней окружности часов
+void initializeClockCircle(CircleShape &clockCircle)
+{
+    clockCircle.setPointCount(clockCirclePointNumber);
+    clockCircle.setOutlineThickness(clockCircleThickness);
+    clockCircle.setOutlineColor(clockCircleColor);
+    clockCircle.setOrigin(clockCircle.getGlobalBounds().width / 2, clockCircle.getGlobalBounds().height / 2);
+    clockCircle.setPosition(screenWidth / 2 + clockCircleThickness, screenHeight / 2 + clockCircleThickness);
+}
+
+//Инициализцаия цетральной окружности часов
+void initializeCenterClockCircle(const Vector2f &windowCenter, CircleShape &centerCircle)
+{
+    centerCircle.setPointCount(centerCirclePointNumber);
+    centerCircle.setFillColor(centerCircleColor);
+    centerCircle.setOrigin(centerCircle.getGlobalBounds().width / 2, centerCircle.getGlobalBounds().height / 2);
+    centerCircle.setPosition(windowCenter);
 }
 
 int main()
@@ -38,28 +64,16 @@ int main()
     settings.antialiasingLevel = 8;
 
     RenderWindow window(VideoMode(screenWidth, screenHeight), "SFML Analog Clock", Style::Close, settings);
-
     Vector2f windowCenter = Vector2f(window.getSize().x / 2.0f, window.getSize().y / 2.0f);
 
     CircleShape dots[60];
-    initializeDots(window, dots);
+    initializeDots(dots);
 
-    // Create outline of the clock
     CircleShape clockCircle(clockCircleSize);
+    initializeClockCircle(clockCircle);
 
-    clockCircle.setPointCount(100);
-    clockCircle.setOutlineThickness(clockCircleThickness);
-    clockCircle.setOutlineColor(Color::Black);
-    clockCircle.setOrigin(clockCircle.getGlobalBounds().width / 2, clockCircle.getGlobalBounds().height / 2);
-    clockCircle.setPosition(window.getSize().x / 2 + clockCircleThickness, window.getSize().y / 2 + clockCircleThickness);
-
-    // Crate another circle for center
-    CircleShape centerCircle(10);
-
-    centerCircle.setPointCount(100);
-    centerCircle.setFillColor(Color::Red);
-    centerCircle.setOrigin(centerCircle.getGlobalBounds().width / 2, centerCircle.getGlobalBounds().height / 2);
-    centerCircle.setPosition(windowCenter);
+    CircleShape centerCircle(centerCircleRadius);
+    initializeCenterClockCircle(windowCenter, centerCircle);
 
     // Create hour, minute, and seconds hands
     RectangleShape hourHand(Vector2f(5, 180));
