@@ -4,18 +4,19 @@
 
 using namespace sf;
 
+const float PI = 3.1415927f;
+
 const int screenWidth = 800;
 const int screenHeight = 600;
+
 const int clockCircleThickness = 2;
 const int clockCircleSize = 250;
-const Color clockCircleColor = Color::Black;
 const int clockCirclePointNumber = 100;
-const float PI = 3.1415927f;
+
 const int hourDotRadius = 3;
 const int aroundHourDotRadius = 1;
-const Color dotColor = Color::Black;
+
 const int centerCircleRadius = 10;
-const Color centerCircleColor = Color::Red;
 const int centerCirclePointNumber = 100;
 
 void initializeClockCircle();
@@ -31,7 +32,7 @@ void initializeDots(CircleShape *dots)
         y = (int)((clockCircleSize - 10) * sin(angle));
 
         dots[i] = (i % 5 == 0) ? CircleShape(hourDotRadius) : CircleShape(aroundHourDotRadius);
-        dots[i].setFillColor(dotColor);
+        dots[i].setFillColor(Color::Black);
         dots[i].setOrigin(dots[i].getGlobalBounds().width / 2, dots[i].getGlobalBounds().height / 2);
         dots[i].setPosition(x + screenWidth / 2, y + screenHeight / 2);
 
@@ -44,7 +45,7 @@ void initializeClockCircle(CircleShape &clockCircle)
 {
     clockCircle.setPointCount(clockCirclePointNumber);
     clockCircle.setOutlineThickness(clockCircleThickness);
-    clockCircle.setOutlineColor(clockCircleColor);
+    clockCircle.setOutlineColor(Color::Black);
     clockCircle.setOrigin(clockCircle.getGlobalBounds().width / 2, clockCircle.getGlobalBounds().height / 2);
     clockCircle.setPosition(screenWidth / 2 + clockCircleThickness, screenHeight / 2 + clockCircleThickness);
 }
@@ -53,9 +54,49 @@ void initializeClockCircle(CircleShape &clockCircle)
 void initializeCenterClockCircle(const Vector2f &windowCenter, CircleShape &centerCircle)
 {
     centerCircle.setPointCount(centerCirclePointNumber);
-    centerCircle.setFillColor(centerCircleColor);
+    centerCircle.setFillColor(Color::Red);
     centerCircle.setOrigin(centerCircle.getGlobalBounds().width / 2, centerCircle.getGlobalBounds().height / 2);
     centerCircle.setPosition(windowCenter);
+}
+
+void processClocks(RenderWindow &window, Sprite &clockBrandSprite, CircleShape &clockCircle, CircleShape *dots, CircleShape &centerCircle, RectangleShape &hourHand, RectangleShape &minuteHand, RectangleShape &secondsHand)
+{
+    while (window.isOpen())
+    {
+        // Handle events
+        Event event;
+        while (window.pollEvent(event))
+        {
+            // Window closed: exit
+            if (event.type == Event::Closed)
+                window.close();
+        }
+
+        // Get system time
+        std::time_t currentTime = std::time(NULL);
+
+        struct tm * ptm = localtime(&currentTime);
+
+        hourHand.setRotation(ptm->tm_hour*30 + (ptm->tm_min/2) );
+        minuteHand.setRotation(ptm->tm_min*6 + (ptm->tm_sec/12) );
+        secondsHand.setRotation(ptm->tm_sec*6);
+
+        window.clear(Color::White);
+        window.draw(clockCircle);
+
+        for (int i=0; i<60; i++)
+        {
+            window.draw(dots[i]);
+        }
+
+        window.draw(clockBrandSprite);
+        window.draw(hourHand);
+        window.draw(minuteHand);
+        window.draw(secondsHand);
+        window.draw(centerCircle);
+
+        window.display();
+    }
 }
 
 int main()
@@ -101,7 +142,6 @@ int main()
     clockTick.setLoop(true);
     clockTick.play();
 
-    // Use a part of SFML logo as clock brand
     Texture clockBrand;
     if (!clockBrand.loadFromFile("resources/clock-brand.png"))
     {
@@ -126,42 +166,7 @@ int main()
     clockCircle.setTexture(&clockImage);
     clockCircle.setTextureRect(IntRect(40, 0, 500, 500));
 
-    while (window.isOpen())
-    {
-        // Handle events
-        Event event;
-        while (window.pollEvent(event))
-        {
-            // Window closed: exit
-            if (event.type == Event::Closed)
-                window.close();
-        }
-
-        // Get system time
-        std::time_t currentTime = std::time(NULL);
-
-        struct tm * ptm = localtime(&currentTime);
-
-        hourHand.setRotation(ptm->tm_hour*30 + (ptm->tm_min/2) );
-        minuteHand.setRotation(ptm->tm_min*6 + (ptm->tm_sec/12) );
-        secondsHand.setRotation(ptm->tm_sec*6);
-
-        window.clear(Color::White);
-        window.draw(clockCircle);
-
-        for (int i=0; i<60; i++)
-        {
-            window.draw(dots[i]);
-        }
-
-        window.draw(clockBrandSprite);
-        window.draw(hourHand);
-        window.draw(minuteHand);
-        window.draw(secondsHand);
-        window.draw(centerCircle);
-
-        window.display();
-    }
+    processClocks(window, clockBrandSprite, clockCircle, dots, centerCircle, hourHand, minuteHand, secondsHand);
 
     return 0;
 }
