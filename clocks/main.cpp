@@ -19,9 +19,7 @@ const int aroundHourDotRadius = 1;
 const int centerCircleRadius = 10;
 const int centerCirclePointNumber = 100;
 
-void initializeClockCircle();
-
-//Инициализация точек окружности часов
+// Инициализация точек окружности часов
 void initializeDots(CircleShape *dots)
 {
     int x, y;
@@ -40,7 +38,7 @@ void initializeDots(CircleShape *dots)
     }
 }
 
-//Инициализация внешней окружности часов
+// Инициализация внешней окружности часов
 void initializeClockCircle(CircleShape &clockCircle)
 {
     clockCircle.setPointCount(clockCirclePointNumber);
@@ -50,7 +48,7 @@ void initializeClockCircle(CircleShape &clockCircle)
     clockCircle.setPosition(screenWidth / 2 + clockCircleThickness, screenHeight / 2 + clockCircleThickness);
 }
 
-//Инициализцаия цетральной окружности часов
+// Инициализцаия цетральной окружности часов
 void initializeCenterClockCircle(const Vector2f &windowCenter, CircleShape &centerCircle)
 {
     centerCircle.setPointCount(centerCirclePointNumber);
@@ -59,43 +57,57 @@ void initializeCenterClockCircle(const Vector2f &windowCenter, CircleShape &cent
     centerCircle.setPosition(windowCenter);
 }
 
-void processClocks(RenderWindow &window, Sprite &clockBrandSprite, CircleShape &clockCircle, CircleShape *dots, CircleShape &centerCircle, RectangleShape &hourHand, RectangleShape &minuteHand, RectangleShape &secondsHand)
+// Отрисовка объектов на форме
+void drawObjects(RenderWindow &window, CircleShape &clockCircle, CircleShape *dots, CircleShape &centerCircle, RectangleShape &hourHand, RectangleShape &minuteHand, RectangleShape &secondsHand)
+{
+    window.draw(clockCircle);
+
+    for (int i=0; i<60; i++)
+    {
+        window.draw(dots[i]);
+    }
+
+    window.draw(hourHand);
+    window.draw(minuteHand);
+    window.draw(secondsHand);
+    window.draw(centerCircle);
+
+    window.display();
+}
+
+// Обновление Формы
+void update(RenderWindow &window, CircleShape &clockCircle, CircleShape *dots, CircleShape &centerCircle, RectangleShape &hourHand, RectangleShape &minuteHand, RectangleShape &secondsHand)
+{
+    window.clear(Color::White);
+    drawObjects(window, clockCircle, dots, centerCircle, hourHand, minuteHand, secondsHand);
+}
+
+// Обработка событий на форме
+void handleEvents(RenderWindow &window)
+{
+    Event event;
+    while (window.pollEvent(event))
+    {
+        if (event.type == Event::Closed)
+            window.close();
+    }
+}
+
+// Игровой цикл
+void processClocks(RenderWindow &window, CircleShape &clockCircle, CircleShape *dots, CircleShape &centerCircle, RectangleShape &hourHand, RectangleShape &minuteHand, RectangleShape &secondsHand)
 {
     while (window.isOpen())
     {
-        // Handle events
-        Event event;
-        while (window.pollEvent(event))
-        {
-            // Window closed: exit
-            if (event.type == Event::Closed)
-                window.close();
-        }
+        handleEvents(window);
 
-        // Get system time
         std::time_t currentTime = std::time(NULL);
-
         struct tm * ptm = localtime(&currentTime);
 
-        hourHand.setRotation(ptm->tm_hour*30 + (ptm->tm_min/2) );
-        minuteHand.setRotation(ptm->tm_min*6 + (ptm->tm_sec/12) );
-        secondsHand.setRotation(ptm->tm_sec*6);
+        hourHand.setRotation(ptm->tm_hour * 30 + (ptm->tm_min / 2));
+        minuteHand.setRotation(ptm->tm_min * 6 + (ptm->tm_sec / 12));
+        secondsHand.setRotation(ptm->tm_sec * 6);
 
-        window.clear(Color::White);
-        window.draw(clockCircle);
-
-        for (int i=0; i<60; i++)
-        {
-            window.draw(dots[i]);
-        }
-
-        window.draw(clockBrandSprite);
-        window.draw(hourHand);
-        window.draw(minuteHand);
-        window.draw(secondsHand);
-        window.draw(centerCircle);
-
-        window.display();
+        update(window, clockCircle, dots, centerCircle, hourHand, minuteHand, secondsHand);
     }
 }
 
@@ -116,7 +128,6 @@ int main()
     CircleShape centerCircle(centerCircleRadius);
     initializeCenterClockCircle(windowCenter, centerCircle);
 
-    // Create hour, minute, and seconds hands
     RectangleShape hourHand(Vector2f(5, 180));
     RectangleShape minuteHand(Vector2f(3, 240));
     RectangleShape secondsHand(Vector2f(2, 250));
@@ -142,23 +153,8 @@ int main()
     clockTick.setLoop(true);
     clockTick.play();
 
-    Texture clockBrand;
-    if (!clockBrand.loadFromFile("resources/clock-brand.png"))
-    {
-        return 1;
-    }
-
-    Sprite clockBrandSprite;
-    clockBrandSprite.setTexture(clockBrand);
-    clockBrandSprite.setOrigin(clockBrandSprite.getTextureRect().left + clockBrandSprite.getTextureRect().width/2.0f,
-                               clockBrandSprite.getTextureRect().top + clockBrandSprite.getTextureRect().height/2.0f);
-
-    clockBrandSprite.setPosition(window.getSize().x/2, window.getSize().y -100);
-
-
-    // Create clock background
     Texture clockImage;
-    if (!clockImage.loadFromFile("resources/clock-image.png"))
+    if (!clockImage.loadFromFile("resources/background.png"))
     {
         return 1;
     }
@@ -166,7 +162,7 @@ int main()
     clockCircle.setTexture(&clockImage);
     clockCircle.setTextureRect(IntRect(40, 0, 500, 500));
 
-    processClocks(window, clockBrandSprite, clockCircle, dots, centerCircle, hourHand, minuteHand, secondsHand);
+    processClocks(window, clockCircle, dots, centerCircle, hourHand, minuteHand, secondsHand);
 
     return 0;
 }
