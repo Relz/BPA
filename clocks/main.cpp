@@ -244,7 +244,6 @@ void drawClockFace(RenderWindow &window, ClockFace &clockFace)
 {
     window.draw(clockFace.clockCircle);
     drawDashesAndNumbers(window, clockFace.dashes, clockFace.numbers, clockFace.numbersCircles);
-    window.draw(clockFace.centerCircle);
 }
 
 // Отрисовка стрелок времени
@@ -260,6 +259,7 @@ void drawObjects(RenderWindow &window, MyClock &clock)
 {
     drawClockFace(window, clock.clockFace);
     drawClockHands(window, clock.clockHands);
+    window.draw(clock.clockFace.centerCircle);
     window.display();
 }
 
