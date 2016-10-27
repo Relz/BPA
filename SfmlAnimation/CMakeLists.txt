@@ -3,7 +3,7 @@ project(SfmlAnimation)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
-set(SOURCE_FILES main.cpp)
+set(SOURCE_FILES main.cpp constant.cpp constant.h stdafx.cpp stdafx.h)
 add_executable(SfmlAnimation ${SOURCE_FILES})
 
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake_modules")
