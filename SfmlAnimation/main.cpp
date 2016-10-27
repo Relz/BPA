@@ -209,7 +209,7 @@ int main()
     ContextSettings settings;
     settings.antialiasingLevel = ANTIALIASING_LEVEL;
 
-    RenderWindow window(VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "SFML Animation", Style::Close, settings);
+    RenderWindow window(VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), WINDOW_TITLE, Style::Close, settings);
     Blocks blocks;
     
     initializeBlocks(blocks);

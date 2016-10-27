@@ -7,6 +7,8 @@ const unsigned ANTIALIASING_LEVEL = 8;
 const unsigned SCREEN_WIDTH = 540;
 const unsigned SCREEN_HEIGHT = 600;
 
+const string WINDOW_TITLE = "SFML Animation";
+
 const unsigned RECTANGLE_COUNT = 8;
 const unsigned RECTANGLE_WIDTH = 50;
 const unsigned RECTANGLE_HEIGHT = 50;
