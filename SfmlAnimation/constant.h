@@ -1,0 +1,8 @@
+//
+// Created by relz on 26.10.16.
+//
+
+#ifndef SFMLANIMATION_CONSTANT_H
+#define SFMLANIMATION_CONSTANT_H
+
+#endif //SFMLANIMATION_CONSTANT_H
