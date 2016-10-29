@@ -1,5 +1,30 @@
 #include "handleEvents.h"
 
+// Выбрать шар
+void selectBall(GameField &gameField, Cell *cell)
+{
+    if (gameField.selectedCell != nullptr)
+    {
+        gameField.selectedCell->ball->setOutlineThickness(0);
+        gameField.selectedCell->ball->setOutlineColor(Color::Transparent);
+    }
+    gameField.selectedCell = cell;
+    gameField.selectedCell->ball->setOutlineThickness(CELL_OUTLINE_THICKNESS);
+    gameField.selectedCell->ball->setOutlineColor(Color(0, 0, 0));
+}
+
+// Переместить шар
+void moveBall(GameField &gameField, Cell *cell)
+{
+    gameField.selectedCell->ball->setPosition(cell->posX * CELL_SIZE + gameField.x + (CELL_SIZE - BALL_DIAMETER) / 2,
+                                              cell->posY * CELL_SIZE + gameField.y + (CELL_SIZE - BALL_DIAMETER) / 2);
+    gameField.selectedCell->ball->setOutlineThickness(0);
+    gameField.selectedCell->ball->setOutlineColor(Color::Transparent);
+    cell->ball = gameField.selectedCell->ball;
+    gameField.selectedCell->ball = nullptr;
+    gameField.selectedCell = nullptr;
+}
+
 // Получить ячейку, зная позицию x y
 Cell &getCellByPos(GameField &gameField, float x, float y)
 {
@@ -21,26 +46,13 @@ void processLeftMouseButtonClick(GameField &gameField, size_t clickX, size_t cli
     if (doesUserClickedOnField(gameField, clickX, clickY))
     {
         Cell *cell = &getCellByPos(gameField, clickX, clickY);
-        if (cell->ball != nullptr)
+        if (cell->ball != nullptr) // Если у нажатой ячейки есть шар
         {
-            if (gameField.selectedCell != nullptr)
-            {
-                gameField.selectedCell->ball->setOutlineThickness(0);
-                gameField.selectedCell->ball->setOutlineColor(Color::Transparent);
-            }
-            gameField.selectedCell = cell;
-            gameField.selectedCell->ball->setOutlineThickness(CELL_OUTLINE_THICKNESS);
-            gameField.selectedCell->ball->setOutlineColor(Color(0, 0, 0));
+            selectBall(gameField, cell);
         }
-        else if (gameField.selectedCell != nullptr)
+        else if (gameField.selectedCell != nullptr) // Если нажатая ячейка пуста и уже выбран шар
         {
-            gameField.selectedCell->ball->setPosition(cell->posX * CELL_SIZE + gameField.x + (CELL_SIZE - BALL_DIAMETER) / 2,
-                                                      cell->posY * CELL_SIZE + gameField.y + (CELL_SIZE - BALL_DIAMETER) / 2);
-            gameField.selectedCell->ball->setOutlineThickness(0);
-            gameField.selectedCell->ball->setOutlineColor(Color::Transparent);
-            cell->ball = gameField.selectedCell->ball;
-            gameField.selectedCell->ball = nullptr;
-            gameField.selectedCell = nullptr;
+            moveBall(gameField, cell);
         }
     }
 }

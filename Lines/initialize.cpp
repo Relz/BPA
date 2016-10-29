@@ -38,6 +38,7 @@ void initCells(GameField &gameField)
         {
             size_t cellPos = i * CELL_COUNT_X + j;
             gameField.cells[cellPos].shape.setSize(Vector2f(CELL_SIZE, CELL_SIZE));
+            gameField.cells[cellPos].shape.setFillColor(CELL_FILL_COLOR);
             gameField.cells[cellPos].shape.setOutlineThickness(CELL_OUTLINE_THICKNESS);
             gameField.cells[cellPos].shape.setOutlineColor(CELL_OUTLINE_COLOR);
             gameField.cells[cellPos].shape.setPosition(j * CELL_SIZE + gameField.x, i * CELL_SIZE + gameField.y);

@@ -12,9 +12,9 @@ const string WINDOW_TITLE = "Lines";
 const size_t CELL_COUNT_X = 9;
 const size_t CELL_COUNT_Y = 9;
 const float CELL_SIZE = 50;
-const Color CELL_FILL_COLOR = Color(255, 255, 255);
-const Color CELL_OUTLINE_COLOR = Color(0, 0, 0);
+const Color CELL_FILL_COLOR = Color(192, 192, 192);
 const float CELL_OUTLINE_THICKNESS = 2;
+const Color CELL_OUTLINE_COLOR = Color(63, 63, 63);
 
 const size_t START_BALL_COUNT = 3;
 const float BALL_RADIUS = CELL_SIZE / 2.5;
@@ -34,13 +34,13 @@ struct FieldPosition
 
 const vector<Color> ballColors =
 {
-    Color(255, 0, 0),   // Red
-    Color(255, 127, 0), // Orange
-    Color(255, 255, 0), // Yellow
-    Color(0, 255, 0),   // Green
-    Color(0, 255, 255), // Cyan
-    Color(0, 0, 255),   // Blue
-    Color(75, 0, 130)   // Purple
+    Color(100, 0, 0),   // Red
+    Color(200, 0, 0), // Orange
+    Color(165, 165, 45), // Yellow
+    Color(40, 169, 30),   // Green
+    Color(10, 150, 180), // Cyan
+    Color(30, 40, 150),   // Blue
+    Color(180, 50, 180)   // Purple
 };
 
 #endif //SFMLANIMATION_CONSTANT_H

@@ -24,7 +24,7 @@ void drawObjects(RenderWindow &window, GameField &gameField)
 void update(RenderWindow &window, GameField &gameField)
 {
     drawObjects(window, gameField);
-    window.clear(Color::White);
+    window.clear(Color::Black);
 }
 
 // Игровой цикл
