@@ -1,4 +1,3 @@
-#include <iostream>
 #include "stdafx.h"
 #include "constant.h"
 #include "gameField.h"
@@ -25,10 +24,11 @@ void initStartBalls(GameField &gameField)
         getRandomEmptyFieldPosition(gameField, randomTool, fieldPosition);
         size_t cellPos = fieldPosition.y * CELL_COUNT_X + fieldPosition.x;
 
-        gameField.cells[cellPos].ball.setPosition(fieldPosition.x * CELL_SIZE + gameField.x + (CELL_SIZE - BALL_DIAMETER) / 2,
+        gameField.cells[cellPos].ball = new CircleShape;
+        gameField.cells[cellPos].ball->setPosition(fieldPosition.x * CELL_SIZE + gameField.x + (CELL_SIZE - BALL_DIAMETER) / 2,
                                                   fieldPosition.y * CELL_SIZE + gameField.y + (CELL_SIZE - BALL_DIAMETER) / 2);
-        gameField.cells[cellPos].ball.setRadius(BALL_RADIUS);
-        gameField.cells[cellPos].ball.setFillColor(Color(0, 100, 0));
+        gameField.cells[cellPos].ball->setRadius(BALL_RADIUS);
+        gameField.cells[cellPos].ball->setFillColor(Color(0, 100, 0));
         gameField.cells[cellPos].isEmpty = false;
     }
 }
@@ -47,6 +47,7 @@ void initCells(GameField &gameField)
             gameField.cells[cellPos].shape.setPosition(j * CELL_SIZE + gameField.x, i * CELL_SIZE + gameField.y);
             gameField.cells[cellPos].posX = j;
             gameField.cells[cellPos].posY = i;
+            gameField.cells[cellPos].ball = nullptr;
         }
     }
 }
@@ -66,7 +67,10 @@ void drawGameField(RenderWindow &window, GameField &gameField)
     for (size_t i = 0; i < CELL_COUNT_X * CELL_COUNT_Y; ++i)
     {
         window.draw(gameField.cells[i].shape);
-        window.draw(gameField.cells[i].ball);
+        if (gameField.cells[i].ball != nullptr)
+        {
+            window.draw(*(gameField.cells[i].ball));
+        }
     }
 }
 

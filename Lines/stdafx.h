@@ -5,6 +5,7 @@
 #include <string>
 #include <math.h>
 #include <random>
+#include <iostream>
 
 using namespace std;
 using namespace sf;
