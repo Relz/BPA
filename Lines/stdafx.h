@@ -10,4 +10,10 @@
 using namespace std;
 using namespace sf;
 
+#include "constant.h"
+#include "gameField.h"
+#include "randomTool.h"
+#include "handleEvents.h"
+#include "initialize.h"
+
 #endif //SFMLANIMATION_STDAFX_H
