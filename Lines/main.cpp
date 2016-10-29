@@ -2,7 +2,37 @@
 #include "stdafx.h"
 #include "constant.h"
 #include "gameField.h"
+#include "randomTool.h"
+#include "handleEvents.h"
 
+// Получение случайных координат игрового поля, на которых нет шара
+void getRandomEmptyGameFieldPos(GameField &gameField, RandomTool &randomTool, FieldPosition &fieldPosition)
+{
+    do
+    {
+        fieldPosition.x = randomTool.getRandomValue(0, CELL_COUNT_X - 1);
+        fieldPosition.y = randomTool.getRandomValue(0, CELL_COUNT_Y - 1);
+    } while (!gameField.cells[fieldPosition.y * CELL_COUNT_X + fieldPosition.x].isEmpty);
+};
+
+// Инициализация начальных шаров
+void initStartBalls(GameField &gameField)
+{
+    RandomTool randomTool;
+
+    for (size_t i = 0; i < START_BALL_COUNT; ++i)
+    {
+        FieldPosition fieldPosition;
+        getRandomEmptyGameFieldPos(gameField, randomTool, fieldPosition);
+        size_t currentCellPos = fieldPosition.y * CELL_COUNT_X + fieldPosition.x;
+
+        gameField.cells[currentCellPos].ball.setPosition(fieldPosition.x * CELL_SIZE + gameField.x,
+                                                         fieldPosition.y * CELL_SIZE + gameField.y);
+        gameField.cells[currentCellPos].ball.setRadius(BALL_SIZE);
+        gameField.cells[currentCellPos].ball.setFillColor(Color(0, 100, 0));
+        gameField.cells[currentCellPos].isEmpty = false;
+    }
+}
 
 // Инициализация игровых ячеек
 void initCells(GameField &gameField)
@@ -11,11 +41,13 @@ void initCells(GameField &gameField)
     {
         for (size_t j = 0; j < CELL_COUNT_X; ++j)
         {
-            gameField.cells[i * CELL_COUNT_Y + j].shape.setSize(Vector2f(CELL_SIZE, CELL_SIZE));
-            gameField.cells[i * CELL_COUNT_Y + j].shape.setOutlineThickness(CELL_OUTLINE_THICKNESS);
-            gameField.cells[i * CELL_COUNT_Y + j].shape.setOutlineColor(CELL_OUTLINE_COLOR);
-            gameField.cells[i * CELL_COUNT_Y + j].shape.setPosition(j * CELL_SIZE + gameField.x, i * CELL_SIZE + gameField.y);
-            gameField.cells[i * CELL_COUNT_Y + j].ball = nullptr;
+            size_t currentCellPos = i * CELL_COUNT_X + j;
+            gameField.cells[currentCellPos].shape.setSize(Vector2f(CELL_SIZE, CELL_SIZE));
+            gameField.cells[currentCellPos].shape.setOutlineThickness(CELL_OUTLINE_THICKNESS);
+            gameField.cells[currentCellPos].shape.setOutlineColor(CELL_OUTLINE_COLOR);
+            gameField.cells[currentCellPos].shape.setPosition(j * CELL_SIZE + gameField.x, i * CELL_SIZE + gameField.y);
+            gameField.cells[currentCellPos].posX = j;
+            gameField.cells[currentCellPos].posY = i;
         }
     }
 }
@@ -24,8 +56,9 @@ void initCells(GameField &gameField)
 void initGameField(GameField &gameField, Vector2f &windowCenter)
 {
     gameField.x = windowCenter.x - CELL_COUNT_X * CELL_SIZE / 2;
-    gameField.y = windowCenter.y - CELL_COUNT_Y * CELL_SIZE / 2
+    gameField.y = windowCenter.y - CELL_COUNT_Y * CELL_SIZE / 2;
     initCells(gameField);
+    initStartBalls(gameField);
 }
 
 // Отрисовка игрового поля
@@ -34,6 +67,7 @@ void drawGameField(RenderWindow &window, GameField &gameField)
     for (size_t i = 0; i < CELL_COUNT_X * CELL_COUNT_Y; ++i)
     {
         window.draw(gameField.cells[i].shape);
+        window.draw(gameField.cells[i].ball);
     }
 }
 
@@ -51,38 +85,12 @@ void update(RenderWindow &window, GameField &gameField)
     window.clear(Color::White);
 }
 
-// Обработка событий на форме
-void handleEvents(RenderWindow &window)
-{
-    Event event;
-    while (window.pollEvent(event))
-    {
-        switch (event.type)
-        {
-            case Event::Closed:
-            {
-                window.close();
-                break;
-            }
-            case Event::MouseButtonReleased:
-            {
-                if (event.mouseButton.button == sf::Mouse::Left)
-                {
-                    cout << event.mouseButton.x << "\n";
-                    cout << event.mouseButton.y << "\n";
-                }
-                break;
-            }
-        }
-    }
-}
-
 // Игровой цикл
 void gameLoop(RenderWindow &window, GameField &gameField)
 {
     while (window.isOpen())
     {
-        handleEvents(window);
+        handleEvents(window, gameField);
         update(window, gameField);
     }
 }

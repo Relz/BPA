@@ -2,11 +2,15 @@
 <module type="CPP_MODULE" version="4">
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
-      <sourceFolder url="file://$MODULE_DIR$/cmake_modules/FindSFML.cmake" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/main.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/gameField.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/CMakeLists.txt" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/cmake_modules/FindSFML.cmake" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/main.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/gameField.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/randomTool.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/randomTool.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/handleEvents.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/handleEvents.cpp" isTestSource="false" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module-library">

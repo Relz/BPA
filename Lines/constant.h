@@ -16,4 +16,19 @@ const Color CELL_FILL_COLOR = Color(255, 255, 255);
 const Color CELL_OUTLINE_COLOR = Color(0, 0, 0);
 const float CELL_OUTLINE_THICKNESS = 2;
 
+const size_t START_BALL_COUNT = 3;
+const float BALL_SIZE = CELL_SIZE / 2.5;
+
+struct FieldPosition
+{
+    size_t x;
+    size_t y;
+
+    FieldPosition(size_t x = 0, size_t y = 0)
+    {
+        FieldPosition::x = x;
+        FieldPosition::y = y;
+    }
+};
+
 #endif //SFMLANIMATION_CONSTANT_H

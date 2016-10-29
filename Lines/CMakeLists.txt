@@ -3,7 +3,7 @@ project(Lines)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
-set(SOURCE_FILES main.cpp gameField.cpp gameField.h)
+set(SOURCE_FILES main.cpp gameField.cpp gameField.h randomTool.cpp randomTool.h handleEvents.cpp handleEvents.h)
 add_executable(Lines ${SOURCE_FILES})
 
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake_modules")
