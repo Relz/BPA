@@ -6,31 +6,30 @@
 #include "handleEvents.h"
 
 // Получение случайных координат игрового поля, на которых нет шара
-void getRandomEmptyGameFieldPos(GameField &gameField, RandomTool &randomTool, FieldPosition &fieldPosition)
+void getRandomEmptyFieldPosition(GameField &gameField, RandomTool &randomTool, FieldPosition &fieldPosition)
 {
     do
     {
         fieldPosition.x = randomTool.getRandomValue(0, CELL_COUNT_X - 1);
         fieldPosition.y = randomTool.getRandomValue(0, CELL_COUNT_Y - 1);
     } while (!gameField.cells[fieldPosition.y * CELL_COUNT_X + fieldPosition.x].isEmpty);
-};
+}
 
 // Инициализация начальных шаров
 void initStartBalls(GameField &gameField)
 {
     RandomTool randomTool;
-
     for (size_t i = 0; i < START_BALL_COUNT; ++i)
     {
         FieldPosition fieldPosition;
-        getRandomEmptyGameFieldPos(gameField, randomTool, fieldPosition);
-        size_t currentCellPos = fieldPosition.y * CELL_COUNT_X + fieldPosition.x;
+        getRandomEmptyFieldPosition(gameField, randomTool, fieldPosition);
+        size_t cellPos = fieldPosition.y * CELL_COUNT_X + fieldPosition.x;
 
-        gameField.cells[currentCellPos].ball.setPosition(fieldPosition.x * CELL_SIZE + gameField.x,
-                                                         fieldPosition.y * CELL_SIZE + gameField.y);
-        gameField.cells[currentCellPos].ball.setRadius(BALL_SIZE);
-        gameField.cells[currentCellPos].ball.setFillColor(Color(0, 100, 0));
-        gameField.cells[currentCellPos].isEmpty = false;
+        gameField.cells[cellPos].ball.setPosition(fieldPosition.x * CELL_SIZE + gameField.x + (CELL_SIZE - BALL_DIAMETER) / 2,
+                                                  fieldPosition.y * CELL_SIZE + gameField.y + (CELL_SIZE - BALL_DIAMETER) / 2);
+        gameField.cells[cellPos].ball.setRadius(BALL_RADIUS);
+        gameField.cells[cellPos].ball.setFillColor(Color(0, 100, 0));
+        gameField.cells[cellPos].isEmpty = false;
     }
 }
 
@@ -41,13 +40,13 @@ void initCells(GameField &gameField)
     {
         for (size_t j = 0; j < CELL_COUNT_X; ++j)
         {
-            size_t currentCellPos = i * CELL_COUNT_X + j;
-            gameField.cells[currentCellPos].shape.setSize(Vector2f(CELL_SIZE, CELL_SIZE));
-            gameField.cells[currentCellPos].shape.setOutlineThickness(CELL_OUTLINE_THICKNESS);
-            gameField.cells[currentCellPos].shape.setOutlineColor(CELL_OUTLINE_COLOR);
-            gameField.cells[currentCellPos].shape.setPosition(j * CELL_SIZE + gameField.x, i * CELL_SIZE + gameField.y);
-            gameField.cells[currentCellPos].posX = j;
-            gameField.cells[currentCellPos].posY = i;
+            size_t cellPos = i * CELL_COUNT_X + j;
+            gameField.cells[cellPos].shape.setSize(Vector2f(CELL_SIZE, CELL_SIZE));
+            gameField.cells[cellPos].shape.setOutlineThickness(CELL_OUTLINE_THICKNESS);
+            gameField.cells[cellPos].shape.setOutlineColor(CELL_OUTLINE_COLOR);
+            gameField.cells[cellPos].shape.setPosition(j * CELL_SIZE + gameField.x, i * CELL_SIZE + gameField.y);
+            gameField.cells[cellPos].posX = j;
+            gameField.cells[cellPos].posY = i;
         }
     }
 }

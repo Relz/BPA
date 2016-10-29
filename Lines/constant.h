@@ -17,7 +17,8 @@ const Color CELL_OUTLINE_COLOR = Color(0, 0, 0);
 const float CELL_OUTLINE_THICKNESS = 2;
 
 const size_t START_BALL_COUNT = 3;
-const float BALL_SIZE = CELL_SIZE / 2.5;
+const float BALL_RADIUS = CELL_SIZE / 2.5;
+const float BALL_DIAMETER = BALL_RADIUS * 2;
 
 struct FieldPosition
 {
