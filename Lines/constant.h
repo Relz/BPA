@@ -32,4 +32,15 @@ struct FieldPosition
     }
 };
 
+const vector<Color> ballColors =
+{
+    Color(255, 0, 0),   // Red
+    Color(255, 127, 0), // Orange
+    Color(255, 255, 0), // Yellow
+    Color(0, 255, 0),   // Green
+    Color(0, 255, 255), // Cyan
+    Color(0, 0, 255),   // Blue
+    Color(75, 0, 130)   // Purple
+};
+
 #endif //SFMLANIMATION_CONSTANT_H

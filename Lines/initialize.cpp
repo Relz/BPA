@@ -24,7 +24,7 @@ void initStartBalls(GameField &gameField)
         gameField.cells[cellPos].ball->setPosition(fieldPosition.x * CELL_SIZE + gameField.x + (CELL_SIZE - BALL_DIAMETER) / 2,
                                                   fieldPosition.y * CELL_SIZE + gameField.y + (CELL_SIZE - BALL_DIAMETER) / 2);
         gameField.cells[cellPos].ball->setRadius(BALL_RADIUS);
-        gameField.cells[cellPos].ball->setFillColor(Color(0, 100, 0));
+        gameField.cells[cellPos].ball->setFillColor(ballColors[randomTool.getRandomValue(0, ballColors.size() - 1)]);
         gameField.cells[cellPos].isEmpty = false;
     }
 }

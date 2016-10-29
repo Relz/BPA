@@ -23,14 +23,21 @@ void processLeftMouseButtonClick(GameField &gameField, size_t clickX, size_t cli
         Cell *cell = &getCellByPos(gameField, clickX, clickY);
         if (cell->ball != nullptr)
         {
+            if (gameField.selectedCell != nullptr)
+            {
+                gameField.selectedCell->ball->setOutlineThickness(0);
+                gameField.selectedCell->ball->setOutlineColor(Color::Transparent);
+            }
             gameField.selectedCell = cell;
-            gameField.selectedCell->ball->setFillColor(Color(100, 0, 0));
+            gameField.selectedCell->ball->setOutlineThickness(CELL_OUTLINE_THICKNESS);
+            gameField.selectedCell->ball->setOutlineColor(Color(0, 0, 0));
         }
         else if (gameField.selectedCell != nullptr)
         {
             gameField.selectedCell->ball->setPosition(cell->posX * CELL_SIZE + gameField.x + (CELL_SIZE - BALL_DIAMETER) / 2,
                                                       cell->posY * CELL_SIZE + gameField.y + (CELL_SIZE - BALL_DIAMETER) / 2);
-            gameField.selectedCell->ball->setFillColor(Color(0, 100, 0));
+            gameField.selectedCell->ball->setOutlineThickness(0);
+            gameField.selectedCell->ball->setOutlineColor(Color::Transparent);
             cell->ball = gameField.selectedCell->ball;
             gameField.selectedCell->ball = nullptr;
             gameField.selectedCell = nullptr;
