@@ -3,7 +3,7 @@
 // Отрисовка игрового поля
 void drawGameField(RenderWindow &window, GameField &gameField)
 {
-    for (size_t i = 0; i < CELL_COUNT_X * CELL_COUNT_Y; ++i)
+    for (size_t i = 0; i < CELL_COUNT; ++i)
     {
         window.draw(gameField.cells[i].shape);
         if (gameField.cells[i].ball != nullptr)
@@ -47,6 +47,7 @@ int main()
 
     GameField gameField;
     initGameField(gameField, windowCenter);
+    addBalls(gameField);
 
     gameLoop(window, gameField);
 

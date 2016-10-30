@@ -11,12 +11,14 @@ const string WINDOW_TITLE = "Lines";
 
 const size_t CELL_COUNT_X = 9;
 const size_t CELL_COUNT_Y = 9;
+const size_t CELL_COUNT = CELL_COUNT_X * CELL_COUNT_Y;
 const float CELL_SIZE = 50;
 const Color CELL_FILL_COLOR = Color(192, 192, 192);
 const float CELL_OUTLINE_THICKNESS = 2;
 const Color CELL_OUTLINE_COLOR = Color(63, 63, 63);
 
-const size_t START_BALL_COUNT = 3;
+const size_t BALLS_PER_COUP = 3;
+const size_t LINE_BALL_COUNT = 5;
 const float BALL_RADIUS = CELL_SIZE / 2.5;
 const float BALL_DIAMETER = BALL_RADIUS * 2;
 

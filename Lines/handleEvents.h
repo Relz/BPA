@@ -2,7 +2,6 @@
 #define LINES_HANDLEEVENTS_H
 
 #include "stdafx.h"
-#include "gameField.h"
 
 void handleEvents(RenderWindow &window, GameField &gameField);
 

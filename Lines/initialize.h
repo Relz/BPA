@@ -3,7 +3,6 @@
 
 #include "stdafx.h"
 
-void initStartBalls(GameField &gameField);
 void initCells(GameField &gameField);
 void initGameField(GameField &gameField, Vector2f &windowCenter);
 
