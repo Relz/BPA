@@ -1,13 +1,13 @@
 #include "gameField.h"
 
 // Получение случайных координат игрового поля, на которых нет шара
-void getRandomEmptyFieldPosition(GameField &gameField, RandomTool &randomTool, FieldPosition &fieldPosition)
+void getRandomEmptyPositionOnField(GameField &gameField, RandomTool &randomTool, PositionOnField &positionOnField)
 {
     do
     {
-        fieldPosition.x = randomTool.getRandomValue(0, CELL_COUNT_X - 1);
-        fieldPosition.y = randomTool.getRandomValue(0, CELL_COUNT_Y - 1);
-    } while (gameField.cells[fieldPosition.y * CELL_COUNT_X + fieldPosition.x].ball != nullptr);
+        positionOnField.x = randomTool.getRandomValue(0, CELL_COUNT_X - 1);
+        positionOnField.y = randomTool.getRandomValue(0, CELL_COUNT_Y - 1);
+    } while (gameField.cells[positionOnField.y * CELL_COUNT_X + positionOnField.x].ball != nullptr);
 }
 
 // Добавление шаров на игровое поле
@@ -20,55 +20,149 @@ void addBalls(GameField &gameField)
     RandomTool randomTool;
     for (size_t i = 0; i < BALLS_PER_COUP; ++i)
     {
-        FieldPosition fieldPosition;
-        getRandomEmptyFieldPosition(gameField, randomTool, fieldPosition);
-        size_t cellPos = fieldPosition.y * CELL_COUNT_X + fieldPosition.x;
+        PositionOnField ballPosition;
+        getRandomEmptyPositionOnField(gameField, randomTool, ballPosition);
+        size_t cellPos = ballPosition.y * CELL_COUNT_X + ballPosition.x;
 
         gameField.cells[cellPos].ball = new CircleShape;
-        gameField.cells[cellPos].ball->setPosition(fieldPosition.x * CELL_SIZE + gameField.x + (CELL_SIZE - BALL_DIAMETER) / 2,
-                                                   fieldPosition.y * CELL_SIZE + gameField.y + (CELL_SIZE - BALL_DIAMETER) / 2);
+        gameField.cells[cellPos].ball->setPosition(ballPosition.x * CELL_SIZE + gameField.x + (CELL_SIZE - BALL_DIAMETER) / 2,
+                                                   ballPosition.y * CELL_SIZE + gameField.y + (CELL_SIZE - BALL_DIAMETER) / 2);
         gameField.cells[cellPos].ball->setRadius(BALL_RADIUS);
         gameField.cells[cellPos].ball->setFillColor(ballColors[randomTool.getRandomValue(0, ballColors.size() - 1)]);
     }
     gameField.ballCount += BALLS_PER_COUP;
 }
 
-/*TODO: Передавать в функции проверки выстроения шаров в одну линию Vector2f позицию нажатой клетки*/
-
-// Функция проверки выстроенной в ряд LINE_BALL_COUNT шаров
-bool wasHorizontalLineFound(GameField &gameField, Cell *cell)
+// Функция проверки выстроенной в колонку LINE_BALL_COUNT шаров
+bool wasVerticalLineFound(GameField &gameField, PositionOnField &cellPosition, vector<Cell *> &cellsToClear)
 {
     size_t ballCount = 1;
-    for (size_t shift = 1; shift < CELL_COUNT_X - cell->posX && ballCount != LINE_BALL_COUNT; ++shift)
+
+    for (size_t shift = 1; shift <= cellPosition.y; ++shift)
     {
-        if (gameField.cells[cell->posY * CELL_COUNT_X + cell->posX + shift].ball == nullptr)
+        if (gameField.cells[(cellPosition.y - shift) * CELL_COUNT_X + cellPosition.x].ball == nullptr)
         {
             break;
         }
+        cellsToClear.push_back(&gameField.cells[(cellPosition.y - shift) * CELL_COUNT_X + cellPosition.x]);
         ballCount++;
     }
 
-    if (ballCount == LINE_BALL_COUNT)
+    for (size_t shift = 1; shift < CELL_COUNT_Y - cellPosition.y; ++shift)
     {
-        return true;
-    }
-
-    for (size_t shift = 1; shift < cell->posX && ballCount != LINE_BALL_COUNT; ++shift)
-    {
-        if (gameField.cells[cell->posY * CELL_COUNT_X + cell->posX - shift].ball == nullptr)
+        if (gameField.cells[(cellPosition.y + shift) * CELL_COUNT_X + cellPosition.x].ball == nullptr)
         {
             break;
         }
+        cellsToClear.push_back(&gameField.cells[(cellPosition.y + shift) * CELL_COUNT_X + cellPosition.x]);
         ballCount++;
     }
 
-    return (ballCount == LINE_BALL_COUNT);
+    return (ballCount >= LINE_BALL_COUNT);
+}
+
+// Функция проверки выстроенной по правой диагонали LINE_BALL_COUNT шаров
+bool wasRightDiagonalLineFound(GameField &gameField, PositionOnField &cellPosition, vector<Cell *> &cellsToClear)
+{
+    size_t ballCount = 1;
+
+    for (size_t shift = 1; shift < CELL_COUNT_X - cellPosition.x && shift <= cellPosition.y; ++shift)
+    {
+        if (gameField.cells[(cellPosition.y - shift) * CELL_COUNT_X + cellPosition.x + shift].ball == nullptr)
+        {
+            break;
+        }
+        cellsToClear.push_back(&gameField.cells[(cellPosition.y - shift) * CELL_COUNT_X + cellPosition.x + shift]);
+        ballCount++;
+    }
+
+    for (size_t shift = 1; shift <= cellPosition.x && shift < CELL_COUNT_Y - cellPosition.y; ++shift)
+    {
+        if (gameField.cells[(cellPosition.y + shift) * CELL_COUNT_X + cellPosition.x - shift].ball == nullptr)
+        {
+            break;
+        }
+        cellsToClear.push_back(&gameField.cells[(cellPosition.y + shift) * CELL_COUNT_X + cellPosition.x - shift]);
+        ballCount++;
+    }
+
+    return (ballCount >= LINE_BALL_COUNT);
+}
+
+// Функция проверки выстроенной в ряд LINE_BALL_COUNT шаров
+bool wasHorizontalLineFound(GameField &gameField, PositionOnField &cellPosition, vector<Cell *> &cellsToClear)
+{
+    size_t ballCount = 1;
+
+    for (size_t shift = 1; shift < CELL_COUNT_X - cellPosition.x; ++shift)
+    {
+        if (gameField.cells[cellPosition.y * CELL_COUNT_X + cellPosition.x + shift].ball == nullptr)
+        {
+            break;
+        }
+        cellsToClear.push_back(&gameField.cells[cellPosition.y * CELL_COUNT_X + cellPosition.x + shift]);
+        ballCount++;
+    }
+
+    for (size_t shift = 1; shift <= cellPosition.x; ++shift)
+    {
+        if (gameField.cells[cellPosition.y * CELL_COUNT_X + cellPosition.x - shift].ball == nullptr)
+        {
+            break;
+        }
+        cellsToClear.push_back(&gameField.cells[cellPosition.y * CELL_COUNT_X + cellPosition.x - shift]);
+        ballCount++;
+    }
+
+    return (ballCount >= LINE_BALL_COUNT);
+}
+
+// Функция проверки выстроенной по левой диагонали LINE_BALL_COUNT шаров
+bool wasLeftDiagonalLineFound(GameField &gameField, PositionOnField &cellPosition, vector<Cell *> &cellsToClear)
+{
+    size_t ballCount = 1;
+
+    for (size_t shift = 1; shift < CELL_COUNT_X - cellPosition.x && shift < CELL_COUNT_Y - cellPosition.y; ++shift)
+    {
+        if (gameField.cells[(cellPosition.y + shift) * CELL_COUNT_X + cellPosition.x + shift].ball == nullptr)
+        {
+            break;
+        }
+        cellsToClear.push_back(&gameField.cells[(cellPosition.y + shift) * CELL_COUNT_X + cellPosition.x + shift]);
+        ballCount++;
+    }
+
+    for (size_t shift = 1; shift <= cellPosition.x && shift <= cellPosition.y; ++shift)
+    {
+        if (gameField.cells[(cellPosition.y - shift) * CELL_COUNT_X + cellPosition.x - shift].ball == nullptr)
+        {
+            break;
+        }
+        cellsToClear.push_back(&gameField.cells[(cellPosition.y - shift) * CELL_COUNT_X + cellPosition.x - shift]);
+        ballCount++;
+    }
+
+    return (ballCount >= LINE_BALL_COUNT);
 }
 
 // Функция проверки выстроенной в линию LINE_BALL_COUNT шаров и последующего удаления этой линии
 bool wasLineFoundAndRemoved(GameField &gameField, Cell *cell)
 {
-    return wasHorizontalLineFound(gameField, cell);
+    PositionOnField cellPosition(cell->posX, cell->posY);
+    vector<Cell *> cellsToClear({cell});
+    if (wasVerticalLineFound(gameField, cellPosition, cellsToClear)
+        || wasRightDiagonalLineFound(gameField, cellPosition, cellsToClear)
+        || wasHorizontalLineFound(gameField, cellPosition, cellsToClear)
+        || wasLeftDiagonalLineFound(gameField, cellPosition, cellsToClear))
+    {
+        for (auto cellToClear : cellsToClear)
+        {
+            delete cellToClear->ball;
+            cellToClear->ball = nullptr;
+        }
+        return true;
+    }
+    return false;
 }
 
 // Выбрать шар

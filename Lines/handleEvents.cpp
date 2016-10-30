@@ -15,7 +15,7 @@ void processLeftMouseButtonClick(GameField &gameField, size_t clickX, size_t cli
             moveBall(gameField, cell);
             if (wasLineFoundAndRemoved(gameField, cell))
             {
-
+                cout << "found!\n";
             }
             else
             {

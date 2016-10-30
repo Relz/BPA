@@ -22,27 +22,27 @@ const size_t LINE_BALL_COUNT = 5;
 const float BALL_RADIUS = CELL_SIZE / 2.5;
 const float BALL_DIAMETER = BALL_RADIUS * 2;
 
-struct FieldPosition
+struct PositionOnField
 {
     size_t x;
     size_t y;
 
-    FieldPosition(size_t x = 0, size_t y = 0)
+    PositionOnField(size_t x = 0, size_t y = 0)
     {
-        FieldPosition::x = x;
-        FieldPosition::y = y;
+        PositionOnField::x = x;
+        PositionOnField::y = y;
     }
 };
 
 const vector<Color> ballColors =
 {
     Color(100, 0, 0),   // Red
-    Color(200, 0, 0), // Orange
-    Color(165, 165, 45), // Yellow
-    Color(40, 169, 30),   // Green
-    Color(10, 150, 180), // Cyan
-    Color(30, 40, 150),   // Blue
-    Color(180, 50, 180)   // Purple
+    Color(200, 0, 0),   // Orange
+    Color(165, 165, 45),// Yellow
+    Color(40, 169, 30), // Green
+    Color(10, 150, 180),// Cyan
+    Color(30, 40, 150), // Blue
+    Color(180, 50, 180) // Purple
 };
 
 #endif //SFMLANIMATION_CONSTANT_H
