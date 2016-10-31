@@ -1,5 +1,15 @@
 #include "stdafx.h"
 
+// Отрисовка верхней панели
+void drawGameTopBar(RenderWindow &window, GameTopBar &gameTopBar)
+{
+    window.draw(gameTopBar.ballCountText);
+    window.draw(gameTopBar.ballCountNum);
+
+    window.draw(gameTopBar.scoreText);
+    window.draw(gameTopBar.scoreNum);
+}
+
 // Отрисовка игрового поля
 void drawGameField(RenderWindow &window, GameField &gameField)
 {
@@ -14,26 +24,27 @@ void drawGameField(RenderWindow &window, GameField &gameField)
 }
 
 // Отрисовка объектов на форме
-void drawObjects(RenderWindow &window, GameField &gameField)
+void drawObjects(RenderWindow &window, GameView &gameView)
 {
-    drawGameField(window, gameField);
+    drawGameField(window, gameView.gameField);
+    drawGameTopBar(window, gameView.gameTopBar);
     window.display();
 }
 
 // Обновление Формы
-void update(RenderWindow &window, GameField &gameField)
+void update(RenderWindow &window, GameView &gameView)
 {
-    drawObjects(window, gameField);
+    drawObjects(window, gameView);
     window.clear(Color::Black);
 }
 
 // Игровой цикл
-void gameLoop(RenderWindow &window, GameField &gameField)
+void gameLoop(RenderWindow &window, GameView &gameView)
 {
     while (window.isOpen())
     {
-        handleEvents(window, gameField);
-        update(window, gameField);
+        handleEvents(window, gameView);
+        update(window, gameView);
     }
 }
 
@@ -45,11 +56,12 @@ int main()
     RenderWindow window(VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), WINDOW_TITLE, Style::Close, settings);
     Vector2f windowCenter = Vector2f(window.getSize().x / 2.0f, window.getSize().y / 2.0f);
 
-    GameField gameField;
-    initGameField(gameField, windowCenter);
-    addBalls(gameField);
+    GameView gameView;
+    initGameView(gameView, windowCenter);
 
-    gameLoop(window, gameField);
+    addBalls(gameView);
+
+    gameLoop(window, gameView);
 
     return 0;
 }

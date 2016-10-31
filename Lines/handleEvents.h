@@ -3,6 +3,6 @@
 
 #include "stdafx.h"
 
-void handleEvents(RenderWindow &window, GameField &gameField);
+void handleEvents(RenderWindow &window, GameView &gameView);
 
 #endif //LINES_HANDLEEVENTS_H

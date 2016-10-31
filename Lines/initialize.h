@@ -3,7 +3,6 @@
 
 #include "stdafx.h"
 
-void initCells(GameField &gameField);
-void initGameField(GameField &gameField, Vector2f &windowCenter);
+void initGameView(GameView &gameView, Vector2f &windowCenter);
 
 #endif //LINES_INITIALIZE_H

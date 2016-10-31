@@ -11,6 +11,7 @@ using namespace std;
 using namespace sf;
 
 #include "constant.h"
+#include "gameView.h"
 #include "gameField.h"
 #include "randomTool.h"
 #include "handleEvents.h"

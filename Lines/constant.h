@@ -22,6 +22,9 @@ const size_t LINE_BALL_COUNT = 5;
 const float BALL_RADIUS = CELL_SIZE / 2.5;
 const float BALL_DIAMETER = BALL_RADIUS * 2;
 
+const string TEXT_BALLS = "BALLS ";
+const string TEXT_SCORE = "SCORE ";
+
 struct PositionOnField
 {
     size_t x;

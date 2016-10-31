@@ -181,6 +181,7 @@ bool wasLineFoundAndRemoved(GameField &gameField, Cell *cell)
     {
         cellsToClear.push_back(cell);
         gameField.ballCount -= cellsToClear.size();
+        gameField.score += cellsToClear.size();
         for (auto cellToClear : cellsToClear)
         {
             delete cellToClear->ball;
@@ -202,9 +203,9 @@ void getRandomEmptyPositionOnField(GameField &gameField, RandomTool &randomTool,
 }
 
 // Добавление шаров на игровое поле
-void addBalls(GameField &gameField)
+void addBalls(GameView &gameView)
 {
-    if (gameField.ballCount == CELL_COUNT)
+    if (gameView.gameField.ballCount == CELL_COUNT)
     {
         return;
     }
@@ -212,16 +213,17 @@ void addBalls(GameField &gameField)
     for (size_t i = 0; i < BALLS_PER_COUP; ++i)
     {
         PositionOnField ballPosition;
-        getRandomEmptyPositionOnField(gameField, randomTool, ballPosition);
+        getRandomEmptyPositionOnField(gameView.gameField, randomTool, ballPosition);
         size_t cellPos = ballPosition.y * CELL_COUNT_X + ballPosition.x;
 
-        gameField.cells[cellPos].ball = new CircleShape;
-        gameField.cells[cellPos].ball->setPosition(ballPosition.x * CELL_SIZE + gameField.x + (CELL_SIZE - BALL_DIAMETER) / 2,
-                                                   ballPosition.y * CELL_SIZE + gameField.y + (CELL_SIZE - BALL_DIAMETER) / 2);
-        gameField.cells[cellPos].ball->setRadius(BALL_RADIUS);
-        gameField.cells[cellPos].ball->setFillColor(ballColors[randomTool.getRandomValue(0, ballColors.size() - 1)]);
+        gameView.gameField.cells[cellPos].ball = new CircleShape;
+        gameView.gameField.cells[cellPos].ball->setPosition(ballPosition.x * CELL_SIZE + gameView.gameField.x + (CELL_SIZE - BALL_DIAMETER) / 2,
+                                                            ballPosition.y * CELL_SIZE + gameView.gameField.y + (CELL_SIZE - BALL_DIAMETER) / 2);
+        gameView.gameField.cells[cellPos].ball->setRadius(BALL_RADIUS);
+        gameView.gameField.cells[cellPos].ball->setFillColor(ballColors[randomTool.getRandomValue(0, ballColors.size() - 1)]);
     }
-    gameField.ballCount += BALLS_PER_COUP;
+    gameView.gameField.ballCount += BALLS_PER_COUP;
+    gameView.gameTopBar.ballCountNum.setString(String(to_string(gameView.gameField.ballCount)));
 }
 
 // Выбрать шар

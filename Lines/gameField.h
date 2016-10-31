@@ -3,24 +3,7 @@
 #ifndef LINES_GAMEFIELD_H
 #define LINES_GAMEFIELD_H
 
-struct Cell
-{
-    RectangleShape shape;
-    size_t posX;
-    size_t posY;
-    CircleShape *ball;
-};
-
-struct GameField
-{
-    float x;
-    float y;
-    Cell cells[CELL_COUNT];
-    size_t ballCount = 0;
-    Cell *selectedCell = nullptr;
-};
-
-void addBalls(GameField &gameField);
+void addBalls(GameView &gameView);
 bool wasLineFoundAndRemoved(GameField &gameField, Cell *cell);
 void selectBall(GameField &gameField, Cell *cell);
 void moveBall(GameField &gameField, Cell *cell);

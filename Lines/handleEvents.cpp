@@ -1,32 +1,33 @@
 #include "handleEvents.h"
 
 // Обработка нажатия левой кнопкой мыши
-void processLeftMouseButtonClick(GameField &gameField, size_t clickX, size_t clickY)
+void processLeftMouseButtonClick(GameView &gameView, size_t clickX, size_t clickY)
 {
-    if (doesUserClickedOnField(gameField, clickX, clickY))
+    if (doesUserClickedOnField(gameView.gameField, clickX, clickY))
     {
-        Cell *cell = &getCellByPos(gameField, clickX, clickY);
+        Cell *cell = &getCellByPos(gameView.gameField, clickX, clickY);
         if (cell->ball != nullptr) // Если у нажатой ячейки есть шар
         {
-            selectBall(gameField, cell);
+            selectBall(gameView.gameField, cell);
         }
-        else if (gameField.selectedCell != nullptr) // Если нажатая ячейка пуста и уже выбран шар
+        else if (gameView.gameField.selectedCell != nullptr) // Если нажатая ячейка пуста и уже выбран шар
         {
-            moveBall(gameField, cell);
-            if (wasLineFoundAndRemoved(gameField, cell))
+            moveBall(gameView.gameField, cell);
+            if (wasLineFoundAndRemoved(gameView.gameField, cell))
             {
-                cout << "found!\n";
+                gameView.gameTopBar.ballCountNum.setString(String(to_string(gameView.gameField.ballCount)));
+                gameView.gameTopBar.scoreNum.setString(String(to_string(gameView.gameField.score)));
             }
             else
             {
-                addBalls(gameField);
+                addBalls(gameView);
             }
         }
     }
 }
 
 // Обработка событий на форме
-void handleEvents(RenderWindow &window, GameField &gameField)
+void handleEvents(RenderWindow &window, GameView &gameView)
 {
     Event event;
     while (window.pollEvent(event))
@@ -42,7 +43,7 @@ void handleEvents(RenderWindow &window, GameField &gameField)
             {
                 if (event.mouseButton.button == sf::Mouse::Left)
                 {
-                    processLeftMouseButtonClick(gameField, event.mouseButton.x, event.mouseButton.y);
+                    processLeftMouseButtonClick(gameView, event.mouseButton.x, event.mouseButton.y);
                 }
                 break;
             }
