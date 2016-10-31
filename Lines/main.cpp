@@ -8,6 +8,11 @@ void drawGameTopBar(RenderWindow &window, GameTopBar &gameTopBar)
 
     window.draw(gameTopBar.scoreText);
     window.draw(gameTopBar.scoreNum);
+
+    for (size_t i = 0; i < BALLS_PER_COUP; ++i)
+    {
+        window.draw(gameTopBar.futureBalls[i]);
+    }
 }
 
 // Отрисовка игрового поля
@@ -20,6 +25,10 @@ void drawGameField(RenderWindow &window, GameField &gameField)
         {
             window.draw(*(gameField.cells[i].ball));
         }
+    }
+    for (size_t i = 0; i < BALLS_PER_COUP; ++i)
+    {
+        window.draw(*(gameField.futureBallsPositions[i].ball));
     }
 }
 
@@ -58,8 +67,9 @@ int main()
 
     GameView gameView;
     initGameView(gameView, windowCenter);
-
+    setRandomFutureBalls(gameView);
     addBalls(gameView);
+    setRandomFutureBalls(gameView);
 
     gameLoop(window, gameView);
 

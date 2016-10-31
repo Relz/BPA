@@ -21,6 +21,7 @@ void processLeftMouseButtonClick(GameView &gameView, size_t clickX, size_t click
             else
             {
                 addBalls(gameView);
+                setRandomFutureBalls(gameView);
             }
         }
     }

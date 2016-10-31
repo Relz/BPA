@@ -21,6 +21,10 @@ const size_t BALLS_PER_COUP = 3;
 const size_t LINE_BALL_COUNT = 5;
 const float BALL_RADIUS = CELL_SIZE / 2.5;
 const float BALL_DIAMETER = BALL_RADIUS * 2;
+const float FUTURE_BALL_RADIUS = BALL_RADIUS / 2;
+const float FUTURE_BALL_DIAMETER = FUTURE_BALL_RADIUS * 2;
+
+const float TOPBAR_FUTURE_BALLS_LEFT_PADDING = 20;
 
 const string TEXT_BALLS = "BALLS ";
 const string TEXT_SCORE = "SCORE ";

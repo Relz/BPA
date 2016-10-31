@@ -3,12 +3,17 @@
 #ifndef LINES_GAMEVIEW_H
 #define LINES_GAMEVIEW_H
 
+struct BallPointerOnField
+{
+    CircleShape *ball;
+    PositionOnField pos;
+};
+
 struct Cell
 {
     RectangleShape shape;
-    size_t posX;
-    size_t posY;
     CircleShape *ball;
+    PositionOnField pos;
 };
 
 struct GameField
@@ -19,6 +24,7 @@ struct GameField
     size_t ballCount = 0;
     size_t score = 0;
     Cell *selectedCell = nullptr;
+    BallPointerOnField futureBallsPositions[BALLS_PER_COUP];
 };
 
 struct GameTopBar
@@ -28,6 +34,7 @@ struct GameTopBar
     Text scoreText;
     Text scoreNum;
     Font font;
+    CircleShape futureBalls[BALLS_PER_COUP];
 };
 
 struct GameView

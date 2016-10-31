@@ -3,6 +3,7 @@
 #ifndef LINES_GAMEFIELD_H
 #define LINES_GAMEFIELD_H
 
+void setRandomFutureBalls(GameView &gameView);
 void addBalls(GameView &gameView);
 bool wasLineFoundAndRemoved(GameField &gameField, Cell *cell);
 void selectBall(GameField &gameField, Cell *cell);

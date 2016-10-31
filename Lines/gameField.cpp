@@ -171,7 +171,7 @@ bool wasLeftDiagonalLineFound(GameField &gameField, PositionOnField &cellPositio
 // Функция проверки выстроенной в линию LINE_BALL_COUNT шаров и последующего удаления этой линии
 bool wasLineFoundAndRemoved(GameField &gameField, Cell *cell)
 {
-    PositionOnField cellPosition(cell->posX, cell->posY);
+    PositionOnField cellPosition(cell->pos.x, cell->pos.y);
     vector<Cell *> cellsToClear;
     bool lineFound = wasVerticalLineFound(gameField, cellPosition, cellsToClear);
     lineFound = wasRightDiagonalLineFound(gameField, cellPosition, cellsToClear) || lineFound;
@@ -192,14 +192,41 @@ bool wasLineFoundAndRemoved(GameField &gameField, Cell *cell)
     return false;
 }
 
-// Получение случайных координат игрового поля, на которых нет шара
-void getRandomEmptyPositionOnField(GameField &gameField, RandomTool &randomTool, PositionOnField &positionOnField)
+// Получение случайной свободной позиции шара
+void getRandomFreeFieldPosition(GameField &gameField, PositionOnField &positionOnField)
 {
+    RandomTool randomTool;
     do
     {
         positionOnField.x = randomTool.getRandomValue(0, CELL_COUNT_X - 1);
         positionOnField.y = randomTool.getRandomValue(0, CELL_COUNT_Y - 1);
     } while (gameField.cells[positionOnField.y * CELL_COUNT_X + positionOnField.x].ball != nullptr);
+}
+
+// Получение шара случайного цвета и координат игрового поля, на которых уже нет шара
+void getRandomBallPointerOnFreeFieldPosition(GameField &gameField, BallPointerOnField &ballPointerOnField)
+{
+    RandomTool randomTool;
+    PositionOnField positionOnField;
+    getRandomFreeFieldPosition(gameField, positionOnField);
+
+    size_t cellPos = positionOnField.y * CELL_COUNT_X + positionOnField.x;
+
+    ballPointerOnField.ball = new CircleShape;
+    ballPointerOnField.ball->setPosition(positionOnField.x * CELL_SIZE + gameField.x + (CELL_SIZE - FUTURE_BALL_DIAMETER) / 2,
+                            positionOnField.y * CELL_SIZE + gameField.y + (CELL_SIZE - FUTURE_BALL_DIAMETER) / 2);
+    ballPointerOnField.ball->setRadius(FUTURE_BALL_RADIUS);
+    ballPointerOnField.ball->setFillColor(ballColors[randomTool.getRandomValue(0, ballColors.size() - 1)]);
+    ballPointerOnField.pos = positionOnField;
+}
+
+void setRandomFutureBalls(GameView &gameView)
+{
+    for (size_t i = 0; i < BALLS_PER_COUP; ++i)
+    {
+        getRandomBallPointerOnFreeFieldPosition(gameView.gameField, gameView.gameField.futureBallsPositions[i]);
+        gameView.gameTopBar.futureBalls[i].setFillColor(gameView.gameField.futureBallsPositions[i].ball->getFillColor());
+    }
 }
 
 // Добавление шаров на игровое поле
@@ -209,18 +236,17 @@ void addBalls(GameView &gameView)
     {
         return;
     }
-    RandomTool randomTool;
     for (size_t i = 0; i < BALLS_PER_COUP; ++i)
     {
-        PositionOnField ballPosition;
-        getRandomEmptyPositionOnField(gameView.gameField, randomTool, ballPosition);
-        size_t cellPos = ballPosition.y * CELL_COUNT_X + ballPosition.x;
-
-        gameView.gameField.cells[cellPos].ball = new CircleShape;
-        gameView.gameField.cells[cellPos].ball->setPosition(ballPosition.x * CELL_SIZE + gameView.gameField.x + (CELL_SIZE - BALL_DIAMETER) / 2,
-                                                            ballPosition.y * CELL_SIZE + gameView.gameField.y + (CELL_SIZE - BALL_DIAMETER) / 2);
-        gameView.gameField.cells[cellPos].ball->setRadius(BALL_RADIUS);
-        gameView.gameField.cells[cellPos].ball->setFillColor(ballColors[randomTool.getRandomValue(0, ballColors.size() - 1)]);
+        if (gameView.gameField.cells[gameView.gameField.futureBallsPositions[i].pos.y * CELL_COUNT_X + gameView.gameField.futureBallsPositions[i].pos.x].ball != nullptr)
+        {
+            getRandomFreeFieldPosition(gameView.gameField, gameView.gameField.futureBallsPositions[i].pos);
+        }
+        gameView.gameField.futureBallsPositions[i].ball->setRadius(BALL_RADIUS);
+        gameView.gameField.futureBallsPositions[i].ball->setPosition(
+                gameView.gameField.futureBallsPositions[i].pos.x * CELL_SIZE + gameView.gameField.x + (CELL_SIZE - BALL_DIAMETER) / 2,
+                gameView.gameField.futureBallsPositions[i].pos.y * CELL_SIZE + gameView.gameField.y + (CELL_SIZE - BALL_DIAMETER) / 2);
+        gameView.gameField.cells[gameView.gameField.futureBallsPositions[i].pos.y * CELL_COUNT_X + gameView.gameField.futureBallsPositions[i].pos.x].ball = gameView.gameField.futureBallsPositions[i].ball;
     }
     gameView.gameField.ballCount += BALLS_PER_COUP;
     gameView.gameTopBar.ballCountNum.setString(String(to_string(gameView.gameField.ballCount)));
@@ -242,8 +268,8 @@ void selectBall(GameField &gameField, Cell *cell)
 // Переместить шар
 void moveBall(GameField &gameField, Cell *cell)
 {
-    gameField.selectedCell->ball->setPosition(cell->posX * CELL_SIZE + gameField.x + (CELL_SIZE - BALL_DIAMETER) / 2,
-                                              cell->posY * CELL_SIZE + gameField.y + (CELL_SIZE - BALL_DIAMETER) / 2);
+    gameField.selectedCell->ball->setPosition(cell->pos.x * CELL_SIZE + gameField.x + (CELL_SIZE - BALL_DIAMETER) / 2,
+                                              cell->pos.y * CELL_SIZE + gameField.y + (CELL_SIZE - BALL_DIAMETER) / 2);
     gameField.selectedCell->ball->setOutlineThickness(0);
     gameField.selectedCell->ball->setOutlineColor(Color::Transparent);
     cell->ball = gameField.selectedCell->ball;
