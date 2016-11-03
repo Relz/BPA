@@ -1,23 +1,22 @@
 ﻿#include "stdafx.h"
 #include "constant.h"
 
-unsigned mode = 0;
-
 struct Blocks
 {
     RectangleShape rectangles[RECTANGLE_COUNT];
     Vector2f currentSize;
     Color currentRGBA;
     float currentRotation;
+    unsigned mode = 0;
 };
 
 // Проверка блоков на столкновение со стеной
 bool doesBlocksCollideWithWall(Blocks &blocks)
 {
-    float firstRectangleFutureX = blocks.rectangles[0].getPosition().x + ANIMATION_MODES[mode]["SPEED"]["X"];
-    float firstRectangleFutureY = blocks.rectangles[0].getPosition().y + ANIMATION_MODES[mode]["SPEED"]["Y"];
-    float lastRectangleFutureX = blocks.rectangles[RECTANGLE_COUNT - 1].getPosition().x + ANIMATION_MODES[mode]["SPEED"]["X"];
-    float lastRectangleFutureY = blocks.rectangles[RECTANGLE_COUNT - 1].getPosition().y + ANIMATION_MODES[mode]["SPEED"]["Y"];
+    float firstRectangleFutureX = blocks.rectangles[0].getPosition().x + ANIMATION_MODES[blocks.mode]["SPEED"]["X"];
+    float firstRectangleFutureY = blocks.rectangles[0].getPosition().y + ANIMATION_MODES[blocks.mode]["SPEED"]["Y"];
+    float lastRectangleFutureX = blocks.rectangles[RECTANGLE_COUNT - 1].getPosition().x + ANIMATION_MODES[blocks.mode]["SPEED"]["X"];
+    float lastRectangleFutureY = blocks.rectangles[RECTANGLE_COUNT - 1].getPosition().y + ANIMATION_MODES[blocks.mode]["SPEED"]["Y"];
 
     return ((firstRectangleFutureX - RECTANGLE_WIDTH / 2 < 0 || firstRectangleFutureX + RECTANGLE_WIDTH / 2 > SCREEN_WIDTH)
         || (firstRectangleFutureY - RECTANGLE_HEIGHT / 2 < 0 || firstRectangleFutureY + RECTANGLE_HEIGHT / 2 > SCREEN_HEIGHT)
@@ -49,13 +48,13 @@ float degreesToRadians(float degrees)
 // Асинхронный эффект: Поворот всех блоков вокруг оси первого
 void rotateBlocks(Blocks &blocks)
 {
-    if (blocks.currentRotation != ANIMATION_MODES[mode]["ROTATION"]["TO"])
+    if (blocks.currentRotation != ANIMATION_MODES[blocks.mode]["ROTATION"]["TO"])
     {
-        if (blocks.currentRotation > ANIMATION_MODES[mode]["ROTATION"]["TO"])
+        if (blocks.currentRotation > ANIMATION_MODES[blocks.mode]["ROTATION"]["TO"])
         {
             blocks.currentRotation -= SPEED_ROTATION;
         }
-        else if (blocks.currentRotation < ANIMATION_MODES[mode]["ROTATION"]["TO"])
+        else if (blocks.currentRotation < ANIMATION_MODES[blocks.mode]["ROTATION"]["TO"])
         {
             blocks.currentRotation += SPEED_ROTATION;
         }
@@ -73,7 +72,7 @@ void rotateBlocks(Blocks &blocks)
 }
 
 // Обновление ширины блока
-void refreshBlockWidth(float &width)
+void refreshBlockWidth(float &width, unsigned mode)
 {
     if (width < ANIMATION_MODES[mode]["WIDTH"]["TO"])
     {
@@ -86,7 +85,7 @@ void refreshBlockWidth(float &width)
 }
 
 // Обновление высоты блока
-void refreshBlockHeight(float &height)
+void refreshBlockHeight(float &height, unsigned mode)
 {
     if (height < ANIMATION_MODES[mode]["HEIGHT"]["TO"])
     {
@@ -101,12 +100,12 @@ void refreshBlockHeight(float &height)
 // Обновление размера блоков
 void refreshBlocksSize(Blocks &blocks, Vector2f &currentSize)
 {
-    if (currentSize.x != ANIMATION_MODES[mode]["WIDTH"]["TO"] || currentSize.y != ANIMATION_MODES[mode]["HEIGHT"]["TO"])
+    if (currentSize.x != ANIMATION_MODES[blocks.mode]["WIDTH"]["TO"] || currentSize.y != ANIMATION_MODES[blocks.mode]["HEIGHT"]["TO"])
     {
         for (unsigned i = 0; i < RECTANGLE_COUNT; ++i)
         {
-            refreshBlockWidth(currentSize.x);
-            refreshBlockHeight(currentSize.y);
+            refreshBlockWidth(currentSize.x, blocks.mode);
+            refreshBlockHeight(currentSize.y, blocks.mode);
 
             blocks.rectangles[i].setPosition(blocks.rectangles[i].getPosition().x,
                                              ((blocks.currentSize.y + RECTANGLE_DISTANCE) * i) + blocks.rectangles[0].getPosition().y);
@@ -116,7 +115,7 @@ void refreshBlocksSize(Blocks &blocks, Vector2f &currentSize)
 }
 
 // Обновление цвета и прозрачности блоков
-void refreshBlocksColor(Uint8 &currentColor, const string &colorStr)
+void refreshBlocksColor(Uint8 &currentColor, const string &colorStr, unsigned mode)
 {
     if (static_cast<int>(currentColor) < ANIMATION_MODES[mode][colorStr]["TO"])
     {
@@ -131,10 +130,10 @@ void refreshBlocksColor(Uint8 &currentColor, const string &colorStr)
 // Обновление цвета блоков
 void refreshBlocksColors(Blocks &blocks)
 {
-    refreshBlocksColor(blocks.currentRGBA.r, "COLOR_RED");
-    refreshBlocksColor(blocks.currentRGBA.g, "COLOR_GREEN");
-    refreshBlocksColor(blocks.currentRGBA.b, "COLOR_BLUE");
-    refreshBlocksColor(blocks.currentRGBA.a, "OPACITY");
+    refreshBlocksColor(blocks.currentRGBA.r, "COLOR_RED", blocks.mode);
+    refreshBlocksColor(blocks.currentRGBA.g, "COLOR_GREEN", blocks.mode);
+    refreshBlocksColor(blocks.currentRGBA.b, "COLOR_BLUE", blocks.mode);
+    refreshBlocksColor(blocks.currentRGBA.a, "OPACITY", blocks.mode);
 }
 
 // Движение блоков
@@ -142,8 +141,8 @@ void moveBlocks(Blocks &blocks)
 {
     for (unsigned i = 0; i < RECTANGLE_COUNT; ++i)
     {
-        blocks.rectangles[i].setPosition(blocks.rectangles[i].getPosition().x + ANIMATION_MODES[mode]["SPEED"]["X"],
-                                         blocks.rectangles[i].getPosition().y + ANIMATION_MODES[mode]["SPEED"]["Y"]);
+        blocks.rectangles[i].setPosition(blocks.rectangles[i].getPosition().x + ANIMATION_MODES[blocks.mode]["SPEED"]["X"],
+                                         blocks.rectangles[i].getPosition().y + ANIMATION_MODES[blocks.mode]["SPEED"]["Y"]);
         blocks.rectangles[i].setFillColor(blocks.currentRGBA);
     }
 }
@@ -192,13 +191,13 @@ void processAnimation(RenderWindow &window, Blocks &blocks)
     {
         handleEvents(window);
 
-        if (mode != ANIMATION_MODES.size())
+        if (blocks.mode != ANIMATION_MODES.size())
         {
             refreshBlocks(blocks);
         }
-        if (doesBlocksCollideWithWall(blocks) && (mode + 1 != ANIMATION_MODES.size()))
+        if (doesBlocksCollideWithWall(blocks) && (blocks.mode + 1 != ANIMATION_MODES.size()))
         {
-                mode++;
+            blocks.mode++;
         }
         update(window, blocks.rectangles);
     }
