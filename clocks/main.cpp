@@ -5,8 +5,6 @@
 using namespace sf;
 using namespace std;
 
-const float PI = 3.1415927f;
-
 const unsigned ANTIALIASING_LEVEL = 8;
 const unsigned SCREEN_WIDTH = 800;
 const unsigned SCREEN_HEIGHT = 600;
@@ -64,12 +62,6 @@ struct MyClock
     Music clockTick;
 };
 
-struct Point
-{
-    unsigned x;
-    unsigned y;
-};
-
 // Получение текщей времени
 struct tm *getCurrentTime()
 {
@@ -96,7 +88,7 @@ void initializeNumber(ClockFace &clockFace, unsigned number, float angle, Vector
     clockFace.numbers[number].setFillColor(DARK_BLUE);
     clockFace.numbers[number].setCharacterSize(35);
     clockFace.numbers[number].setString(to_string(number + 1));
-    Vector2f numberPosition = Vector2f((CLOCK_CIRCLE_SIZE - 50) * cos(angle + PI / 6), (CLOCK_CIRCLE_SIZE - 50) * sin(angle + PI / 6));
+    Vector2f numberPosition = Vector2f((CLOCK_CIRCLE_SIZE - 50) * cos(angle + M_PI / 6), (CLOCK_CIRCLE_SIZE - 50) * sin(angle + M_PI / 6));
     Vector2f positionText(numberPosition + windowCenter);
     clockFace.numbers[number].setPosition(positionText.x, positionText.y - clockFace.numbers[number].getGlobalBounds().height / 2.0f);
     clockFace.numbers[number].setOrigin(clockFace.numbers[number].getGlobalBounds().width / 2.0f, clockFace.numbers[number].getGlobalBounds().height / 2.0f);
@@ -106,7 +98,7 @@ void initializeNumber(ClockFace &clockFace, unsigned number, float angle, Vector
 }
 
 // Инициализация точки окружности и числа
-void initializeDashAndNumber(ClockFace &clockFace, unsigned i, float angle, Point &coors, Vector2f &windowCenter)
+void initializeDashAndNumber(ClockFace &clockFace, unsigned i, float angle, Vector2f &coordinates, Vector2f &windowCenter)
 {
     if (i % 5 == 0)
     {
@@ -119,23 +111,22 @@ void initializeDashAndNumber(ClockFace &clockFace, unsigned i, float angle, Poin
     }
     clockFace.dashes[i].setFillColor(DARK_BLUE);
     clockFace.dashes[i].setOrigin(clockFace.dashes[i].getGlobalBounds().width / 2, clockFace.dashes[i].getGlobalBounds().height / 2);
-    clockFace.dashes[i].setPosition(coors.x + SCREEN_WIDTH / 2, coors.y + SCREEN_HEIGHT / 2);
-    clockFace.dashes[i].setRotation(angle * 180 / PI + 90);
+    clockFace.dashes[i].setPosition(coordinates.x + SCREEN_WIDTH / 2, coordinates.y + SCREEN_HEIGHT / 2);
+    clockFace.dashes[i].setRotation(angle * 180 / M_PI + 90);
 }
 
 // Инициализация точек окружности часов и чисел
-bool initializeDashesAndNumbers(ClockFace &clockFace, Vector2f &windowCenter)
+void initializeDashesAndNumbers(ClockFace &clockFace, Vector2f &windowCenter)
 {
-    Point coors;
-    float angle = 1.5f * PI;
+    Vector2f coordinates;
+    float angle = 1.5f * M_PI;
     for (unsigned i = 0; i < 60; i++)
     {
-        coors.x = (unsigned)((CLOCK_CIRCLE_SIZE - 10) * cos(angle));
-        coors.y = (unsigned)((CLOCK_CIRCLE_SIZE - 10) * sin(angle));
-        initializeDashAndNumber(clockFace, i, angle, coors, windowCenter);
-        angle = angle + ((2 * PI) / 60);
+        coordinates.x = ((CLOCK_CIRCLE_SIZE - 10) * cos(angle));
+        coordinates.y = ((CLOCK_CIRCLE_SIZE - 10) * sin(angle));
+        initializeDashAndNumber(clockFace, i, angle, coordinates, windowCenter);
+        angle = angle + ((2 * M_PI) / 60);
     }
-    return true;
 }
 
 // Инициализация фонового изображения часов
@@ -146,7 +137,7 @@ void initializeClockImage(CircleShape &clockCircle, Texture &clockImage)
 }
 
 // Инициализация внешней окружности часов
-bool initializeClockCircle(CircleShape &clockCircle)
+void initializeClockCircle(CircleShape &clockCircle)
 {
     clockCircle.setRadius(CLOCK_CIRCLE_SIZE);
     clockCircle.setPointCount(CLOCK_CIRCLE_POINT_NUMBER);
@@ -154,7 +145,6 @@ bool initializeClockCircle(CircleShape &clockCircle)
     clockCircle.setOutlineColor(Color::Black);
     clockCircle.setOrigin(clockCircle.getGlobalBounds().width / 2, clockCircle.getGlobalBounds().height / 2);
     clockCircle.setPosition(SCREEN_WIDTH / 2 + CLOCK_CIRCLE_THICKNESS, SCREEN_HEIGHT / 2 + CLOCK_CIRCLE_THICKNESS);
-    return true;
 }
 
 // Инициализцаия цетральной окружности часов
@@ -171,11 +161,11 @@ void initializeCenterClockCircle(const Vector2f &windowCenter, CircleShape &cent
 bool initializeClockFace(ClockFace &clockFace, Vector2f &windowCenter)
 {
     if (!clockFace.numbersFont.loadFromFile("resources/DroidSans-Bold.ttf")
-        || !initializeClockCircle(clockFace.clockCircle)
         || !clockFace.backgroundImage.loadFromFile("resources/background.png"))
     {
         return false;
     }
+    initializeClockCircle(clockFace.clockCircle);
     initializeClockImage(clockFace.clockCircle, clockFace.backgroundImage);
     initializeDashesAndNumbers(clockFace, windowCenter);
     initializeCenterClockCircle(windowCenter, clockFace.centerCircle);
