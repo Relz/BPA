@@ -15,21 +15,42 @@ void drawGameTopBar(RenderWindow &window, GameTopBar &gameTopBar)
     }
 }
 
-// Отрисовка игрового поля
-void drawGameField(RenderWindow &window, GameField &gameField)
+// Отрисовка ячеек игрового поля
+void drawCells(RenderWindow &window, Cell *cells)
 {
     for (size_t i = 0; i < CELL_COUNT; ++i)
     {
-        window.draw(gameField.cells[i].shape);
-        if (gameField.cells[i].ball != nullptr)
+        window.draw(cells[i].shape);
+    }
+}
+
+// Отрисовка шаров на игровом поле
+void drawBalls(RenderWindow &window, Cell *cells)
+{
+    for (size_t i = 0; i < CELL_COUNT; ++i)
+    {
+        if (cells[i].ball != nullptr)
         {
-            window.draw(*(gameField.cells[i].ball));
+            window.draw(*(cells[i].ball));
         }
     }
+}
+
+// Отрисовка шаров следующего хода на игровом поле
+void drawFutureBalls(RenderWindow &window, BallPointerOnField *futureBallsPositions)
+{
     for (size_t i = 0; i < BALLS_PER_COUP; ++i)
     {
-        window.draw(*(gameField.futureBallsPositions[i].ball));
+        window.draw(*(futureBallsPositions[i].ball));
     }
+}
+
+// Отрисовка игрового поля
+void drawGameField(RenderWindow &window, GameField &gameField)
+{
+    drawCells(window, gameField.cells);
+    drawFutureBalls(window, gameField.futureBallsPositions);
+    drawBalls(window, gameField.cells);
 }
 
 // Отрисовка объектов на форме
@@ -52,7 +73,14 @@ void gameLoop(RenderWindow &window, GameView &gameView)
 {
     while (window.isOpen())
     {
-        handleEvents(window, gameView);
+        if (gameView.gameField.selectedCell != nullptr && !gameView.gameField.moves.empty())
+        {
+            moveBall(gameView);
+        }
+        else
+        {
+            handleEvents(window, gameView);
+        }
         update(window, gameView);
     }
 }

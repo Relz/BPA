@@ -12,17 +12,7 @@ void processLeftMouseButtonClick(GameView &gameView, size_t clickX, size_t click
         }
         else if (gameView.gameField.selectedCell != nullptr) // Если нажатая ячейка пуста и уже выбран шар
         {
-            moveBall(gameView.gameField, cell);
-            if (wasLineFoundAndRemoved(gameView.gameField, cell))
-            {
-                gameView.gameTopBar.ballCountNum.setString(String(to_string(gameView.gameField.ballCount)));
-                gameView.gameTopBar.scoreNum.setString(String(to_string(gameView.gameField.score)));
-            }
-            else
-            {
-                addBalls(gameView);
-                setRandomFutureBalls(gameView);
-            }
+            initMoves(gameView.gameField, cell);
         }
     }
 }

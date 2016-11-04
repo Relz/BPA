@@ -14,6 +14,7 @@ struct Cell
     RectangleShape shape;
     CircleShape *ball;
     PositionOnField pos;
+    size_t distance = 0;
 };
 
 struct GameField
@@ -25,6 +26,7 @@ struct GameField
     size_t score = 0;
     Cell *selectedCell = nullptr;
     BallPointerOnField futureBallsPositions[BALLS_PER_COUP];
+    vector<PositionOnField> moves;
 };
 
 struct GameTopBar
