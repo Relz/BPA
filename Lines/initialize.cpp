@@ -53,7 +53,7 @@ bool initGameTopBar(GameView &gameView)
 {
     if (!gameView.gameTopBar.font.loadFromFile("a_LCDNovaObl.ttf"))
     {
-        cout << "Problems with font loading";
+        cout << "Problems with font loading: file \"a_LCDNovaObl.ttf\" not found.";
         return false;
     }
 
@@ -87,7 +87,7 @@ bool initGameBottomBar(GameView &gameView, Vector2f &windowCenter)
 {
     if (!gameView.gameBottomBar.font.loadFromFile("DroidSans-Bold.ttf"))
     {
-        cout << "Problems with font loading";
+        cout << "Problems with font loading: file \"DroidSans-Bold.ttf\" not found.";
         return false;
     }
 
@@ -185,7 +185,7 @@ bool initGameOverView(GameView &gameView)
 {
     if (!gameView.gameOverView.font.loadFromFile("DroidSans-Bold.ttf"))
     {
-        cout << "Problems with font loading";
+        cout << "Problems with font loading: file \"DroidSans-Bold.ttf\" not found.";
         return false;
     }
     initGameOverViewBackground(gameView.gameOverView.background);
