@@ -1,17 +1,10 @@
 #include "gameView.h"
 
-// Было ли произведено нажатие в пределах кнопки перезагрузки игры на экране конца игры
-bool doesUserClickedOnRestartButtonOnGameOverView(Button &restartButton, size_t clickX, size_t clickY)
+// Было ли произведено нажатие в пределах кнопки
+bool doesUserClickedOnButton(Button &restartButton, size_t clickX, size_t clickY)
 {
-    return (clickY >= restartButton.shape.getPosition().y && clickY < restartButton.shape.getPosition().y + CELL_COUNT_Y * CELL_SIZE &&
-            clickX >= restartButton.shape.getPosition().x && clickX < restartButton.shape.getPosition().x + CELL_COUNT_X * CELL_SIZE);
-}
-
-// Было ли произведено нажатие в пределах кнопки перезагрузки игры под игровым полем
-bool doesUserClickedOnRestartButton(Button &restartButton, size_t clickX, size_t clickY)
-{
-    return (clickY >= restartButton.shape.getPosition().y && clickY < restartButton.shape.getPosition().y + CELL_COUNT_Y * CELL_SIZE &&
-            clickX >= restartButton.shape.getPosition().x && clickX < restartButton.shape.getPosition().x + CELL_COUNT_X * CELL_SIZE);
+    return (clickY >= restartButton.shape.getPosition().y && clickY < restartButton.shape.getPosition().y + restartButton.shape.getLocalBounds().height &&
+            clickX >= restartButton.shape.getPosition().x && clickX < restartButton.shape.getPosition().x + restartButton.shape.getLocalBounds().width);
 }
 
 // Было ли произведено нажатие в пределах игрового поля

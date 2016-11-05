@@ -76,8 +76,7 @@ struct GameView
     bool isGameOver = false;
 };
 
-bool doesUserClickedOnRestartButton(Button &restartButton, size_t clickX, size_t clickY);
-bool doesUserClickedOnRestartButtonOnGameOverView(Button &restartButton, size_t clickX, size_t clickY);
+bool doesUserClickedOnButton(Button &restartButton, size_t clickX, size_t clickY);
 bool doesUserClickedOnField(GameField &gameField, size_t clickX, size_t clickY);
 void restartGame(GameView &gameView);
 

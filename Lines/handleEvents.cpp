@@ -22,8 +22,12 @@ void processLeftMouseButtonClick(GameView &gameView, size_t clickX, size_t click
                 initMoves(gameView.gameField, cell);
             }
         }
+        else if (doesUserClickedOnButton(gameView.gameBottomBar.restartButton, clickX, clickY))
+        {
+            restartGame(gameView);
+        }
     }
-    else if (doesUserClickedOnRestartButtonOnGameOverView(gameView.gameOverView.restartButton, clickX, clickY))
+    else if (doesUserClickedOnButton(gameView.gameOverView.restartButton, clickX, clickY))
     {
         restartGame(gameView);
     }
