@@ -50,7 +50,7 @@ void handleEvents(RenderWindow &window, GameView &gameView)
             {
                 if (event.mouseButton.button == sf::Mouse::Left)
                 {
-                    processLeftMouseButtonClick(gameView, event.mouseButton.x, event.mouseButton.y);
+                    processLeftMouseButtonClick(gameView, static_cast<size_t>(event.mouseButton.x), static_cast<size_t>(event.mouseButton.y));
                 }
                 break;
             }
