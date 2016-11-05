@@ -50,6 +50,12 @@ struct Button
     Text text;
 };
 
+struct GameBottomBar
+{
+    Font font;
+    Button restartButton;
+};
+
 struct GameOverView
 {
     RectangleShape background;
@@ -64,6 +70,7 @@ struct GameView
     Vector2f windowCenter;
     GameTopBar gameTopBar;
     GameField gameField;
+    GameBottomBar gameBottomBar;
     GameInfo gameInfo;
     GameOverView gameOverView;
     bool isGameOver = false;

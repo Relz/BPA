@@ -63,6 +63,38 @@ bool initGameTopBar(GameView &gameView)
     return true;
 }
 
+// Инициализация кнопки перезагрузки игры на нижней панели
+void initRestartButtonOnBottomBar(GameView &gameView, Vector2f &windowCenter)
+{
+    gameView.gameBottomBar.restartButton.text.setFont(gameView.gameBottomBar.font);
+    gameView.gameBottomBar.restartButton.text.setString(TEXT_GAME_OVER_RESTART_BUTTON);
+    gameView.gameBottomBar.restartButton.text.setCharacterSize(20);
+    gameView.gameBottomBar.restartButton.text.setOutlineThickness(3);
+    gameView.gameBottomBar.restartButton.text.setFillColor(RESTART_BUTTON_TEXT_COLOR);
+    gameView.gameBottomBar.restartButton.text.setPosition(windowCenter.x - gameView.gameBottomBar.restartButton.text.getLocalBounds().width / 2,
+                                                          gameView.gameField.y + CELL_COUNT_Y * CELL_SIZE + 10);
+    gameView.gameBottomBar.restartButton.shape.setSize(Vector2f(gameView.gameBottomBar.restartButton.text.getLocalBounds().width + 20,
+                                                                gameView.gameBottomBar.restartButton.text.getLocalBounds().height + 10));
+    gameView.gameBottomBar.restartButton.shape.setFillColor(RESTART_BUTTON_FILL_COLOR);
+    gameView.gameBottomBar.restartButton.shape.setOutlineThickness(2);
+    gameView.gameBottomBar.restartButton.shape.setOutlineColor(RESTART_BUTTON_OUTLINE_COLOR);
+    gameView.gameBottomBar.restartButton.shape.setPosition(gameView.gameBottomBar.restartButton.text.getPosition().x - 10,
+                                                           gameView.gameBottomBar.restartButton.text.getPosition().y);
+}
+
+// Инициализация нижней панели
+bool initGameBottomBar(GameView &gameView, Vector2f &windowCenter)
+{
+    if (!gameView.gameBottomBar.font.loadFromFile("DroidSans-Bold.ttf"))
+    {
+        cout << "Problems with font loading";
+        return false;
+    }
+
+    initRestartButtonOnBottomBar(gameView, windowCenter);
+    return true;
+}
+
 // Инициализация игровых ячеек
 void initGameFieldCells(GameField &gameField)
 {
@@ -119,6 +151,7 @@ void initGameOverViewText(Text &gameOverText, Font &font, Vector2f &windowCenter
     gameOverText.setCharacterSize(100);
     gameOverText.setOutlineThickness(5);
     gameOverText.setOutlineColor(Color::Black);
+    gameOverText.setStyle(Text::Bold);
     gameOverText.setPosition(windowCenter.x - gameOverText.getLocalBounds().width / 2, windowCenter.y - gameOverText.getLocalBounds().height * 2);
 }
 
@@ -168,5 +201,5 @@ bool initGameView(RenderWindow &window, GameView &gameView)
 {
     gameView.windowCenter = Vector2f(window.getSize().x / 2.0f, window.getSize().y / 2.0f);
     initGameField(gameView.gameField, gameView.windowCenter);
-    return (initGameTopBar(gameView) && initGameOverView(gameView));
+    return (initGameTopBar(gameView) && initGameBottomBar(gameView, gameView.windowCenter) && initGameOverView(gameView));
 }

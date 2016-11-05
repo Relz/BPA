@@ -15,6 +15,13 @@ void drawGameTopBar(RenderWindow &window, GameTopBar &gameTopBar)
     }
 }
 
+// Отрисовка нижней панели
+void drawGameBottomBar(RenderWindow &window, GameBottomBar &gameBottomBar)
+{
+    window.draw(gameBottomBar.restartButton.shape);
+    window.draw(gameBottomBar.restartButton.text);
+}
+
 // Отрисовка ячеек игрового поля
 void drawCells(RenderWindow &window, Cell *cells)
 {
@@ -78,6 +85,7 @@ void drawObjects(RenderWindow &window, GameView &gameView)
 {
     drawGameField(window, gameView.gameField);
     drawGameTopBar(window, gameView.gameTopBar);
+    drawGameBottomBar(window, gameView.gameBottomBar);
     if (gameView.isGameOver)
     {
         drawGameOverView(window, gameView);

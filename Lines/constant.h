@@ -38,6 +38,10 @@ const string TEXT_GAME_OVER_RESTART_BUTTON = "Restart";
 const Color GAME_OVER_RESTART_BUTTON_TEXT_OUTLINE_COLOR = Color::Black;
 const Color GAME_OVER_RESTART_BUTTON_FILL_COLOR = Color(0, 100, 0);
 
+const Color RESTART_BUTTON_TEXT_COLOR = Color(253, 253, 253);
+const Color RESTART_BUTTON_FILL_COLOR = Color(20, 20, 20);
+const Color RESTART_BUTTON_OUTLINE_COLOR = Color(100, 100, 100);
+
 struct PositionOnField
 {
     size_t x;
