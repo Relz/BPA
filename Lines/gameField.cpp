@@ -218,7 +218,7 @@ bool wasLeftDiagonalLineFound(GameField &gameField, PositionOnField &cellPositio
 }
 
 // Функция проверки выстроенной в линию LINE_BALL_COUNT шаров и последующего удаления этой линии
-bool wasLineFoundAndRemoved(GameField &gameField, Cell *cell)
+bool wasLineFoundAndRemoved(GameField &gameField, GameInfo &gameInfo, Cell *cell)
 {
     PositionOnField cellPosition(cell->pos.x, cell->pos.y);
     vector<Cell *> cellsToClear;
@@ -229,10 +229,11 @@ bool wasLineFoundAndRemoved(GameField &gameField, Cell *cell)
     if (lineFound)
     {
         cellsToClear.push_back(cell);
-        gameField.ballCount -= cellsToClear.size();
-        gameField.score += cellsToClear.size();
+        gameInfo.ballCount -= cellsToClear.size();
+        gameInfo.score += cellsToClear.size();
         for (auto cellToClear : cellsToClear)
         {
+            gameField.freePositionsOnField.emplace_back(PositionOnField(cellToClear->pos.x, cellToClear->pos.y));
             delete cellToClear->ball;
             cellToClear->ball = nullptr;
         }
@@ -241,32 +242,56 @@ bool wasLineFoundAndRemoved(GameField &gameField, Cell *cell)
     return false;
 }
 
-// Получение случайной свободной позиции шара
-void getRandomFreeFieldPosition(GameField &gameField, PositionOnField &positionOnField)
+// Удаление позиции из массива свободных позиций игрового поля
+void removeFreePositionOnGameField(vector<PositionOnField> &freePositionsOnField, PositionOnField positionOnField)
 {
-    RandomTool randomTool;
-    do
+    for (size_t i = 0; i < freePositionsOnField.size(); ++i)
     {
-        positionOnField.x = randomTool.getRandomValue(0, CELL_COUNT_X - 1);
-        positionOnField.y = randomTool.getRandomValue(0, CELL_COUNT_Y - 1);
-    } while (gameField.cells[positionOnField.y * CELL_COUNT_X + positionOnField.x].ball != nullptr);
+        if (freePositionsOnField[i].x == positionOnField.x &&
+            freePositionsOnField[i].y == positionOnField.y)
+        {
+            freePositionsOnField.erase(freePositionsOnField.begin() + i);
+            break;
+        }
+    }
+}
+
+// Получение случайной свободной позиции шара
+bool getRandomFreeFieldPosition(GameField &gameField, PositionOnField &positionOnField)
+{
+    if (gameField.freePositionsOnField.empty())
+    {
+        return false;
+    }
+    RandomTool randomTool;
+    size_t randomPositionOnField = randomTool.getRandomValue(0, gameField.freePositionsOnField.size() - 1);
+    positionOnField = gameField.freePositionsOnField[randomPositionOnField];
+    removeFreePositionOnGameField(gameField.freePositionsOnField, positionOnField);
+    return true;
 }
 
 // Получение шара случайного цвета и координат игрового поля, на которых уже нет шара
-void getRandomBallPointerOnFreeFieldPosition(GameField &gameField, BallPointerOnField &ballPointerOnField)
+bool getRandomBallPointerOnFreeFieldPosition(GameView &gameView, BallPointerOnField &ballPointerOnField)
 {
+    if (gameView.gameInfo.ballCount >= CELL_COUNT)
+    {
+        gameView.isGameOver = true;
+        return false;
+    }
     RandomTool randomTool;
     PositionOnField positionOnField;
-    getRandomFreeFieldPosition(gameField, positionOnField);
-
-    size_t cellPos = positionOnField.y * CELL_COUNT_X + positionOnField.x;
+    if (!getRandomFreeFieldPosition(gameView.gameField, positionOnField))
+    {
+        return false;
+    }
 
     ballPointerOnField.ball = new CircleShape;
-    ballPointerOnField.ball->setPosition(positionOnField.x * CELL_SIZE + gameField.x + (CELL_SIZE - FUTURE_BALL_DIAMETER) / 2,
-                            positionOnField.y * CELL_SIZE + gameField.y + (CELL_SIZE - FUTURE_BALL_DIAMETER) / 2);
+    ballPointerOnField.ball->setPosition(positionOnField.x * CELL_SIZE + gameView.gameField.x + (CELL_SIZE - FUTURE_BALL_DIAMETER) / 2,
+                            positionOnField.y * CELL_SIZE + gameView.gameField.y + (CELL_SIZE - FUTURE_BALL_DIAMETER) / 2);
     ballPointerOnField.ball->setRadius(FUTURE_BALL_RADIUS);
     ballPointerOnField.ball->setFillColor(ballColors[randomTool.getRandomValue(0, ballColors.size() - 1)]);
     ballPointerOnField.pos = positionOnField;
+    return true;
 }
 
 // Готовит шары случайного цвета следующего хода в случайных свободных местах игровой карты
@@ -274,16 +299,19 @@ void setRandomFutureBalls(GameView &gameView)
 {
     for (size_t i = 0; i < BALLS_PER_COUP; ++i)
     {
-        getRandomBallPointerOnFreeFieldPosition(gameView.gameField, gameView.gameField.futureBallsPositions[i]);
-        gameView.gameTopBar.futureBalls[i].setFillColor(gameView.gameField.futureBallsPositions[i].ball->getFillColor());
+        if (getRandomBallPointerOnFreeFieldPosition(gameView, gameView.gameField.futureBallsPositions[i]))
+        {
+            gameView.gameTopBar.futureBalls[i].setFillColor(gameView.gameField.futureBallsPositions[i].ball->getFillColor());
+        }
     }
 }
 
 // Добавление шаров на игровое поле
 void addBalls(GameView &gameView)
 {
-    if (gameView.gameField.ballCount == CELL_COUNT)
+    if (gameView.gameInfo.ballCount >= CELL_COUNT)
     {
+        gameView.isGameOver = true;
         return;
     }
     for (size_t i = 0; i < BALLS_PER_COUP; ++i)
@@ -291,7 +319,10 @@ void addBalls(GameView &gameView)
         size_t cellPos = gameView.gameField.futureBallsPositions[i].pos.y * CELL_COUNT_X + gameView.gameField.futureBallsPositions[i].pos.x;
         if (gameView.gameField.cells[cellPos].ball != nullptr)
         {
-            getRandomFreeFieldPosition(gameView.gameField, gameView.gameField.futureBallsPositions[i].pos);
+            if (!getRandomFreeFieldPosition(gameView.gameField, gameView.gameField.futureBallsPositions[i].pos))
+            {
+                return;
+            }
             cellPos = gameView.gameField.futureBallsPositions[i].pos.y * CELL_COUNT_X + gameView.gameField.futureBallsPositions[i].pos.x;
         }
 
@@ -301,14 +332,14 @@ void addBalls(GameView &gameView)
                 gameView.gameField.futureBallsPositions[i].pos.y * CELL_SIZE + gameView.gameField.y + (CELL_SIZE - BALL_DIAMETER) / 2);
         gameView.gameField.cells[cellPos].ball = gameView.gameField.futureBallsPositions[i].ball;
 
-        if (wasLineFoundAndRemoved(gameView.gameField, &gameView.gameField.cells[cellPos]))
+        if (wasLineFoundAndRemoved(gameView.gameField, gameView.gameInfo, &gameView.gameField.cells[cellPos]))
         {
-            gameView.gameTopBar.ballCountNum.setString(String(to_string(gameView.gameField.ballCount)));
-            gameView.gameTopBar.scoreNum.setString(String(to_string(gameView.gameField.score)));
+            gameView.gameTopBar.ballCountNum.setString(to_string(gameView.gameInfo.ballCount));
+            gameView.gameTopBar.scoreNum.setString(to_string(gameView.gameInfo.score));
         }
+        gameView.gameInfo.ballCount++;
+        gameView.gameTopBar.ballCountNum.setString(String(to_string(gameView.gameInfo.ballCount)));
     }
-    gameView.gameField.ballCount += BALLS_PER_COUP;
-    gameView.gameTopBar.ballCountNum.setString(String(to_string(gameView.gameField.ballCount)));
 }
 
 // Выбрать шар
@@ -456,18 +487,18 @@ void moveBall(GameView &gameView)
         if (gameView.gameField.moves.empty())
         {
             gameView.gameField.cells[dstCellPosY * CELL_COUNT_X + dstCellPosX].ball = gameView.gameField.selectedCell->ball;
-            if (wasLineFoundAndRemoved(gameView.gameField, &gameView.gameField.cells[dstCellPosY * CELL_COUNT_X + dstCellPosX]))
+            gameView.gameField.selectedCell->ball = nullptr;
+            gameView.gameField.selectedCell = nullptr;
+            if (wasLineFoundAndRemoved(gameView.gameField, gameView.gameInfo, &gameView.gameField.cells[dstCellPosY * CELL_COUNT_X + dstCellPosX]))
             {
-                gameView.gameTopBar.ballCountNum.setString(String(to_string(gameView.gameField.ballCount)));
-                gameView.gameTopBar.scoreNum.setString(String(to_string(gameView.gameField.score)));
+                gameView.gameTopBar.ballCountNum.setString(to_string(gameView.gameInfo.ballCount));
+                gameView.gameTopBar.scoreNum.setString(to_string(gameView.gameInfo.score));
             }
             else
             {
                 addBalls(gameView);
                 setRandomFutureBalls(gameView);
             }
-            gameView.gameField.selectedCell->ball = nullptr;
-            gameView.gameField.selectedCell = nullptr;
         }
     }
 }
@@ -475,14 +506,42 @@ void moveBall(GameView &gameView)
 // Получить ячейку, зная позицию x y
 Cell &getCellByPos(GameField &gameField, float x, float y)
 {
-    size_t i = floor((y - gameField.y) / CELL_SIZE);
-    size_t j = floor((x - gameField.x) / CELL_SIZE);
+    size_t i = static_cast<size_t >(floor((y - gameField.y) / CELL_SIZE));
+    size_t j = static_cast<size_t >(floor((x - gameField.x) / CELL_SIZE));
     return gameField.cells[i * CELL_COUNT_X + j];
 }
 
-// Было ли произведено нажатие в пределах игрового поля
-bool doesUserClickedOnField(GameField &gameField, size_t clickX, size_t clickY)
+// Очистка массива ячеек игрового поля
+void clearGameFieldCells(GameField &gameField)
 {
-    return (clickY >= gameField.y && clickY < gameField.y + CELL_COUNT_Y * CELL_SIZE &&
-            clickX >= gameField.x && clickX < gameField.x + CELL_COUNT_X * CELL_SIZE);
+    for (size_t i = 0; i < CELL_COUNT_Y; ++i)
+    {
+        for (size_t j = 0; j < CELL_COUNT_X; ++j)
+        {
+            size_t cellPos = i * CELL_COUNT_X + j;
+            gameField.cells[cellPos].ball = nullptr;
+        }
+    }
+}
+
+// Очистка массива шаров следующего хода
+void clearFutureBalls(BallPointerOnField *futureBallsPositions)
+{
+    for (size_t i = 0; i < BALLS_PER_COUP; ++i)
+    {
+        if (futureBallsPositions[i].ball != nullptr)
+        {
+            delete futureBallsPositions[i].ball;
+            futureBallsPositions[i].ball = nullptr;
+        }
+        futureBallsPositions[i].pos = PositionOnField(0, 0);
+    }
+}
+
+// Очистка игрового поля
+void clearGameField(GameField &gameField)
+{
+    clearGameFieldCells(gameField);
+    clearFutureBalls(gameField.futureBallsPositions);
+    initFreePositionsOnField(gameField.freePositionsOnField);
 }

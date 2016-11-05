@@ -10,7 +10,7 @@ void initBallCountInfoOnTopBar(GameView &gameView)
                                                   (gameView.gameField.y - gameView.gameTopBar.ballCountText.getLocalBounds().height) / 2);
 
     gameView.gameTopBar.ballCountNum.setFont(gameView.gameTopBar.font);
-    gameView.gameTopBar.ballCountNum.setString(to_string(gameView.gameField.ballCount));
+    gameView.gameTopBar.ballCountNum.setString(to_string(gameView.gameInfo.ballCount));
     gameView.gameTopBar.ballCountNum.setCharacterSize(50);
     gameView.gameTopBar.ballCountNum.setStyle(Text::Bold);
     gameView.gameTopBar.ballCountNum.setPosition(gameView.gameField.x + gameView.gameTopBar.ballCountText.getLocalBounds().width,
@@ -35,7 +35,7 @@ void initFutureBallsOnTopBar(GameView &gameView)
 void initScoreInfoOnTopBar(GameView &gameView)
 {
     gameView.gameTopBar.scoreNum.setFont(gameView.gameTopBar.font);
-    gameView.gameTopBar.scoreNum.setString(to_string(gameView.gameField.score));
+    gameView.gameTopBar.scoreNum.setString(to_string(gameView.gameInfo.score));
     gameView.gameTopBar.scoreNum.setCharacterSize(50);
     gameView.gameTopBar.scoreNum.setStyle(Text::Bold);
     gameView.gameTopBar.scoreNum.setPosition(gameView.gameField.x + CELL_COUNT_X * CELL_SIZE - gameView.gameTopBar.scoreNum.getLocalBounds().width * 2,
@@ -49,21 +49,22 @@ void initScoreInfoOnTopBar(GameView &gameView)
 }
 
 // Инициализация верхней панели
-void initGameTopBar(GameView &gameView)
+bool initGameTopBar(GameView &gameView)
 {
     if (!gameView.gameTopBar.font.loadFromFile("a_LCDNovaObl.ttf"))
     {
         cout << "Problems with font loading";
-        return;
+        return false;
     }
 
     initBallCountInfoOnTopBar(gameView);
     initFutureBallsOnTopBar(gameView);
     initScoreInfoOnTopBar(gameView);
+    return true;
 }
 
 // Инициализация игровых ячеек
-void initCells(GameField &gameField)
+void initGameFieldCells(GameField &gameField)
 {
     for (size_t i = 0; i < CELL_COUNT_Y; ++i)
     {
@@ -77,7 +78,19 @@ void initCells(GameField &gameField)
             gameField.cells[cellPos].shape.setPosition(j * CELL_SIZE + gameField.x, i * CELL_SIZE + gameField.y);
             gameField.cells[cellPos].pos.x = j;
             gameField.cells[cellPos].pos.y = i;
-            gameField.cells[cellPos].ball = nullptr;
+        }
+    }
+}
+
+// Инициализация массива свободных позиций игрового поля
+void initFreePositionsOnField(vector<PositionOnField> &freePositionsOnField)
+{
+    freePositionsOnField = {};
+    for (size_t i = 0; i < CELL_COUNT_Y; ++i)
+    {
+        for (size_t j = 0; j < CELL_COUNT_X; ++j)
+        {
+            freePositionsOnField.emplace_back(PositionOnField(j, i));
         }
     }
 }
@@ -87,11 +100,73 @@ void initGameField(GameField &gameField, Vector2f &windowCenter)
 {
     gameField.x = windowCenter.x - CELL_COUNT_X * CELL_SIZE / 2;
     gameField.y = windowCenter.y - CELL_COUNT_Y * CELL_SIZE / 2;
-    initCells(gameField);
+    initGameFieldCells(gameField);
+    initFreePositionsOnField(gameField.freePositionsOnField);
 }
 
-void initGameView(GameView &gameView, Vector2f &windowCenter)
+// Инициализация фона экрана конца игры
+void initGameOverViewBackground(RectangleShape &background)
 {
-    initGameField(gameView.gameField, windowCenter);
-    initGameTopBar(gameView);
+    background.setSize(Vector2f(SCREEN_WIDTH, SCREEN_HEIGHT));
+    background.setFillColor(GAME_OVER_BACKGROUND_COLOR);
+}
+
+// Инициализация надписи конца игры
+void initGameOverViewText(Text &gameOverText, Font &font, Vector2f &windowCenter)
+{
+    gameOverText.setFont(font);
+    gameOverText.setString(TEXT_GAME_OVER);
+    gameOverText.setCharacterSize(100);
+    gameOverText.setOutlineThickness(5);
+    gameOverText.setOutlineColor(Color::Black);
+    gameOverText.setPosition(windowCenter.x - gameOverText.getLocalBounds().width / 2, windowCenter.y - gameOverText.getLocalBounds().height * 2);
+}
+
+// Инициализация надписи кол-ва очков на экране конца игры
+void initGameOverViewScore(Text &scoreText, Font &font, Vector2f &windowCenter)
+{
+    scoreText.setFont(font);
+    scoreText.setString(TEXT_GAME_OVER_SCORE);
+    scoreText.setCharacterSize(90);
+    scoreText.setOutlineThickness(5);
+    scoreText.setOutlineColor(Color::Black);
+    scoreText.setPosition(windowCenter.x - scoreText.getLocalBounds().width / 2, windowCenter.y);
+}
+
+// Инициализцаия кнопки перезагрузки игры на экране конца игры
+void initGameOverViewRestartButton(Button &restartButton, Font &font, Vector2f &windowCenter)
+{
+    restartButton.text.setFont(font);
+    restartButton.text.setString(TEXT_GAME_OVER_RESTART_BUTTON);
+    restartButton.text.setCharacterSize(60);
+    restartButton.text.setOutlineThickness(3);
+    restartButton.text.setOutlineColor(GAME_OVER_RESTART_BUTTON_TEXT_OUTLINE_COLOR);
+    restartButton.text.setPosition(windowCenter.x - restartButton.text.getLocalBounds().width / 2, SCREEN_HEIGHT - 100);
+    restartButton.shape.setSize(Vector2f(restartButton.text.getLocalBounds().width + 20, restartButton.text.getLocalBounds().height + 30));
+    restartButton.shape.setFillColor(GAME_OVER_RESTART_BUTTON_FILL_COLOR);
+    restartButton.shape.setPosition(restartButton.text.getPosition().x - 10, restartButton.text.getPosition().y);
+}
+
+// Инициализация отображения конца игры
+bool initGameOverView(GameView &gameView)
+{
+    if (!gameView.gameOverView.font.loadFromFile("DroidSans-Bold.ttf"))
+    {
+        cout << "Problems with font loading";
+        return false;
+    }
+    initGameOverViewBackground(gameView.gameOverView.background);
+    initGameOverViewText(gameView.gameOverView.gameOverText, gameView.gameOverView.font, gameView.windowCenter);
+    initGameOverViewScore(gameView.gameOverView.scoreText, gameView.gameOverView.font, gameView.windowCenter);
+    initGameOverViewRestartButton(gameView.gameOverView.restartButton, gameView.gameOverView.font, gameView.windowCenter);
+
+    return true;
+}
+
+// Инициализация игрового экрана
+bool initGameView(RenderWindow &window, GameView &gameView)
+{
+    gameView.windowCenter = Vector2f(window.getSize().x / 2.0f, window.getSize().y / 2.0f);
+    initGameField(gameView.gameField, gameView.windowCenter);
+    return (initGameTopBar(gameView) && initGameOverView(gameView));
 }

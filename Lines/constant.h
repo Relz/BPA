@@ -26,9 +26,17 @@ const float FUTURE_BALL_DIAMETER = FUTURE_BALL_RADIUS * 2;
 const float BALL_MOVEMENT_SPEED = 0.8;
 
 const float TOPBAR_FUTURE_BALLS_LEFT_PADDING = 20;
+const float TOPBAR_FUTURE_BALLS_MAX_COUNT = 3;
 
 const string TEXT_BALLS = "BALLS ";
 const string TEXT_SCORE = "SCORE ";
+
+const Color GAME_OVER_BACKGROUND_COLOR = Color(255, 255, 255, 200);
+const string TEXT_GAME_OVER = "Game Over";
+const string TEXT_GAME_OVER_SCORE = "Score: ";
+const string TEXT_GAME_OVER_RESTART_BUTTON = "Restart";
+const Color GAME_OVER_RESTART_BUTTON_TEXT_OUTLINE_COLOR = Color::Black;
+const Color GAME_OVER_RESTART_BUTTON_FILL_COLOR = Color(0, 100, 0);
 
 struct PositionOnField
 {

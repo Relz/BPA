@@ -9,7 +9,7 @@ void drawGameTopBar(RenderWindow &window, GameTopBar &gameTopBar)
     window.draw(gameTopBar.scoreText);
     window.draw(gameTopBar.scoreNum);
 
-    for (size_t i = 0; i < BALLS_PER_COUP; ++i)
+    for (size_t i = 0; i < BALLS_PER_COUP && i < TOPBAR_FUTURE_BALLS_MAX_COUNT; ++i)
     {
         window.draw(gameTopBar.futureBalls[i]);
     }
@@ -41,7 +41,10 @@ void drawFutureBalls(RenderWindow &window, BallPointerOnField *futureBallsPositi
 {
     for (size_t i = 0; i < BALLS_PER_COUP; ++i)
     {
-        window.draw(*(futureBallsPositions[i].ball));
+        if (futureBallsPositions[i].ball != nullptr)
+        {
+            window.draw(*(futureBallsPositions[i].ball));
+        }
     }
 }
 
@@ -53,11 +56,32 @@ void drawGameField(RenderWindow &window, GameField &gameField)
     drawBalls(window, gameField.cells);
 }
 
+// Отрисовка кнопки перезагрузки игры на экране конца игры
+void drawGameOverViewRestartButton(RenderWindow &window, Button &restartButton)
+{
+    window.draw(restartButton.shape);
+    window.draw(restartButton.text);
+}
+
+// Отрисовка конца игры с возможностью начать заново
+void drawGameOverView(RenderWindow &window, GameView &gameView)
+{
+    window.draw(gameView.gameOverView.background);
+    window.draw(gameView.gameOverView.gameOverText);
+    gameView.gameOverView.scoreText.setString(TEXT_GAME_OVER_SCORE + to_string(gameView.gameInfo.score));
+    window.draw(gameView.gameOverView.scoreText);
+    drawGameOverViewRestartButton(window, gameView.gameOverView.restartButton);
+}
+
 // Отрисовка объектов на форме
 void drawObjects(RenderWindow &window, GameView &gameView)
 {
     drawGameField(window, gameView.gameField);
     drawGameTopBar(window, gameView.gameTopBar);
+    if (gameView.isGameOver)
+    {
+        drawGameOverView(window, gameView);
+    }
     window.display();
 }
 
@@ -77,10 +101,7 @@ void gameLoop(RenderWindow &window, GameView &gameView)
         {
             moveBall(gameView);
         }
-        else
-        {
-            handleEvents(window, gameView);
-        }
+        handleEvents(window, gameView);
         update(window, gameView);
     }
 }
@@ -91,10 +112,13 @@ int main()
     settings.antialiasingLevel = ANTIALIASING_LEVEL;
 
     RenderWindow window(VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), WINDOW_TITLE, Style::Close, settings);
-    Vector2f windowCenter = Vector2f(window.getSize().x / 2.0f, window.getSize().y / 2.0f);
 
     GameView gameView;
-    initGameView(gameView, windowCenter);
+    if (!initGameView(window, gameView))
+    {
+        return false;
+    }
+
     setRandomFutureBalls(gameView);
     addBalls(gameView);
     setRandomFutureBalls(gameView);
