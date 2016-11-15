@@ -7,7 +7,4 @@
 #include <map>
 #include <math.h>
 
-using namespace std;
-using namespace sf;
-
 #endif //SFMLANIMATION_STDAFX_H

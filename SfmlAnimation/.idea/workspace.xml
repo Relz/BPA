@@ -41,7 +41,7 @@
     </ADDITIONAL_GENERATION_ENVIRONMENT>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8a78313d-833a-4bd4-88b9-d6643dfae62a" name="Default" comment="Глобальная переменная mode перенесена в поле структуры Blocks.">
+    <list default="true" id="8a78313d-833a-4bd4-88b9-d6643dfae62a" name="Default" comment="">
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../Lines/draw.cpp" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../Lines/draw.h" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../Ultimate Shaman King/.idea/vcs.xml" />
@@ -66,6 +66,7 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/constant.cpp" afterPath="$PROJECT_DIR$/constant.cpp" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/constant.h" afterPath="$PROJECT_DIR$/constant.h" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/main.cpp" afterPath="$PROJECT_DIR$/main.cpp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/stdafx.h" afterPath="$PROJECT_DIR$/stdafx.h" />
     </list>
     <ignored path="SfmlAnimation.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -88,10 +89,22 @@
       <file leaf-file-name="main.cpp" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="465">
-              <caret line="31" column="64" selection-start-line="31" selection-start-column="64" selection-end-line="31" selection-end-column="64" />
+            <state relative-caret-position="270">
+              <caret line="117" column="35" selection-start-line="117" selection-start-column="35" selection-end-line="117" selection-end-column="35" />
               <folding>
                 <element signature="e#0#19#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="stdafx.h" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/stdafx.h">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="105">
+              <caret line="7" column="17" selection-start-line="7" selection-start-column="17" selection-end-line="7" selection-end-column="17" />
+              <folding>
+                <element signature="e#63#91#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -100,9 +113,11 @@
       <file leaf-file-name="constant.cpp" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/constant.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="75">
-              <caret line="5" column="34" selection-start-line="5" selection-start-column="34" selection-end-line="5" selection-end-column="34" />
-              <folding />
+            <state relative-caret-position="480">
+              <caret line="65" column="51" selection-start-line="65" selection-start-column="51" selection-end-line="65" selection-end-column="51" />
+              <folding>
+                <element signature="e#0#19#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -110,8 +125,8 @@
       <file leaf-file-name="constant.h" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/constant.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="420">
-              <caret line="28" column="31" selection-start-line="28" selection-start-column="31" selection-end-line="28" selection-end-column="31" />
+            <state relative-caret-position="255">
+              <caret line="17" column="37" selection-start-line="17" selection-start-column="37" selection-end-line="17" selection-end-column="37" />
               <folding />
             </state>
           </provider>
@@ -128,8 +143,8 @@
         <option value="$PROJECT_DIR$/CMakeLists.txt" />
         <option value="$PROJECT_DIR$/animation_modes.h" />
         <option value="$PROJECT_DIR$/stdafx.cpp" />
-        <option value="$PROJECT_DIR$/stdafx.h" />
         <option value="$PROJECT_DIR$/constant.cpp" />
+        <option value="$PROJECT_DIR$/stdafx.h" />
         <option value="$PROJECT_DIR$/constant.h" />
         <option value="$PROJECT_DIR$/main.cpp" />
       </list>
@@ -425,7 +440,7 @@
       <workItem from="1477573591422" duration="463000" />
       <workItem from="1477575802300" duration="1751000" />
       <workItem from="1478198638720" duration="614000" />
-      <workItem from="1479204536020" duration="845000" />
+      <workItem from="1479204536020" duration="7582000" />
     </task>
     <task id="LOCAL-00001" summary="Добавлен проект: Анимация на SFML">
       <created>1477429636530</created>
@@ -448,11 +463,18 @@
       <option name="project" value="LOCAL" />
       <updated>1478199186938</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="изменена структура константы модов для движения блоков.">
+      <created>1479205485793</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1479205485793</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="65100000" />
+    <option name="totallyTimeSpent" value="71837000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -506,7 +528,8 @@
     <MESSAGE value="Вынесены константы в отдельный файл constant.h, а инициализация настройки движений блоков в constant.cpp. Общие для main.cpp и constant.h инклуды вынесены в stdafx.h." />
     <MESSAGE value="Заголовок окна вынесен в константу" />
     <MESSAGE value="Глобальная переменная mode перенесена в поле структуры Blocks." />
-    <option name="LAST_COMMIT_MESSAGE" value="Глобальная переменная mode перенесена в поле структуры Blocks." />
+    <MESSAGE value="изменена структура константы модов для движения блоков." />
+    <option name="LAST_COMMIT_MESSAGE" value="изменена структура константы модов для движения блоков." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -792,31 +815,36 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/stdafx.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="10" column="19" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="19" />
+        <state relative-caret-position="105">
+          <caret line="7" column="17" selection-start-line="7" selection-start-column="17" selection-end-line="7" selection-end-column="17" />
+          <folding>
+            <element signature="e#63#91#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/constant.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="420">
-          <caret line="28" column="31" selection-start-line="28" selection-start-column="31" selection-end-line="28" selection-end-column="31" />
+        <state relative-caret-position="255">
+          <caret line="17" column="37" selection-start-line="17" selection-start-column="37" selection-end-line="17" selection-end-column="37" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/constant.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="5" column="34" selection-start-line="5" selection-start-column="34" selection-end-line="5" selection-end-column="34" />
-          <folding />
+        <state relative-caret-position="480">
+          <caret line="65" column="51" selection-start-line="65" selection-start-column="51" selection-end-line="65" selection-end-column="51" />
+          <folding>
+            <element signature="e#0#19#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/main.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="465">
-          <caret line="31" column="64" selection-start-line="31" selection-start-column="64" selection-end-line="31" selection-end-column="64" />
+        <state relative-caret-position="270">
+          <caret line="117" column="35" selection-start-line="117" selection-start-column="35" selection-end-line="117" selection-end-column="35" />
           <folding>
             <element signature="e#0#19#0" expanded="true" />
           </folding>

@@ -1,4 +1,7 @@
+#include "stdafx.h"
 #include "constant.h"
+
+using namespace std;
 
 vector<map<string, float>> ANIMATION_MODES =
         {

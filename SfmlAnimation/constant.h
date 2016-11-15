@@ -1,7 +1,8 @@
 #ifndef SFMLANIMATION_CONSTANT_H
 #define SFMLANIMATION_CONSTANT_H
 
-#include "stdafx.h"
+using namespace std;
+using namespace sf;
 
 const unsigned ANTIALIASING_LEVEL = 8;
 const unsigned SCREEN_WIDTH = 540;

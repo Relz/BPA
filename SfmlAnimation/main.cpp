@@ -1,6 +1,9 @@
 ﻿#include "stdafx.h"
 #include "constant.h"
 
+using namespace std;
+using namespace sf;
+
 struct Blocks
 {
     RectangleShape rectangles[RECTANGLE_COUNT];
@@ -36,7 +39,7 @@ void initializeBlocks(Blocks &blocks)
         rectangle->setSize(blocks.currentSize);
         rectangle->setFillColor(blocks.currentRGBA);
         rectangle->setOrigin(RECTANGLE_WIDTH / 2, RECTANGLE_HEIGHT / 2);
-        rectangle->setPosition(START_LEFT_OFFSET + rectangle->getOrigin().x, 
+        rectangle->setPosition(START_LEFT_OFFSET + rectangle->getOrigin().x,
                                ((RECTANGLE_HEIGHT + RECTANGLE_DISTANCE) * i) + START_TOP_OFFSET + rectangle->getOrigin().y);
     }
 }
@@ -112,7 +115,7 @@ void refreshBlocksSize(Blocks &blocks, Vector2f &currentSize)
 
             RectangleShape *rectangle = &blocks.rectangles[i];
             rectangle->setPosition(rectangle->getPosition().x,
-                                             ((blocks.currentSize.y + RECTANGLE_DISTANCE) * i) + blocks.rectangles[0].getPosition().y);
+                                   ((blocks.currentSize.y + RECTANGLE_DISTANCE) * i) + blocks.rectangles[0].getPosition().y);
             rectangle->setSize(currentSize);
         }
     }
