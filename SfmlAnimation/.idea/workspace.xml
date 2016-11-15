@@ -42,9 +42,30 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8a78313d-833a-4bd4-88b9-d6643dfae62a" name="Default" comment="Глобальная переменная mode перенесена в поле структуры Blocks.">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../Lines/draw.cpp" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../Lines/draw.h" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../Ultimate Shaman King/.idea/vcs.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../Ultimate Shaman King/Yoh.cpp" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../Ultimate Shaman King/Yoh.h" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../Ultimate Shaman King/constant.cpp" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../Ultimate Shaman King/constant.h" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../Ultimate Shaman King/handleEvents.cpp" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../Ultimate Shaman King/handleEvents.h" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../Ultimate Shaman King/stdafx.cpp" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../Ultimate Shaman King/stdafx.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../Lines/.idea/Lines.iml" afterPath="$PROJECT_DIR$/../Lines/.idea/Lines.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../Lines/CMakeLists.txt" afterPath="$PROJECT_DIR$/../Lines/CMakeLists.txt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../Lines/constant.h" afterPath="$PROJECT_DIR$/../Lines/constant.h" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../Lines/gameField.cpp" afterPath="$PROJECT_DIR$/../Lines/gameField.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../Lines/gameView.h" afterPath="$PROJECT_DIR$/../Lines/gameView.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../Lines/gameField.h" afterPath="$PROJECT_DIR$/../Lines/gameField.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../Lines/gameView.cpp" afterPath="$PROJECT_DIR$/../Lines/gameView.cpp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../Lines/initialize.cpp" afterPath="$PROJECT_DIR$/../Lines/initialize.cpp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../Lines/main.cpp" afterPath="$PROJECT_DIR$/../Lines/main.cpp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../Lines/stdafx.h" afterPath="$PROJECT_DIR$/../Lines/stdafx.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/constant.cpp" afterPath="$PROJECT_DIR$/constant.cpp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/constant.h" afterPath="$PROJECT_DIR$/constant.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/main.cpp" afterPath="$PROJECT_DIR$/main.cpp" />
     </list>
     <ignored path="SfmlAnimation.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -67,8 +88,8 @@
       <file leaf-file-name="main.cpp" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="225">
-              <caret line="15" column="106" selection-start-line="15" selection-start-column="106" selection-end-line="15" selection-end-column="106" />
+            <state relative-caret-position="465">
+              <caret line="31" column="64" selection-start-line="31" selection-start-column="64" selection-end-line="31" selection-end-column="64" />
               <folding>
                 <element signature="e#0#19#0" expanded="true" />
               </folding>
@@ -76,11 +97,21 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="constant.cpp" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/constant.cpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="75">
+              <caret line="5" column="34" selection-start-line="5" selection-start-column="34" selection-end-line="5" selection-end-column="34" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="constant.h" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/constant.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="135">
-              <caret line="9" column="16" selection-start-line="9" selection-start-column="16" selection-end-line="9" selection-end-column="16" />
+            <state relative-caret-position="420">
+              <caret line="28" column="31" selection-start-line="28" selection-start-column="31" selection-end-line="28" selection-end-column="31" />
               <folding />
             </state>
           </provider>
@@ -394,6 +425,7 @@
       <workItem from="1477573591422" duration="463000" />
       <workItem from="1477575802300" duration="1751000" />
       <workItem from="1478198638720" duration="614000" />
+      <workItem from="1479204536020" duration="845000" />
     </task>
     <task id="LOCAL-00001" summary="Добавлен проект: Анимация на SFML">
       <created>1477429636530</created>
@@ -420,7 +452,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="64255000" />
+    <option name="totallyTimeSpent" value="65100000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -437,7 +469,7 @@
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1438152" sideWeight="0.49187934" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3299712" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32707354" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3258595" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="CMake" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32853025" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TeamCity" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3299712" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32853025" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
@@ -446,7 +478,7 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24962743" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3299712" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.1420205" sideWeight="0.50812066" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39906102" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39760837" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -487,6 +519,24 @@
     </watches-manager>
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/main.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#19#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/constant.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="9" column="16" selection-start-line="9" selection-start-column="16" selection-end-line="9" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/main.cpp">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -747,25 +797,26 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/constant.cpp">
+    <entry file="file://$PROJECT_DIR$/constant.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="1" column="0" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
+        <state relative-caret-position="420">
+          <caret line="28" column="31" selection-start-line="28" selection-start-column="31" selection-end-line="28" selection-end-column="31" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/constant.h">
+    <entry file="file://$PROJECT_DIR$/constant.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="9" column="16" selection-start-line="9" selection-start-column="16" selection-end-line="9" selection-end-column="16" />
+        <state relative-caret-position="75">
+          <caret line="5" column="34" selection-start-line="5" selection-start-column="34" selection-end-line="5" selection-end-column="34" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/main.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="15" column="106" selection-start-line="15" selection-start-column="106" selection-end-line="15" selection-end-column="106" />
+        <state relative-caret-position="465">
+          <caret line="31" column="64" selection-start-line="31" selection-start-column="64" selection-end-line="31" selection-end-column="64" />
           <folding>
             <element signature="e#0#19#0" expanded="true" />
           </folding>

@@ -26,6 +26,6 @@ const float SPEED_ROTATION = 0.05;
 
 const Color START_COLOR = Color(0, 0, 100, 255);
 
-extern vector<map<string, map<string, float>>> ANIMATION_MODES;
+extern vector<map<string, float>> ANIMATION_MODES;
 
 #endif //SFMLANIMATION_CONSTANT_H

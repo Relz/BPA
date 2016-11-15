@@ -13,10 +13,10 @@ struct Blocks
 // Проверка блоков на столкновение со стеной
 bool doesBlocksCollideWithWall(Blocks &blocks)
 {
-    float firstRectangleFutureX = blocks.rectangles[0].getPosition().x + ANIMATION_MODES[blocks.mode]["SPEED"]["X"];
-    float firstRectangleFutureY = blocks.rectangles[0].getPosition().y + ANIMATION_MODES[blocks.mode]["SPEED"]["Y"];
-    float lastRectangleFutureX = blocks.rectangles[RECTANGLE_COUNT - 1].getPosition().x + ANIMATION_MODES[blocks.mode]["SPEED"]["X"];
-    float lastRectangleFutureY = blocks.rectangles[RECTANGLE_COUNT - 1].getPosition().y + ANIMATION_MODES[blocks.mode]["SPEED"]["Y"];
+    float firstRectangleFutureX = blocks.rectangles[0].getPosition().x + ANIMATION_MODES[blocks.mode]["SPEED_X"];
+    float firstRectangleFutureY = blocks.rectangles[0].getPosition().y + ANIMATION_MODES[blocks.mode]["SPEED_Y"];
+    float lastRectangleFutureX = blocks.rectangles[RECTANGLE_COUNT - 1].getPosition().x + ANIMATION_MODES[blocks.mode]["SPEED_X"];
+    float lastRectangleFutureY = blocks.rectangles[RECTANGLE_COUNT - 1].getPosition().y + ANIMATION_MODES[blocks.mode]["SPEED_Y"];
 
     return ((firstRectangleFutureX - RECTANGLE_WIDTH / 2 < 0 || firstRectangleFutureX + RECTANGLE_WIDTH / 2 > SCREEN_WIDTH)
         || (firstRectangleFutureY - RECTANGLE_HEIGHT / 2 < 0 || firstRectangleFutureY + RECTANGLE_HEIGHT / 2 > SCREEN_HEIGHT)
@@ -32,10 +32,12 @@ void initializeBlocks(Blocks &blocks)
     blocks.currentRotation = blocks.rectangles[0].getRotation();
     for (unsigned i = 0; i < RECTANGLE_COUNT; ++i)
     {
-        blocks.rectangles[i].setSize(blocks.currentSize);
-        blocks.rectangles[i].setFillColor(blocks.currentRGBA);
-        blocks.rectangles[i].setOrigin(RECTANGLE_WIDTH / 2, RECTANGLE_HEIGHT / 2);
-        blocks.rectangles[i].setPosition(START_LEFT_OFFSET + blocks.rectangles[i].getOrigin().x, ((RECTANGLE_HEIGHT + RECTANGLE_DISTANCE) * i) + START_TOP_OFFSET + blocks.rectangles[i].getOrigin().y);
+        RectangleShape *rectangle = &blocks.rectangles[i];
+        rectangle->setSize(blocks.currentSize);
+        rectangle->setFillColor(blocks.currentRGBA);
+        rectangle->setOrigin(RECTANGLE_WIDTH / 2, RECTANGLE_HEIGHT / 2);
+        rectangle->setPosition(START_LEFT_OFFSET + rectangle->getOrigin().x, 
+                               ((RECTANGLE_HEIGHT + RECTANGLE_DISTANCE) * i) + START_TOP_OFFSET + rectangle->getOrigin().y);
     }
 }
 
@@ -48,25 +50,26 @@ float degreesToRadians(float degrees)
 // Асинхронный эффект: Поворот всех блоков вокруг оси первого
 void rotateBlocks(Blocks &blocks)
 {
-    if (blocks.currentRotation != ANIMATION_MODES[blocks.mode]["ROTATION"]["TO"])
+    if (blocks.currentRotation != ANIMATION_MODES[blocks.mode]["ROTATION"])
     {
-        if (blocks.currentRotation > ANIMATION_MODES[blocks.mode]["ROTATION"]["TO"])
+        if (blocks.currentRotation > ANIMATION_MODES[blocks.mode]["ROTATION"])
         {
             blocks.currentRotation -= SPEED_ROTATION;
         }
-        else if (blocks.currentRotation < ANIMATION_MODES[blocks.mode]["ROTATION"]["TO"])
+        else if (blocks.currentRotation < ANIMATION_MODES[blocks.mode]["ROTATION"])
         {
             blocks.currentRotation += SPEED_ROTATION;
         }
         for (unsigned i = 0; i < RECTANGLE_COUNT; ++i)
         {
-            float dx = blocks.rectangles[i].getPosition().x - blocks.rectangles[0].getPosition().x;
-            float dy = blocks.rectangles[i].getPosition().y - blocks.rectangles[0].getPosition().y;
+            RectangleShape *rectangle = &blocks.rectangles[i];
+            float dx = rectangle->getPosition().x - blocks.rectangles[0].getPosition().x;
+            float dy = rectangle->getPosition().y - blocks.rectangles[0].getPosition().y;
             float distance = hypot(dx, dy);
-            blocks.rectangles[i].setPosition(
+            rectangle->setPosition(
                     distance * sin(degreesToRadians(blocks.currentRotation)) + blocks.rectangles[0].getPosition().x,
                     distance * cos(degreesToRadians(blocks.currentRotation)) + blocks.rectangles[0].getPosition().y);
-            blocks.rectangles[i].setRotation(-blocks.currentRotation);
+            rectangle->setRotation(-blocks.currentRotation);
         }
     }
 }
@@ -74,11 +77,11 @@ void rotateBlocks(Blocks &blocks)
 // Обновление ширины блока
 void refreshBlockWidth(float &width, unsigned mode)
 {
-    if (width < ANIMATION_MODES[mode]["WIDTH"]["TO"])
+    if (width < ANIMATION_MODES[mode]["WIDTH"])
     {
         width += SPEED_SIZE;
     }
-    else if (width > ANIMATION_MODES[mode]["WIDTH"]["TO"])
+    else if (width > ANIMATION_MODES[mode]["WIDTH"])
     {
         width -= SPEED_SIZE;
     }
@@ -87,11 +90,11 @@ void refreshBlockWidth(float &width, unsigned mode)
 // Обновление высоты блока
 void refreshBlockHeight(float &height, unsigned mode)
 {
-    if (height < ANIMATION_MODES[mode]["HEIGHT"]["TO"])
+    if (height < ANIMATION_MODES[mode]["HEIGHT"])
     {
         height += SPEED_SIZE;
     }
-    else if (height > ANIMATION_MODES[mode]["HEIGHT"]["TO"])
+    else if (height > ANIMATION_MODES[mode]["HEIGHT"])
     {
         height -= SPEED_SIZE;
     }
@@ -100,16 +103,17 @@ void refreshBlockHeight(float &height, unsigned mode)
 // Обновление размера блоков
 void refreshBlocksSize(Blocks &blocks, Vector2f &currentSize)
 {
-    if (currentSize.x != ANIMATION_MODES[blocks.mode]["WIDTH"]["TO"] || currentSize.y != ANIMATION_MODES[blocks.mode]["HEIGHT"]["TO"])
+    if (currentSize.x != ANIMATION_MODES[blocks.mode]["WIDTH"] || currentSize.y != ANIMATION_MODES[blocks.mode]["HEIGHT"])
     {
         for (unsigned i = 0; i < RECTANGLE_COUNT; ++i)
         {
             refreshBlockWidth(currentSize.x, blocks.mode);
             refreshBlockHeight(currentSize.y, blocks.mode);
 
-            blocks.rectangles[i].setPosition(blocks.rectangles[i].getPosition().x,
+            RectangleShape *rectangle = &blocks.rectangles[i];
+            rectangle->setPosition(rectangle->getPosition().x,
                                              ((blocks.currentSize.y + RECTANGLE_DISTANCE) * i) + blocks.rectangles[0].getPosition().y);
-            blocks.rectangles[i].setSize(currentSize);
+            rectangle->setSize(currentSize);
         }
     }
 }
@@ -117,11 +121,11 @@ void refreshBlocksSize(Blocks &blocks, Vector2f &currentSize)
 // Обновление цвета и прозрачности блоков
 void refreshBlocksColor(Uint8 &currentColor, const string &colorStr, unsigned mode)
 {
-    if (static_cast<int>(currentColor) < ANIMATION_MODES[mode][colorStr]["TO"])
+    if (static_cast<int>(currentColor) < ANIMATION_MODES[mode][colorStr])
     {
         currentColor = Uint8(static_cast<int>(currentColor) + SPEED_COLOR);
     }
-    else if (static_cast<int>(currentColor) > ANIMATION_MODES[mode][colorStr]["TO"])
+    else if (static_cast<int>(currentColor) > ANIMATION_MODES[mode][colorStr])
     {
         currentColor = Uint8(static_cast<int>(currentColor) - SPEED_COLOR);
     }
@@ -141,9 +145,10 @@ void moveBlocks(Blocks &blocks)
 {
     for (unsigned i = 0; i < RECTANGLE_COUNT; ++i)
     {
-        blocks.rectangles[i].setPosition(blocks.rectangles[i].getPosition().x + ANIMATION_MODES[blocks.mode]["SPEED"]["X"],
-                                         blocks.rectangles[i].getPosition().y + ANIMATION_MODES[blocks.mode]["SPEED"]["Y"]);
-        blocks.rectangles[i].setFillColor(blocks.currentRGBA);
+        RectangleShape *rectangle = &blocks.rectangles[i];
+        rectangle->setPosition(rectangle->getPosition().x + ANIMATION_MODES[blocks.mode]["SPEED_X"],
+                                         rectangle->getPosition().y + ANIMATION_MODES[blocks.mode]["SPEED_Y"]);
+        rectangle->setFillColor(blocks.currentRGBA);
     }
 }
 

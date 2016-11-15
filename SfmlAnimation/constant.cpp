@@ -1,75 +1,82 @@
 #include "constant.h"
 
-vector<map<string, map<string, float>>> ANIMATION_MODES =
+vector<map<string, float>> ANIMATION_MODES =
         {
                 {
-                        {"SPEED", {{"X", SPEED_X}, {"Y", 0}}},
-                        {"WIDTH", {{"TO", RECTANGLE_WIDTH}}},
-                        {"HEIGHT", {{"TO", RECTANGLE_HEIGHT}}},
-                        {"COLOR_RED", {{"TO", 0}}},
-                        {"COLOR_GREEN", {{"TO", 0}}},
-                        {"COLOR_BLUE", {{"TO", 100}}},
-                        {"OPACITY", {{"TO", 255}}},
-                        {"ROTATION", {{"TO", 0}}}
+                        {"SPEED_X", SPEED_X},
+                        {"SPEED_Y", 0},
+                        {"WIDTH", RECTANGLE_WIDTH},
+                        {"HEIGHT", RECTANGLE_HEIGHT},
+                        {"COLOR_RED", 0},
+                        {"COLOR_GREEN", 0},
+                        {"COLOR_BLUE", 100},
+                        {"OPACITY", 255},
+                        {"ROTATION", 0}
                 },
                 {
-                        {"SPEED", {{"X", 0}, {"Y", SPEED_Y}}},
-                        {"WIDTH", {{"TO", RECTANGLE_WIDTH}}},
-                        {"HEIGHT", {{"TO", RECTANGLE_HEIGHT}}},
-                        {"COLOR_RED", {{"TO", 0}}},
-                        {"COLOR_GREEN", {{"TO", 100}}},
-                        {"COLOR_BLUE", {{"TO", 0}}},
-                        {"OPACITY", {{"TO", 255}}},
-                        {"ROTATION", {{"TO", 0}}}
+                        {"SPEED_X", 0},
+                        {"SPEED_Y", SPEED_Y},
+                        {"WIDTH", RECTANGLE_WIDTH},
+                        {"HEIGHT", RECTANGLE_HEIGHT},
+                        {"COLOR_RED", 0},
+                        {"COLOR_GREEN", 100},
+                        {"COLOR_BLUE", 0},
+                        {"OPACITY", 255},
+                        {"ROTATION", 0}
                 },
                 {
-                        {"SPEED", {{"X", -SPEED_X}, {"Y", -SPEED_Y}}},
-                        {"WIDTH", {{"TO", RECTANGLE_WIDTH}}},
-                        {"HEIGHT", {{"TO", RECTANGLE_HEIGHT}}},
-                        {"COLOR_RED", {{"TO", 0}}},
-                        {"COLOR_GREEN", {{"TO", 100}}},
-                        {"COLOR_BLUE", {{"TO", 0}}},
-                        {"OPACITY", {{"TO", 100}}},
-                        {"ROTATION", {{"TO", 0}}}
+                        {"SPEED_X", -SPEED_X},
+                        {"SPEED_Y", -SPEED_Y},
+                        {"WIDTH", RECTANGLE_WIDTH},
+                        {"HEIGHT", RECTANGLE_HEIGHT},
+                        {"COLOR_RED", 0},
+                        {"COLOR_GREEN", 100},
+                        {"COLOR_BLUE", 0},
+                        {"OPACITY", 100},
+                        {"ROTATION", 0}
                 },
                 {
-                        {"SPEED", {{"X", SPEED_X}, {"Y", 0}}},
-                        {"WIDTH", {{"TO", RECTANGLE_WIDTH}}},
-                        {"HEIGHT", {{"TO", RECTANGLE_HEIGHT / 2}}},
-                        {"COLOR_RED", {{"TO", 200}}},
-                        {"COLOR_GREEN", {{"TO", 0}}},
-                        {"COLOR_BLUE", {{"TO", 0}}},
-                        {"OPACITY", {{"TO", 100}}},
-                        {"ROTATION", {{"TO", 0}}}
+                        {"SPEED_X", SPEED_X},
+                        {"SPEED_Y", 0},
+                        {"WIDTH", RECTANGLE_WIDTH},
+                        {"HEIGHT", RECTANGLE_HEIGHT / 2},
+                        {"COLOR_RED", 200},
+                        {"COLOR_GREEN", 0},
+                        {"COLOR_BLUE", 0},
+                        {"OPACITY", 100},
+                        {"ROTATION", 0}
                 },
                 {
-                        {"SPEED", {{"X", 0}, {"Y", SPEED_Y}}},
-                        {"WIDTH", {{"TO", RECTANGLE_WIDTH / 5}}},
-                        {"HEIGHT", {{"TO", RECTANGLE_HEIGHT}}},
-                        {"COLOR_RED", {{"TO", 0}}},
-                        {"COLOR_GREEN", {{"TO", 100}}},
-                        {"COLOR_BLUE", {{"TO", 200}}},
-                        {"OPACITY", {{"TO", 255}}},
-                        {"ROTATION", {{"TO", 0}}}
+                        {"SPEED_X", 0},
+                        {"SPEED_Y", SPEED_Y},
+                        {"WIDTH", RECTANGLE_WIDTH / 5},
+                        {"HEIGHT", RECTANGLE_HEIGHT},
+                        {"COLOR_RED", 0},
+                        {"COLOR_GREEN", 100},
+                        {"COLOR_BLUE", 200},
+                        {"OPACITY", 255},
+                        {"ROTATION", 0}
                 },
                 {
-                        {"SPEED", {{"X", -SPEED_X}, {"Y", -SPEED_Y}}},
-                        {"WIDTH", {{"TO", RECTANGLE_WIDTH}}},
-                        {"HEIGHT", {{"TO", RECTANGLE_HEIGHT}}},
-                        {"COLOR_RED", {{"TO", 100}}},
-                        {"COLOR_GREEN", {{"TO", 0}}},
-                        {"COLOR_BLUE", {{"TO", 20}}},
-                        {"OPACITY", {{"TO", 200}}},
-                        {"ROTATION", {{"TO", 0}}}
+                        {"SPEED_X", -SPEED_X},
+                        {"SPEED_Y", -SPEED_Y},
+                        {"WIDTH", RECTANGLE_WIDTH},
+                        {"HEIGHT", RECTANGLE_HEIGHT},
+                        {"COLOR_RED", 100},
+                        {"COLOR_GREEN", 0},
+                        {"COLOR_BLUE", 20},
+                        {"OPACITY", 200},
+                        {"ROTATION", 0}
                 },
                 {
-                        {"SPEED", {{"X", 0}, {"Y", 0}}},
-                        {"WIDTH", {{"TO", RECTANGLE_WIDTH}}},
-                        {"HEIGHT", {{"TO", RECTANGLE_HEIGHT}}},
-                        {"COLOR_RED", {{"TO", 100}}},
-                        {"COLOR_GREEN", {{"TO", 0}}},
-                        {"COLOR_BLUE", {{"TO", 20}}},
-                        {"OPACITY", {{"TO", 200}}},
-                        {"ROTATION", {{"TO", 90}}}
+                        {"SPEED_X", 0},
+                        {"SPEED_Y", 0},
+                        {"WIDTH", RECTANGLE_WIDTH},
+                        {"HEIGHT", RECTANGLE_HEIGHT},
+                        {"COLOR_RED", 100},
+                        {"COLOR_GREEN", 0},
+                        {"COLOR_BLUE", 20},
+                        {"OPACITY", 200},
+                        {"ROTATION", 90}
                 }
         };
