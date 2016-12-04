@@ -1,0 +1,72 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/relz/workspace/Clion/Ultimate Shaman King/Drawable.cpp
+stdafx.h
+/home/relz/workspace/Clion/Ultimate Shaman King/stdafx.h
+Drawable.h
+/home/relz/workspace/Clion/Ultimate Shaman King/Drawable.h
+
+/home/relz/workspace/Clion/Ultimate Shaman King/Drawable.h
+
+/home/relz/workspace/Clion/Ultimate Shaman King/Yoh.cpp
+stdafx.h
+/home/relz/workspace/Clion/Ultimate Shaman King/stdafx.h
+Yoh.h
+/home/relz/workspace/Clion/Ultimate Shaman King/Yoh.h
+
+/home/relz/workspace/Clion/Ultimate Shaman King/Yoh.h
+Drawable.h
+/home/relz/workspace/Clion/Ultimate Shaman King/Drawable.h
+
+/home/relz/workspace/Clion/Ultimate Shaman King/constant.cpp
+constant.h
+/home/relz/workspace/Clion/Ultimate Shaman King/constant.h
+
+/home/relz/workspace/Clion/Ultimate Shaman King/constant.h
+stdafx.h
+/home/relz/workspace/Clion/Ultimate Shaman King/stdafx.h
+
+/home/relz/workspace/Clion/Ultimate Shaman King/handleEvents.cpp
+stdafx.h
+/home/relz/workspace/Clion/Ultimate Shaman King/stdafx.h
+handleEvents.h
+/home/relz/workspace/Clion/Ultimate Shaman King/handleEvents.h
+
+/home/relz/workspace/Clion/Ultimate Shaman King/handleEvents.h
+Yoh.h
+/home/relz/workspace/Clion/Ultimate Shaman King/Yoh.h
+
+/home/relz/workspace/Clion/Ultimate Shaman King/main.cpp
+stdafx.h
+/home/relz/workspace/Clion/Ultimate Shaman King/stdafx.h
+handleEvents.h
+/home/relz/workspace/Clion/Ultimate Shaman King/handleEvents.h
+Yoh.h
+/home/relz/workspace/Clion/Ultimate Shaman King/Yoh.h
+
+/home/relz/workspace/Clion/Ultimate Shaman King/stdafx.cpp
+stdafx.h
+/home/relz/workspace/Clion/Ultimate Shaman King/stdafx.h
+
+/home/relz/workspace/Clion/Ultimate Shaman King/stdafx.h
+SFML/Graphics.hpp
+-
+string
+-
+math.h
+-
+random
+-
+iostream
+-
+cstdio
+-
+constant.h
+/home/relz/workspace/Clion/Ultimate Shaman King/constant.h
+

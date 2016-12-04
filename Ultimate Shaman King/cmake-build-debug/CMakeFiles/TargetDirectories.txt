@@ -1,0 +1,3 @@
+/home/relz/workspace/Clion/Ultimate Shaman King/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/relz/workspace/Clion/Ultimate Shaman King/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/relz/workspace/Clion/Ultimate Shaman King/cmake-build-debug/CMakeFiles/Ultimate_Shaman_King.dir
