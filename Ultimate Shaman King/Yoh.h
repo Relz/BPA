@@ -17,6 +17,8 @@ public:
     bool left = false;
 
 private:
+    void move();
+    void gravity();
 };
 
 

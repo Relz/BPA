@@ -11,6 +11,12 @@ CYoh::CYoh(sf::Vector2f startPos)
 
 void CYoh::update()
 {
+    move();
+    //gravity();
+}
+
+void CYoh::move()
+{
     float newPosX = m_model->getPosition().x;
     float newPosY = m_model->getPosition().y;
 
@@ -26,12 +32,21 @@ void CYoh::update()
     }
     if (down)
     {
-        newPosY += YOH_SPEED_Y;
-        m_model->setPosition(newPosX, newPosY);
+        //newPosY += YOH_SPEED_Y;
+        //m_model->setPosition(newPosX, newPosY);
     }
     if (left)
     {
         newPosX -= YOH_SPEED_X;
         m_model->setPosition(newPosX, newPosY);
     }
+}
+
+void CYoh::gravity()
+{
+    float newPosX = m_model->getPosition().x;
+    float newPosY = m_model->getPosition().y;
+
+    newPosY += YOH_SPEED_Y;
+    m_model->setPosition(newPosX, newPosY);
 }

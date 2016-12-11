@@ -2,7 +2,7 @@
 #include "handleEvents.h"
 
 // Обработка событий на форме
-void handleEvents(sf::RenderWindow &window, CYoh &yoh)
+void handleEvents(sf::RenderWindow &window, b2Body **Body)
 {
     sf::Event event;
     while (window.pollEvent(event))
@@ -16,42 +16,15 @@ void handleEvents(sf::RenderWindow &window, CYoh &yoh)
             }
             case sf::Event::KeyPressed:
             {
-                if (event.key.code == sf::Keyboard::Up)
-                {
-                    yoh.up = true;
-                }
-                if (event.key.code == sf::Keyboard::Right)
-                {
-                    yoh.right = true;
-                }
-                if (event.key.code == sf::Keyboard::Down)
-                {
-                    yoh.down = true;
-                }
-                if (event.key.code == sf::Keyboard::Left)
-                {
-                    yoh.left = true;
-                }
-                break;
-            }
-            case sf::Event::KeyReleased:
-            {
-                if (event.key.code == sf::Keyboard::Up)
-                {
-                    yoh.up = false;
-                }
-                if (event.key.code == sf::Keyboard::Right)
-                {
-                    yoh.right = false;
-                }
-                if (event.key.code == sf::Keyboard::Down)
-                {
-                    yoh.down = false;
-                }
-                if (event.key.code == sf::Keyboard::Left)
-                {
-                    yoh.left = false;
-                }
+                if(event.key.code == sf::Keyboard::W)
+                    //(*Body)->SetLinearVelocity(b2Vec2(0.0f, -50.0f));
+                    (*Body)->ApplyLinearImpulse(b2Vec2(0.0f, -50.0f), b2Vec2(0.0f, 0.0f), true  );
+
+                if(event.key.code == sf::Keyboard::D)
+                    (*Body)->SetLinearVelocity(b2Vec2(5.0f, 0.0f));
+
+                if(event.key.code == sf::Keyboard::A)
+                    (*Body)->SetLinearVelocity(b2Vec2(-5.0f, 0.0f));
                 break;
             }
             default:

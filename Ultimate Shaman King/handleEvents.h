@@ -3,6 +3,6 @@
 
 #include "Yoh.h"
 
-void handleEvents(sf::RenderWindow &window, CYoh &yoh);
+void handleEvents(sf::RenderWindow &window, b2Body **Body);
 
 #endif //ULTIMATE_SHAMAN_KING_HANDLEEVENTS_H

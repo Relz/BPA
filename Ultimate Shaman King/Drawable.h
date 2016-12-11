@@ -1,7 +1,6 @@
 #ifndef ULTIMATE_SHAMAN_KING_CDRAWABLE_H
 #define ULTIMATE_SHAMAN_KING_CDRAWABLE_H
 
-
 class CDrawable
 {
 public:
