@@ -4,7 +4,7 @@
 #include "stdafx.h"
 
 const unsigned ANTIALIASING_LEVEL = 8;
-const sf::Vector2i SCREEN_SIZE(1280, 640);
+const sf::Vector2u SCREEN_SIZE(1280, 640);
 const sf::Color BACKGROUND_COLOR = sf::Color(200, 200, 255);
 
 const float PLAYER_SPEED_X = 7;
