@@ -1,10 +1,8 @@
 #ifndef ULTIMATE_SHAMAN_KING_TMXLEVEL_H
 #define ULTIMATE_SHAMAN_KING_TMXLEVEL_H
 
-#include <string>
-#include <vector>
-#include <map>
-#include <SFML/Graphics.hpp>
+#include "constant.h"
+#include "lib/tinyxml2/tinyxml2.h"
 
 struct TmxObject
 {

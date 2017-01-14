@@ -1,7 +1,6 @@
 #ifndef ULTIMATE_SHAMAN_KING_PLAYER_H
 #define ULTIMATE_SHAMAN_KING_PLAYER_H
 
-#include "stdafx.h"
 #include "TmxLevel.h"
 
 struct Collision

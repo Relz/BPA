@@ -1,9 +1,10 @@
 #ifndef ULTIMATE_SHAMAN_KING_GAMEVIEW_H
 #define ULTIMATE_SHAMAN_KING_GAMEVIEW_H
 
-#include "stdafx.h"
 #include "constant.h"
+#include "TmxLevel.h"
 #include "GameScene.h"
+#include "Player.h"
 
 class CGameView
 {

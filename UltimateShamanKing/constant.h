@@ -1,8 +1,6 @@
 #ifndef ULTIMATE_SHAMAN_KING_CONSTANT_H
 #define ULTIMATE_SHAMAN_KING_CONSTANT_H
 
-#include "stdafx.h"
-
 const unsigned ANTIALIASING_LEVEL = 8;
 const sf::Vector2u SCREEN_SIZE(1280, 640);
 const sf::Color BACKGROUND_COLOR = sf::Color(200, 200, 255);
