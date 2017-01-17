@@ -429,7 +429,7 @@ bool TmxLevel::LoadFromFile(const std::string &filepath)
 			object.leftCollision = leftCollision;
 
 			sf::IntRect objectRect;
-			objectRect.top = (objectName == TMX_PLAYER) ? y - height : y;
+			objectRect.top = (objectName == TMX_PLAYER || objectType == TMX_ENEMY) ? y - height : y;
 			objectRect.left = x;
 			objectRect.height = height;
 			objectRect.width = width;

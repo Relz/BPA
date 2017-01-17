@@ -15,9 +15,20 @@ CGameScene::CGameScene()
 	float topPosition = static_cast<float>(m_level.GetPlayerRect().top);
 	player.Init({leftPosition, topPosition}, PLAYER_SPEED_X, PLAYER_SPEED_UP, PLAYER_SPEED_DOWN, GRAVITY);
 	coins = m_level.GetAllObjectsByName(TMX_COIN);
-	enemies = m_level.GetAllObjectsByName(TMX_ENEMIES);
+	InitEnemies(m_level.GetAllObjectsByType(TMX_ENEMY));
 	collisionBlocks = m_level.GetAllObjectsByType(TMX_COLLISION_BLOCK);
 	environmentObjects = m_level.GetAllObjectsByType(TMX_ENVIRONMENT);
+}
+
+void CGameScene::InitEnemies(const std::vector<TmxObject> & enemies)
+{
+	for (const TmxObject & enemyObject : enemies)
+	{
+		CEnemy *enemy = new CEnemy;
+		enemy->SetSprite("../res/Images/Sprites/monster.png", {6, 0, 30, 42}, 5);
+		enemy->Init({enemyObject.rect.left, enemyObject.rect.top}, MONSTER_SPEED_X, MONSTER_SPEED_UP, MONSTER_SPEED_DOWN, GRAVITY, 3);
+		this->enemies.push_back(enemy);
+	}
 }
 
 void CGameScene::Draw(sf::RenderTarget &target) const

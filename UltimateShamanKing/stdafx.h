@@ -4,5 +4,6 @@
 #include <SFML/Graphics.hpp>
 #include <math.h>
 #include <iostream>
+#include <random>
 
 #endif //ULTIMATE_SHAMAN_KING_STDAFX_H

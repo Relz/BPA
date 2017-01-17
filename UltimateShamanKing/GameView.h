@@ -4,7 +4,7 @@
 #include "constant.h"
 #include "TmxLevel.h"
 #include "GameScene.h"
-#include "Player.h"
+#include "Units/Player.h"
 
 class CGameView
 {
@@ -16,11 +16,12 @@ private:
 	void SetCameraCenter(float cameraX, float cameraY);
 	void DrawGameScene();
 	void DrawTmxObjects(const std::vector<TmxObject> & tmxObjects);
+    void DrawEnemies(const std::vector<CEnemy*> & enemies);
+	void EnemiesMoveProcess(std::vector<CEnemy*> & enemies);
 
 	sf::RenderWindow m_window;
 	sf::View m_camera;
 	sf::Vector2u m_windowSize;
-	sf::Clock m_clock;
 	CGameScene m_gameScene;
 };
 

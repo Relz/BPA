@@ -33,10 +33,16 @@ void CGameView::GameLoop()
 				break;
 			}
 		}
-
-		UpdateGameScene();
-		m_window.clear(BACKGROUND_COLOR);
-		DrawGameScene();
+        m_window.clear(BACKGROUND_COLOR);
+        if (m_gameScene.player.IsAlive())
+        {
+            UpdateGameScene();
+            DrawGameScene();
+        }
+        else
+        {
+            std::cout << "Game Over!\n";
+        }
 		m_window.display();
 	}
 }
@@ -44,7 +50,12 @@ void CGameView::GameLoop()
 void CGameView::UpdateGameScene()
 {
 	CPlayer &player = m_gameScene.player;
-	player.MoveProcess(m_gameScene.collisionBlocks, m_clock);
+	player.MoveProcess(m_gameScene.collisionBlocks);
+    EnemiesMoveProcess(m_gameScene.enemies);
+    if (player.DoesAttack())
+    {
+        player.AttackProcess(m_gameScene.enemies);
+    }
 	SetCameraCenter(player.GetPosition().x + m_windowSize.x / 4, m_windowSize.y);
 }
 
@@ -53,16 +64,32 @@ void CGameView::DrawGameScene()
 	m_gameScene.Draw(m_window);
 	DrawTmxObjects(m_gameScene.environmentObjects);
 	DrawTmxObjects(m_gameScene.coins);
-	DrawTmxObjects(m_gameScene.enemies);
+	DrawEnemies(m_gameScene.enemies);
 	m_gameScene.player.Draw(m_window);
 }
 
 void CGameView::DrawTmxObjects(const std::vector<TmxObject> & tmxObjects)
 {
-	for (const TmxObject & tmxObject : tmxObjects)
-	{
-		m_window.draw(tmxObject.sprite);
-	}
+    for (const TmxObject & tmxObject : tmxObjects)
+    {
+        m_window.draw(tmxObject.sprite);
+    }
+}
+
+void CGameView::DrawEnemies(const std::vector<CEnemy*> & enemies)
+{
+    for (const CEnemy * enemy : enemies)
+    {
+        enemy->Draw(m_window);
+    }
+}
+
+void CGameView::EnemiesMoveProcess(std::vector<CEnemy*> & enemies)
+{
+    for (CEnemy * enemy : enemies)
+    {
+        enemy->MoveProcess(m_gameScene.collisionBlocks);
+    }
 }
 
 void CGameView::SetCameraCenter(float cameraX, float cameraY)

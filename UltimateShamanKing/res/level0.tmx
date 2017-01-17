@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="left-up" width="100" height="10" tilewidth="128" tileheight="128" nextobjectid="63">
+<map version="1.0" orientation="orthogonal" renderorder="left-up" width="100" height="10" tilewidth="128" tileheight="128" nextobjectid="136">
  <tileset firstgid="1" name="Тайлы" tilewidth="128" tileheight="128" tilecount="27" columns="9">
   <image source="Images/tileset.png" width="1152" height="384"/>
  </tileset>
@@ -285,6 +285,9 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+   <tile gid="6"/>
+   <tile gid="7"/>
+   <tile gid="8"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -296,14 +299,11 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
+   <tile gid="1"/>
+   <tile gid="2"/>
+   <tile gid="2"/>
+   <tile gid="2"/>
+   <tile gid="3"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -397,13 +397,13 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
+   <tile gid="1"/>
+   <tile gid="4"/>
+   <tile gid="5"/>
+   <tile gid="11"/>
+   <tile gid="11"/>
+   <tile gid="11"/>
+   <tile gid="12"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -480,6 +480,42 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+   <tile gid="6"/>
+   <tile gid="7"/>
+   <tile gid="8"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="6"/>
+   <tile gid="7"/>
+   <tile gid="7"/>
+   <tile gid="7"/>
+   <tile gid="7"/>
+   <tile gid="7"/>
+   <tile gid="7"/>
+   <tile gid="5"/>
+   <tile gid="20"/>
+   <tile gid="20"/>
+   <tile gid="20"/>
+   <tile gid="20"/>
+   <tile gid="20"/>
+   <tile gid="12"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="1"/>
+   <tile gid="2"/>
+   <tile gid="2"/>
+   <tile gid="2"/>
+   <tile gid="2"/>
+   <tile gid="2"/>
+   <tile gid="2"/>
+   <tile gid="3"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -509,6 +545,70 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="10"/>
+   <tile gid="11"/>
+   <tile gid="12"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="12"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="10"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -603,112 +703,12 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="10"/>
-   <tile gid="11"/>
    <tile gid="12"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
+   <tile gid="10"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -770,6 +770,16 @@
    <tile gid="2"/>
    <tile gid="2"/>
    <tile gid="2"/>
+   <tile gid="3"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="1"/>
    <tile gid="2"/>
    <tile gid="2"/>
    <tile gid="2"/>
@@ -793,6 +803,12 @@
    <tile gid="2"/>
    <tile gid="2"/>
    <tile gid="2"/>
+   <tile gid="13"/>
+   <tile gid="14"/>
+   <tile gid="2"/>
+   <tile gid="2"/>
+   <tile gid="4"/>
+   <tile gid="5"/>
    <tile gid="2"/>
    <tile gid="2"/>
    <tile gid="2"/>
@@ -801,34 +817,18 @@
    <tile gid="2"/>
    <tile gid="2"/>
    <tile gid="2"/>
-   <tile gid="2"/>
-   <tile gid="2"/>
-   <tile gid="2"/>
-   <tile gid="2"/>
-   <tile gid="2"/>
-   <tile gid="2"/>
-   <tile gid="2"/>
-   <tile gid="2"/>
-   <tile gid="2"/>
-   <tile gid="2"/>
-   <tile gid="2"/>
-   <tile gid="2"/>
-   <tile gid="2"/>
-   <tile gid="2"/>
-   <tile gid="2"/>
-   <tile gid="2"/>
-   <tile gid="2"/>
-   <tile gid="2"/>
-   <tile gid="2"/>
-   <tile gid="2"/>
-   <tile gid="2"/>
-   <tile gid="2"/>
-   <tile gid="2"/>
-   <tile gid="2"/>
-   <tile gid="2"/>
-   <tile gid="2"/>
-   <tile gid="2"/>
-   <tile gid="2"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="7"/>
+   <tile gid="7"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="7"/>
+   <tile gid="0"/>
+   <tile gid="7"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="2"/>
    <tile gid="2"/>
    <tile gid="2"/>
@@ -870,6 +870,16 @@
    <tile gid="11"/>
    <tile gid="11"/>
    <tile gid="11"/>
+   <tile gid="13"/>
+   <tile gid="14"/>
+   <tile gid="2"/>
+   <tile gid="2"/>
+   <tile gid="2"/>
+   <tile gid="2"/>
+   <tile gid="2"/>
+   <tile gid="2"/>
+   <tile gid="4"/>
+   <tile gid="5"/>
    <tile gid="11"/>
    <tile gid="11"/>
    <tile gid="11"/>
@@ -907,28 +917,18 @@
    <tile gid="11"/>
    <tile gid="11"/>
    <tile gid="11"/>
-   <tile gid="11"/>
-   <tile gid="11"/>
-   <tile gid="11"/>
-   <tile gid="11"/>
-   <tile gid="11"/>
-   <tile gid="11"/>
-   <tile gid="11"/>
-   <tile gid="11"/>
-   <tile gid="11"/>
-   <tile gid="11"/>
-   <tile gid="11"/>
-   <tile gid="11"/>
-   <tile gid="11"/>
-   <tile gid="11"/>
-   <tile gid="11"/>
-   <tile gid="11"/>
-   <tile gid="11"/>
-   <tile gid="11"/>
-   <tile gid="11"/>
-   <tile gid="11"/>
-   <tile gid="11"/>
-   <tile gid="11"/>
+   <tile gid="9"/>
+   <tile gid="9"/>
+   <tile gid="9"/>
+   <tile gid="9"/>
+   <tile gid="9"/>
+   <tile gid="9"/>
+   <tile gid="9"/>
+   <tile gid="9"/>
+   <tile gid="9"/>
+   <tile gid="9"/>
+   <tile gid="9"/>
+   <tile gid="9"/>
    <tile gid="11"/>
    <tile gid="11"/>
    <tile gid="11"/>
@@ -1017,18 +1017,18 @@
    <tile gid="20"/>
    <tile gid="20"/>
    <tile gid="20"/>
-   <tile gid="20"/>
-   <tile gid="20"/>
-   <tile gid="20"/>
-   <tile gid="20"/>
-   <tile gid="20"/>
-   <tile gid="20"/>
-   <tile gid="20"/>
-   <tile gid="20"/>
-   <tile gid="20"/>
-   <tile gid="20"/>
-   <tile gid="20"/>
-   <tile gid="20"/>
+   <tile gid="18"/>
+   <tile gid="18"/>
+   <tile gid="18"/>
+   <tile gid="18"/>
+   <tile gid="18"/>
+   <tile gid="18"/>
+   <tile gid="18"/>
+   <tile gid="18"/>
+   <tile gid="18"/>
+   <tile gid="18"/>
+   <tile gid="18"/>
+   <tile gid="18"/>
    <tile gid="20"/>
    <tile gid="20"/>
    <tile gid="20"/>
@@ -1073,7 +1073,7 @@
     <property name="topCollision" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="6" type="Блок коллизии" x="768" y="916" width="12032" height="364">
+  <object id="6" type="Блок коллизии" x="768" y="916" width="2418.49" height="364">
    <properties>
     <property name="bottomCollision" type="bool" value="true"/>
     <property name="leftCollision" type="bool" value="true"/>
@@ -1129,6 +1129,142 @@
     <property name="topCollision" type="bool" value="true"/>
    </properties>
   </object>
+  <object id="106" type="Блок коллизии" x="3202.13" y="1044.12" width="1019.11" height="226.283">
+   <properties>
+    <property name="bottomCollision" type="bool" value="true"/>
+    <property name="leftCollision" type="bool" value="true"/>
+    <property name="rightCollision" type="bool" value="true"/>
+    <property name="topCollision" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="107" type="Блок коллизии" x="4228.34" y="906.405" width="4848.52" height="364">
+   <properties>
+    <property name="bottomCollision" type="bool" value="true"/>
+    <property name="leftCollision" type="bool" value="true"/>
+    <property name="rightCollision" type="bool" value="true"/>
+    <property name="topCollision" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="108" type="Блок коллизии" x="10632.2" y="906.405" width="2165.27" height="364">
+   <properties>
+    <property name="bottomCollision" type="bool" value="true"/>
+    <property name="leftCollision" type="bool" value="true"/>
+    <property name="rightCollision" type="bool" value="true"/>
+    <property name="topCollision" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="109" type="Блок коллизии" x="4352.65" y="565.291" width="384" height="30">
+   <properties>
+    <property name="bottomCollision" type="bool" value="true"/>
+    <property name="leftCollision" type="bool" value="true"/>
+    <property name="rightCollision" type="bool" value="true"/>
+    <property name="topCollision" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="110" type="Блок коллизии" x="4409.65" y="595.291" width="270" height="30">
+   <properties>
+    <property name="bottomCollision" type="bool" value="true"/>
+    <property name="leftCollision" type="bool" value="true"/>
+    <property name="rightCollision" type="bool" value="true"/>
+    <property name="topCollision" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="111" type="Блок коллизии" x="4996.8" y="312.07" width="384" height="30">
+   <properties>
+    <property name="bottomCollision" type="bool" value="true"/>
+    <property name="leftCollision" type="bool" value="true"/>
+    <property name="rightCollision" type="bool" value="true"/>
+    <property name="topCollision" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="112" type="Блок коллизии" x="5053.8" y="342.07" width="270" height="30">
+   <properties>
+    <property name="bottomCollision" type="bool" value="true"/>
+    <property name="leftCollision" type="bool" value="true"/>
+    <property name="rightCollision" type="bool" value="true"/>
+    <property name="topCollision" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="113" type="Блок коллизии" x="5642.41" y="560.849" width="877.114" height="30">
+   <properties>
+    <property name="bottomCollision" type="bool" value="true"/>
+    <property name="leftCollision" type="bool" value="true"/>
+    <property name="rightCollision" type="bool" value="true"/>
+    <property name="topCollision" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="114" type="Блок коллизии" x="5699.41" y="590.849" width="820.866" height="30">
+   <properties>
+    <property name="bottomCollision" type="bool" value="true"/>
+    <property name="leftCollision" type="bool" value="true"/>
+    <property name="rightCollision" type="bool" value="true"/>
+    <property name="topCollision" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="115" type="Блок коллизии" x="6529.46" y="399.68" width="255.168" height="235.735">
+   <properties>
+    <property name="bottomCollision" type="bool" value="true"/>
+    <property name="leftCollision" type="bool" value="true"/>
+    <property name="rightCollision" type="bool" value="true"/>
+    <property name="topCollision" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="116" type="Блок коллизии" x="6793.78" y="273.07" width="623.893" height="360.124">
+   <properties>
+    <property name="bottomCollision" type="bool" value="true"/>
+    <property name="leftCollision" type="bool" value="true"/>
+    <property name="rightCollision" type="bool" value="true"/>
+    <property name="topCollision" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="117" type="Блок коллизии" x="7295.78" y="646.237" width="117.451" height="266.832">
+   <properties>
+    <property name="bottomCollision" type="bool" value="true"/>
+    <property name="leftCollision" type="bool" value="true"/>
+    <property name="rightCollision" type="bool" value="true"/>
+    <property name="topCollision" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="118" type="Блок коллизии" x="7937.72" y="524.07" width="117.451" height="382.336">
+   <properties>
+    <property name="bottomCollision" type="bool" value="true"/>
+    <property name="leftCollision" type="bool" value="true"/>
+    <property name="rightCollision" type="bool" value="true"/>
+    <property name="topCollision" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="119" type="Блок коллизии" x="8062.11" y="524.07" width="885.998" height="111.345">
+   <properties>
+    <property name="bottomCollision" type="bool" value="true"/>
+    <property name="leftCollision" type="bool" value="true"/>
+    <property name="rightCollision" type="bool" value="true"/>
+    <property name="topCollision" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="120" type="Блок коллизии" x="9348.2" y="943.883" width="237.397" height="75.8052">
+   <properties>
+    <property name="bottomCollision" type="bool" value="true"/>
+    <property name="leftCollision" type="bool" value="true"/>
+    <property name="rightCollision" type="bool" value="true"/>
+    <property name="topCollision" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="121" type="Блок коллизии" x="9854.65" y="939.441" width="126.335" height="75.8052">
+   <properties>
+    <property name="bottomCollision" type="bool" value="true"/>
+    <property name="leftCollision" type="bool" value="true"/>
+    <property name="rightCollision" type="bool" value="true"/>
+    <property name="topCollision" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="122" type="Блок коллизии" x="10114.5" y="943.883" width="126.335" height="71.3628">
+   <properties>
+    <property name="bottomCollision" type="bool" value="true"/>
+    <property name="leftCollision" type="bool" value="true"/>
+    <property name="rightCollision" type="bool" value="true"/>
+    <property name="topCollision" type="bool" value="true"/>
+   </properties>
+  </object>
  </objectgroup>
  <objectgroup name="Окружение">
   <object id="29" name="Знак 1" type="Окружение" gid="51" x="339" y="906" width="153" height="157.857"/>
@@ -1140,8 +1276,58 @@
   <object id="36" name="Желтая трава" type="Окружение" gid="47" x="967" y="299" width="73" height="46"/>
   <object id="37" name="Знак 2" type="Окружение" gid="52" x="2285" y="906" width="139.5" height="144"/>
   <object id="53" name="Зеленое дерево" type="Окружение" gid="55" x="2713" y="910" width="534.957" height="571"/>
+  <object id="66" name="Желтый куст" type="Окружение" gid="45" x="2563.5" y="909.5" width="133" height="65"/>
+  <object id="67" name="Желтый куст" type="Окружение" gid="45" x="3833.5" y="1037.5" width="133" height="65"/>
+  <object id="68" name="Желтый куст" type="Окружение" gid="45" x="4499.18" y="560.72" width="133" height="65"/>
+  <object id="69" name="Желтый куст" type="Окружение" gid="45" x="5566.55" y="909.304" width="133" height="65"/>
+  <object id="70" name="Желтый куст" type="Окружение" gid="45" x="7201.38" y="269.588" width="133" height="65"/>
+  <object id="71" name="Желтый куст" type="Окружение" gid="45" x="8085.43" y="522.809" width="133" height="65"/>
+  <object id="72" name="Желтый куст" type="Окружение" gid="45" x="9427.06" y="940.976" width="133" height="65"/>
+  <object id="73" name="Желтый куст" type="Окружение" gid="45" x="10973" y="909.304" width="133" height="65"/>
+  <object id="74" name="Желтая трава" type="Окружение" gid="47" x="1793.8" y="265.761" width="73" height="46"/>
+  <object id="75" name="Желтая трава" type="Окружение" gid="47" x="2064.79" y="914.361" width="73" height="46"/>
+  <object id="76" name="Желтая трава" type="Окружение" gid="47" x="4525.92" y="914.361" width="73" height="46"/>
+  <object id="77" name="Желтая трава" type="Окружение" gid="47" x="3459.72" y="1043.19" width="73" height="46"/>
+  <object id="78" name="Желтая трава" type="Окружение" gid="47" x="7075.89" y="909.919" width="73" height="46"/>
+  <object id="79" name="Желтая трава" type="Окружение" gid="47" x="5241.15" y="310.185" width="73" height="46"/>
+  <object id="80" name="Желтая трава" type="Окружение" gid="47" x="6618.32" y="399.035" width="73" height="46"/>
+  <object id="81" name="Желтая трава" type="Окружение" gid="47" x="6067.45" y="563.406" width="73" height="46"/>
+  <object id="82" name="Желтая трава" type="Окружение" gid="47" x="7560.12" y="914.361" width="73" height="46"/>
+  <object id="83" name="Желтая трава" type="Окружение" gid="47" x="8537.47" y="905.476" width="73" height="46"/>
+  <object id="84" name="Желтая трава" type="Окружение" gid="47" x="9896.86" y="953.476" width="73" height="46"/>
+  <object id="85" name="Желтая трава" type="Окружение" gid="47" x="10843.1" y="909.919" width="73" height="46"/>
+  <object id="86" name="Зеленый куст" type="Окружение" gid="44" x="4935.72" y="904.861" width="261.832" height="127.963"/>
+  <object id="87" name="Зеленый куст" type="Окружение" gid="44" x="5730.92" y="562.791" width="133" height="65"/>
+  <object id="88" name="Зеленый куст" type="Окружение" gid="44" x="6417.32" y="913.746" width="192.939" height="94.2936"/>
+  <object id="89" name="Зеленый куст" type="Окружение" gid="44" x="8582.99" y="522.809" width="133" height="65"/>
+  <object id="90" name="Зеленый куст" type="Окружение" gid="44" x="8276.46" y="904.861" width="133" height="65"/>
+  <object id="91" name="Зеленый куст" type="Окружение" gid="44" x="12110.3" y="909.304" width="133" height="65"/>
+  <object id="92" name="Камень" type="Окружение" gid="53" x="3006.98" y="910.361" width="90" height="54"/>
+  <object id="93" name="Камень" type="Окружение" gid="53" x="3673.35" y="1048.08" width="90" height="54"/>
+  <object id="94" name="Камень" type="Окружение" gid="53" x="3935.45" y="1034.75" width="90" height="54"/>
+  <object id="95" name="Камень" type="Окружение" gid="53" x="5277.08" y="910.361" width="90" height="54"/>
+  <object id="96" name="Камень" type="Окружение" gid="53" x="5028.3" y="310.628" width="90" height="54"/>
+  <object id="97" name="Камень" type="Окружение" gid="53" x="6374.37" y="564.733" width="90" height="54"/>
+  <object id="98" name="Камень" type="Окружение" gid="53" x="7707.11" y="910.361" width="90" height="54"/>
+  <object id="99" name="Камень" type="Окружение" gid="53" x="10914.6" y="910.361" width="90" height="54"/>
+  <object id="100" name="Камень" type="Окружение" gid="53" x="11883" y="910.361" width="90" height="54"/>
+  <object id="101" name="Пень" type="Окружение" gid="54" x="4714.43" y="907.396" width="158" height="59.931"/>
+  <object id="102" name="Пень" type="Окружение" gid="54" x="7095.59" y="908.838" width="158" height="59.931"/>
+  <object id="103" name="Пень" type="Окружение" gid="54" x="7593.15" y="911.838" width="158" height="59.931"/>
+  <object id="104" name="Желтое дерево" type="Окружение" gid="56" x="11755.9" y="909.99" width="539.663" height="526.267"/>
  </objectgroup>
  <objectgroup name="Движущиеся">
   <object id="25" name="Игрок" x="100" y="600" width="1" height="1"/>
+  <object id="63" name="Монстр" type="Противник" x="1300" y="615.5" width="1" height="1"/>
+  <object id="124" name="Монстр" type="Противник" x="2211.85" y="563.694" width="1" height="1"/>
+  <object id="125" name="Монстр" type="Противник" x="3442.41" y="705.853" width="1" height="1"/>
+  <object id="126" name="Монстр" type="Противник" x="5006.16" y="656.986" width="1" height="1"/>
+  <object id="127" name="Монстр" type="Противник" x="6378.89" y="319.358" width="1" height="1"/>
+  <object id="129" name="Монстр" type="Противник" x="6916.43" y="26.1548" width="1" height="1"/>
+  <object id="131" name="Монстр" type="Противник" x="5330.46" y="617.003" width="1" height="1"/>
+  <object id="132" name="Монстр" type="Противник" x="7636.11" y="577.021" width="1" height="1"/>
+  <object id="133" name="Монстр" type="Противник" x="8280.26" y="270.491" width="1" height="1"/>
+  <object id="134" name="Монстр" type="Противник" x="8164.76" y="714.738" width="1" height="1"/>
+  <object id="135" name="Монстр" type="Противник" x="12585" y="639.216" width="1" height="1"/>
  </objectgroup>
 </map>

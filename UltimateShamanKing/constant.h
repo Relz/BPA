@@ -10,6 +10,10 @@ const float PLAYER_SPEED_UP = 4;
 const float PLAYER_SPEED_DOWN = 2;
 const float GRAVITY = 0.2;
 
+const float MONSTER_SPEED_X = 7;
+const float MONSTER_SPEED_UP = 4;
+const float MONSTER_SPEED_DOWN = 2;
+
 const std::string WINDOW_TITLE = "Ultimate Shaman King";
 
 const std::string TMX_PATH = "../res/level0.tmx";
@@ -18,6 +22,6 @@ const std::string TMX_ENVIRONMENT = "Окружение";
 const std::string TMX_PLAYER = "Игрок";
 const std::string TMX_COLLISION_BLOCK = "Блок коллизии";
 const std::string TMX_COIN = "coin";
-const std::string TMX_ENEMIES = "enemies";
+const std::string TMX_ENEMY = "Противник";
 
 #endif //ULTIMATE_SHAMAN_KING_CONSTANT_H
