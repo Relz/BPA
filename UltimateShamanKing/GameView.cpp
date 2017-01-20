@@ -100,29 +100,6 @@ void CGameView::SetCameraCenter(float cameraX, float cameraY)
 
 bool CGameView::DoesPlayerAttackEnemy(const CEnemy * enemy) const
 {
-	/*const CPlayer & player = m_gameScene.player;
-
-	float playerWidth = player.GetWidth();
-	float playerHeight = player.GetHeight();
-
-	float playerTopY = player.GetTop();
-	float playerBottomY = playerTopY + playerHeight;
-	float playerLeftX = player.GetLeft();
-	float playerRightX = playerLeftX + playerWidth;
-
-	float enemyWidth = enemy->GetWidth();
-	float enemyHeight = enemy->GetHeight();
-
-	float enemyTopY = enemy->GetTop();
-	float enemyBottomY = enemyTopY + enemyHeight;
-	float enemyLeftX = enemy->GetLeft();
-	float enemyRightX = enemyLeftX + enemyWidth;
-
-	bool playerPlacesInOneHorizontalWithTile = DoesObjectsPlacesInOneHorizontal(playerTopY, playerBottomY, enemyTopY, enemyBottomY);
-	bool isLeftCollision = playerLeftX <= enemyRightX && playerRightX >= enemyRightX;
-	bool isRightCollision = playerRightX >= enemyLeftX && playerLeftX <= enemyLeftX;
-
-	return (playerPlacesInOneHorizontalWithTile && (isLeftCollision || isRightCollision));*/
 	return false;
 }
 

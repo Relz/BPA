@@ -26,7 +26,6 @@ public:
 	float GetHeight() const;
 	float GetTop() const;
 	float GetLeft() const;
-	sf::IntRect GetRect() const;
 	sf::Vector2f GetPosition() const;
 	sf::Vector2f GetMovement() const;
 	bool IsStaying() const;
@@ -52,10 +51,13 @@ protected:
 	void Gravity();
 
 	sf::Sprite m_sprite;
-	int m_startOffsetLeft = 0;
-	int m_startOffsetTop = 0;
-	int m_startWidth = 0;
-	int m_startHeight = 0;
+	int m_startSpriteOffsetLeft = 0;
+	int m_startSpriteOffsetTop = 0;
+	int m_startSpriteWidth = 0;
+	int m_startSpriteHeight = 0;
+
+	float m_width = 0;
+	float m_height = 0;
 
 private:
 	Collision GetCollision(const std::vector<TmxObject> & collisionBlocks,

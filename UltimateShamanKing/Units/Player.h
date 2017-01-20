@@ -23,6 +23,7 @@ private:
 	sf::Clock m_animationClock;
 	size_t m_currentStayingSprite = 0;
 	size_t m_currentMovingSprite = 0;
+	size_t m_currentAttackingSprite = 0;
 
 	sf::Clock m_attackingClock;
 

@@ -25,11 +25,14 @@ void CUnit::SetSprite(const std::string & spritePath, const sf::IntRect & player
 	}
 	m_sprite.setTexture(m_texture);
 	m_sprite.setTextureRect(sf::IntRect(playerSpriteRect.left, playerSpriteRect.top, playerSpriteRect.width, playerSpriteRect.height));
-	m_startOffsetLeft = playerSpriteRect.left;
-	m_startOffsetTop = playerSpriteRect.top;
-	m_startWidth = playerSpriteRect.width;
-	m_startHeight = playerSpriteRect.height;
+	m_startSpriteOffsetLeft = playerSpriteRect.left;
+	m_startSpriteOffsetTop = playerSpriteRect.top;
+	m_startSpriteWidth = playerSpriteRect.width;
+	m_startSpriteHeight = playerSpriteRect.height;
 	m_sprite.setScale(zoom, zoom);
+	m_width = m_sprite.getGlobalBounds().width;
+	m_height = m_sprite.getGlobalBounds().height;
+	m_startHeight = m_height;
 }
 
 void CUnit::SetPosition(float x, float y)
@@ -77,11 +80,6 @@ float CUnit::GetLeft() const
 	return m_sprite.getPosition().x;
 }
 
-sf::IntRect CUnit::GetRect() const
-{
-	return sf::IntRect(static_cast<int>(GetLeft()), static_cast<int>(GetTop()), static_cast<int>(GetWidth()), static_cast<int>(GetHeight()));
-}
-
 sf::Vector2f CUnit::GetPosition() const
 {
 	return sf::Vector2f(GetLeft(), GetTop());
@@ -102,13 +100,9 @@ void CUnit::UpdateCollision(const std::vector<TmxObject> & collisionBlocks)
 	float collisionBlockTop = 0;
 	float collisionBlockBottom = 0;
 	collision = GetCollision(collisionBlocks, GetLeft(), GetTop(), collisionBlockTop, collisionBlockBottom);
-	if (collision.top && !attacking)
+	if (collision.bottom && downSpeed > 0)
 	{
-		SetPosition(GetPosition().x, collisionBlockBottom + 1);
-	}
-	if (collision.bottom && downSpeed > 0 && !attacking)
-	{
-		SetPosition(GetPosition().x, collisionBlockTop - GetHeight() + downSpeed);
+		SetPosition(GetPosition().x, collisionBlockTop - m_height + downSpeed);
 	}
 }
 
@@ -116,8 +110,9 @@ bool CUnit::IsAbyssOnSide(const std::vector<TmxObject> & collisionBlocks) const
 {
 	float collisionBlockTop = 0;
 	float collisionBlockBottom = 0;
-	Collision collision = GetCollision(collisionBlocks, GetLeft(), GetTop() + GetHeight(), collisionBlockTop, collisionBlockBottom);
-	return collision.bottom;
+	bool isLeftAbyss = !GetCollision(collisionBlocks, GetLeft() - m_width, GetTop(), collisionBlockTop, collisionBlockBottom).bottom;
+	bool isRightAbyss = !GetCollision(collisionBlocks, GetLeft() + m_width, GetTop(), collisionBlockTop, collisionBlockBottom).bottom;
+	return isLeftAbyss || isRightAbyss;
 }
 
 Collision CUnit::GetCollision(const std::vector<TmxObject> & collisionBlocks,
@@ -128,14 +123,14 @@ Collision CUnit::GetCollision(const std::vector<TmxObject> & collisionBlocks,
 {
 	Collision result;
 
-	float unitRight = unitLeft + GetWidth();
-	float unitBottom = unitTop + GetHeight();
+	float unitRight = unitLeft + m_width;
+	float unitBottom = unitTop + m_height;
 
 	sf::Vector2f unitMovement = GetMovement();
 	float futureUnitTop = unitTop + unitMovement.y;
-	float futureUnitBottom = futureUnitTop + GetHeight();
-	float futureUnitLeft = GetLeft() + unitMovement.x;
-	float futureUnitRight = futureUnitLeft + GetWidth();
+	float futureUnitBottom = futureUnitTop + m_height;
+	float futureUnitLeft = unitLeft + unitMovement.x;
+	float futureUnitRight = futureUnitLeft + m_width;
 
 	for (const TmxObject & collisionBlock : collisionBlocks)
 	{
@@ -194,18 +189,12 @@ void CUnit::GetCollision(const TmxObject & collisionBlock,
 		if (isTopCollision)
 		{
 			out_collision.top = isTopCollision;
-			if (!attacking)
-			{
-				out_collisionBlockBottom = collisionBlockBottom;
-			}
+			out_collisionBlockBottom = collisionBlockBottom;
 		}
 		if (isBottomCollision)
 		{
 			out_collision.bottom = isBottomCollision;
-			if (downSpeed > 0 && !attacking)
-			{
-				out_collisionBlockTop = collisionBlockTop;
-			}
+			out_collisionBlockTop = collisionBlockTop;
 		}
 	}
 }

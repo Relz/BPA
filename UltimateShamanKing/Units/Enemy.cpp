@@ -29,11 +29,9 @@ void CEnemy::MoveProcess(const std::vector<TmxObject> & collisionBlocks)
 		m_movingClock.restart();
 	}
 	bool isAbyssOnSide = IsAbyssOnSide(collisionBlocks);
-	if (isAbyssOnSide)
-	{
-		std::cout << isAbyssOnSide << "\n";
-	}
-	if (collision.left || collision.right || (isAbyssOnSide && direction.x == 1) || (isAbyssOnSide && direction.x == -1))
+	if (collision.left || collision.right ||
+			(isAbyssOnSide && collision.bottom && direction.x == 1) ||
+			(isAbyssOnSide && collision.bottom && direction.x == -1))
 	{
 		direction.x = -direction.x;
 	}
@@ -102,7 +100,7 @@ void CEnemy::UpdateStayingSprite()
 	m_currentStayingSprite = (m_currentStayingSprite == 2) ? 0 : m_currentStayingSprite + 1;
 	sf::IntRect textureRect = m_sprite.getTextureRect();
 	int offsetLeft = 0;
-	textureRect.top = m_startOffsetTop;
+	textureRect.top = m_startSpriteOffsetTop;
 	textureRect.width = abs(textureRect.width);
 	if (m_lastDirection.x == -1)
 	{
@@ -113,15 +111,15 @@ void CEnemy::UpdateStayingSprite()
 	switch (m_currentStayingSprite)
 	{
 		case 0:
-			textureRect.height = m_startHeight;
+			textureRect.height = m_startSpriteHeight;
 			textureRect.left = offsetLeft + 0;
 			break;
 		case 1:
-			textureRect.height = m_startHeight;
+			textureRect.height = m_startSpriteHeight;
 			textureRect.left = offsetLeft + 27;
 			break;
 		case 2:
-			textureRect.height = m_startHeight;
+			textureRect.height = m_startSpriteHeight;
 			textureRect.left = offsetLeft + 54;
 			break;
 		default:
@@ -136,7 +134,7 @@ void CEnemy::UpdateMovingSprite()
 	m_currentMovingSprite = (m_currentMovingSprite == 5) ? 0 : m_currentMovingSprite + 1;
 	sf::IntRect textureRect = m_sprite.getTextureRect();
 	int offsetLeft = 0;
-	textureRect.height = m_startHeight;
+	textureRect.height = m_startSpriteHeight;
 	textureRect.top = 52;
 	textureRect.width = abs(textureRect.width);
 	if (m_lastDirection.x == 1)
@@ -176,7 +174,7 @@ void CEnemy::UpdateJumpingSprite()
 	m_currentMovingSprite = 0;
 	sf::IntRect textureRect = m_sprite.getTextureRect();
 	int offsetLeft = 0;
-	textureRect.height = m_startHeight;
+	textureRect.height = m_startSpriteHeight;
 	textureRect.top = 218;
 	textureRect.width = abs(textureRect.width);
 	if (m_lastDirection.x == -1)
