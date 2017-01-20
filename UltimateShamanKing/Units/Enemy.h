@@ -7,45 +7,48 @@
 
 struct Random
 {
-    std::random_device randomDevice;
-    std::mt19937 gen;
+	std::random_device randomDevice;
+	std::mt19937 gen;
 
-    size_t getRandomValue(size_t min, size_t max)
-    {
-        gen.seed(randomDevice());
-        std::uniform_int_distribution<size_t> dist(min, max);
-        return dist(gen);
-    }
+	size_t getRandomValue(size_t min, size_t max)
+	{
+		gen.seed(randomDevice());
+		std::uniform_int_distribution<size_t> dist(min, max);
+		return dist(gen);
+	}
 };
 
 class CEnemy : public CUnit
 {
 public:
-    void Init(sf::Vector2f startPosition, float movementSpeed, float upSpeed, float downSpeed, float gravity, size_t movingCooldownSec);
-    void MoveProcess(const std::vector<TmxObject> & collisionBlocks) override;
-    void Die();
+	void Init(sf::Vector2f startPosition, float movementSpeed, float upSpeed, float downSpeed, float gravity, size_t movingCooldownSec);
+	void MoveProcess(const std::vector<TmxObject> & collisionBlocks) override;
+	void Die(std::vector<CEnemy*> & enemies);
 
 private:
-    void UpdateDirection();
-    void Animate(sf::Clock & animationClock);
-    void UpdateStayingSprite();
-    void UpdateMovingSprite();
-    void UpdateJumpingSprite();
+	void UpdateDirection();
+	void Animate(sf::Clock & animationClock);
+	void UpdateStayingSprite();
+	void UpdateMovingSprite();
+	void UpdateJumpingSprite();
 
-    sf::Clock m_animationClock;
-    sf::Clock m_movingClock;
-    sf::Clock m_stayingClock;
-    size_t m_movingCooldownSec = 0;
-    size_t m_currentStayingSprite = 0;
-    size_t m_currentMovingSprite = 0;
+	sf::Clock m_animationClock;
+	sf::Clock m_movingClock;
+	sf::Clock m_stayingClock;
+	sf::Clock m_dyingClock;
 
-    sf::Texture m_snowBallTextrure;
-    sf::Sprite m_snowBall;
+	size_t m_movingCooldownSec = 0;
+	size_t m_currentStayingSprite = 0;
+	size_t m_currentMovingSprite = 0;
 
-    sf::Vector2f m_lastDirection;
+	sf::Texture m_snowBallTextrure;
+	sf::Sprite m_snowBall;
 
-    Random m_random;
+	sf::Vector2f m_lastDirection;
+
+	static Random m_random;
+
+	float m_stayingTime = (float)(m_random.getRandomValue(40, 60)) / 10;
 };
-
 
 #endif //ULTIMATE_SHAMAN_KING_ENEMY_H

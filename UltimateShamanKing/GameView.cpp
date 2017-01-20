@@ -33,16 +33,16 @@ void CGameView::GameLoop()
 				break;
 			}
 		}
-        m_window.clear(BACKGROUND_COLOR);
-        if (m_gameScene.player.IsAlive())
-        {
-            UpdateGameScene();
-            DrawGameScene();
-        }
-        else
-        {
-            std::cout << "Game Over!\n";
-        }
+		m_window.clear(BACKGROUND_COLOR);
+		if (m_gameScene.player.IsAlive())
+		{
+			UpdateGameScene();
+			DrawGameScene();
+		}
+		else
+		{
+			std::cout << "Game Over!\n";
+		}
 		m_window.display();
 	}
 }
@@ -51,11 +51,11 @@ void CGameView::UpdateGameScene()
 {
 	CPlayer &player = m_gameScene.player;
 	player.MoveProcess(m_gameScene.collisionBlocks);
-    EnemiesMoveProcess(m_gameScene.enemies);
-    if (player.DoesAttack())
-    {
-        player.AttackProcess(m_gameScene.enemies);
-    }
+	EnemiesMoveProcess(m_gameScene.enemies);
+	if (player.DoesAttack())
+	{
+		TryPlayerToAttackEnemies(m_gameScene.enemies);
+	}
 	SetCameraCenter(player.GetPosition().x + m_windowSize.x / 4, m_windowSize.y);
 }
 
@@ -70,30 +70,69 @@ void CGameView::DrawGameScene()
 
 void CGameView::DrawTmxObjects(const std::vector<TmxObject> & tmxObjects)
 {
-    for (const TmxObject & tmxObject : tmxObjects)
-    {
-        m_window.draw(tmxObject.sprite);
-    }
+	for (const TmxObject & tmxObject : tmxObjects)
+	{
+		m_window.draw(tmxObject.sprite);
+	}
 }
 
 void CGameView::DrawEnemies(const std::vector<CEnemy*> & enemies)
 {
-    for (const CEnemy * enemy : enemies)
-    {
-        enemy->Draw(m_window);
-    }
+	for (const CEnemy * enemy : enemies)
+	{
+		enemy->Draw(m_window);
+	}
 }
 
 void CGameView::EnemiesMoveProcess(std::vector<CEnemy*> & enemies)
 {
-    for (CEnemy * enemy : enemies)
-    {
-        enemy->MoveProcess(m_gameScene.collisionBlocks);
-    }
+	for (CEnemy * enemy : enemies)
+	{
+		enemy->MoveProcess(m_gameScene.collisionBlocks);
+	}
 }
 
 void CGameView::SetCameraCenter(float cameraX, float cameraY)
 {
 	m_camera.setCenter(cameraX, cameraY);
 	m_window.setView(m_camera);
+}
+
+bool CGameView::DoesPlayerAttackEnemy(const CEnemy * enemy) const
+{
+	/*const CPlayer & player = m_gameScene.player;
+
+	float playerWidth = player.GetWidth();
+	float playerHeight = player.GetHeight();
+
+	float playerTopY = player.GetTop();
+	float playerBottomY = playerTopY + playerHeight;
+	float playerLeftX = player.GetLeft();
+	float playerRightX = playerLeftX + playerWidth;
+
+	float enemyWidth = enemy->GetWidth();
+	float enemyHeight = enemy->GetHeight();
+
+	float enemyTopY = enemy->GetTop();
+	float enemyBottomY = enemyTopY + enemyHeight;
+	float enemyLeftX = enemy->GetLeft();
+	float enemyRightX = enemyLeftX + enemyWidth;
+
+	bool playerPlacesInOneHorizontalWithTile = DoesObjectsPlacesInOneHorizontal(playerTopY, playerBottomY, enemyTopY, enemyBottomY);
+	bool isLeftCollision = playerLeftX <= enemyRightX && playerRightX >= enemyRightX;
+	bool isRightCollision = playerRightX >= enemyLeftX && playerLeftX <= enemyLeftX;
+
+	return (playerPlacesInOneHorizontalWithTile && (isLeftCollision || isRightCollision));*/
+	return false;
+}
+
+void CGameView::TryPlayerToAttackEnemies(std::vector<CEnemy*> & enemies) const
+{
+	for (CEnemy * enemy : enemies)
+	{
+		if (DoesPlayerAttackEnemy(enemy))
+		{
+			enemy->Die(enemies);
+		}
+	}
 }

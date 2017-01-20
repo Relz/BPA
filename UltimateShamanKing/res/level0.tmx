@@ -1105,7 +1105,7 @@
     <property name="topCollision" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="23" type="Блок коллизии" x="1129" y="864" width="66" height="39">
+  <object id="23" type="Блок коллизии" x="1129" y="864" width="66" height="39" visible="0">
    <properties>
     <property name="bottomCollision" type="bool" value="true"/>
     <property name="leftCollision" type="bool" value="false"/>
@@ -1270,7 +1270,7 @@
   <object id="29" name="Знак 1" type="Окружение" gid="51" x="339" y="906" width="153" height="157.857"/>
   <object id="30" name="Зеленый куст" type="Окружение" gid="44" x="261" y="906" width="133" height="65"/>
   <object id="31" name="Камень" type="Окружение" gid="53" x="31" y="905" width="90" height="54"/>
-  <object id="32" name="Пень" type="Окружение" gid="54" x="1082" y="906" width="158" height="59.931"/>
+  <object id="32" name="Пень" type="Окружение" gid="54" x="1082" y="906" width="158" height="59.931" visible="0"/>
   <object id="34" name="Желтый куст" type="Окружение" gid="45" x="862" y="908" width="133" height="65"/>
   <object id="35" name="Зеленая трава" type="Окружение" gid="46" x="680" y="557" width="73" height="47"/>
   <object id="36" name="Желтая трава" type="Окружение" gid="47" x="967" y="299" width="73" height="46"/>
@@ -1319,15 +1319,15 @@
  <objectgroup name="Движущиеся">
   <object id="25" name="Игрок" x="100" y="600" width="1" height="1"/>
   <object id="63" name="Монстр" type="Противник" x="1300" y="615.5" width="1" height="1"/>
-  <object id="124" name="Монстр" type="Противник" x="2211.85" y="563.694" width="1" height="1"/>
-  <object id="125" name="Монстр" type="Противник" x="3442.41" y="705.853" width="1" height="1"/>
-  <object id="126" name="Монстр" type="Противник" x="5006.16" y="656.986" width="1" height="1"/>
-  <object id="127" name="Монстр" type="Противник" x="6378.89" y="319.358" width="1" height="1"/>
-  <object id="129" name="Монстр" type="Противник" x="6916.43" y="26.1548" width="1" height="1"/>
-  <object id="131" name="Монстр" type="Противник" x="5330.46" y="617.003" width="1" height="1"/>
-  <object id="132" name="Монстр" type="Противник" x="7636.11" y="577.021" width="1" height="1"/>
-  <object id="133" name="Монстр" type="Противник" x="8280.26" y="270.491" width="1" height="1"/>
-  <object id="134" name="Монстр" type="Противник" x="8164.76" y="714.738" width="1" height="1"/>
-  <object id="135" name="Монстр" type="Противник" x="12585" y="639.216" width="1" height="1"/>
+  <object id="124" name="Монстр" type="Противник" x="2211.85" y="563.694" width="1" height="1" visible="0"/>
+  <object id="125" name="Монстр" type="Противник" x="3442.41" y="705.853" width="1" height="1" visible="0"/>
+  <object id="126" name="Монстр" type="Противник" x="5006.16" y="656.986" width="1" height="1" visible="0"/>
+  <object id="127" name="Монстр" type="Противник" x="6378.89" y="319.358" width="1" height="1" visible="0"/>
+  <object id="129" name="Монстр" type="Противник" x="6916.43" y="26.1548" width="1" height="1" visible="0"/>
+  <object id="131" name="Монстр" type="Противник" x="5330.46" y="617.003" width="1" height="1" visible="0"/>
+  <object id="132" name="Монстр" type="Противник" x="7636.11" y="577.021" width="1" height="1" visible="0"/>
+  <object id="133" name="Монстр" type="Противник" x="8280.26" y="270.491" width="1" height="1" visible="0"/>
+  <object id="134" name="Монстр" type="Противник" x="8164.76" y="714.738" width="1" height="1" visible="0"/>
+  <object id="135" name="Монстр" type="Противник" x="12585" y="639.216" width="1" height="1" visible="0"/>
  </objectgroup>
 </map>

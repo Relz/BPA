@@ -16,8 +16,10 @@ private:
 	void SetCameraCenter(float cameraX, float cameraY);
 	void DrawGameScene();
 	void DrawTmxObjects(const std::vector<TmxObject> & tmxObjects);
-    void DrawEnemies(const std::vector<CEnemy*> & enemies);
+	void DrawEnemies(const std::vector<CEnemy*> & enemies);
 	void EnemiesMoveProcess(std::vector<CEnemy*> & enemies);
+	bool DoesPlayerAttackEnemy(const CEnemy * enemy) const;
+	void TryPlayerToAttackEnemies(std::vector<CEnemy*> & enemies) const;
 
 	sf::RenderWindow m_window;
 	sf::View m_camera;

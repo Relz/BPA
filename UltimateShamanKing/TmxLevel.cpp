@@ -294,6 +294,16 @@ bool TmxLevel::LoadFromFile(const std::string &filepath)
 
 		while (objectElement)
 		{
+			bool visible = true;
+			if (objectElement->QueryBoolAttribute("visible", &visible) != XML_SUCCESS)
+			{
+				visible = true;
+			}
+			if (!visible)
+			{
+				objectElement = objectElement->NextSiblingElement("object");
+				continue;
+			}
 			std::string objectType;
 			if (objectElement->Attribute("type") != nullptr)
 			{
