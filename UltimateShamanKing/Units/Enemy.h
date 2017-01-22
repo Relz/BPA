@@ -21,9 +21,9 @@ struct Random
 class CEnemy : public CUnit
 {
 public:
-	void Init(sf::Vector2f startPosition, float movementSpeed, float upSpeed, float downSpeed, float gravity, size_t movingCooldownSec);
-	void MoveProcess(const std::vector<TmxObject> & collisionBlocks) override;
-	void Die(std::vector<CEnemy*> & enemies);
+	void Init(sf::Vector2f startPosition, float movementSpeed, float upSpeed, float downSpeed, float gravity, float dyingTimeSec, float movingCooldownSec);
+	void Process(const std::vector<TmxObject> & collisionBlocks) override;
+	void Die() override;
 
 private:
 	void UpdateDirection();
@@ -31,24 +31,25 @@ private:
 	void UpdateStayingSprite();
 	void UpdateMovingSprite();
 	void UpdateJumpingSprite();
+	void UpdateDyingSprite();
 
 	sf::Clock m_animationClock;
 	sf::Clock m_movingClock;
 	sf::Clock m_stayingClock;
-	sf::Clock m_dyingClock;
 
-	size_t m_movingCooldownSec = 0;
+	float m_movingCooldownSec = 0;
 	size_t m_currentStayingSprite = 0;
 	size_t m_currentMovingSprite = 0;
+	size_t m_currentDyingSprite = 0;
 
 	sf::Texture m_snowBallTextrure;
 	sf::Sprite m_snowBall;
 
-	sf::Vector2f m_lastDirection;
-
 	static Random m_random;
 
 	float m_stayingTime = (float)(m_random.getRandomValue(40, 60)) / 10;
+
+	bool m_justDied = false;
 };
 
 #endif //ULTIMATE_SHAMAN_KING_ENEMY_H

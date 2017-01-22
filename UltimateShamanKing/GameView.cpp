@@ -50,12 +50,13 @@ void CGameView::GameLoop()
 void CGameView::UpdateGameScene()
 {
 	CPlayer &player = m_gameScene.player;
-	player.MoveProcess(m_gameScene.collisionBlocks);
-	EnemiesMoveProcess(m_gameScene.enemies);
-	if (player.DoesAttack())
+	player.Process(m_gameScene.collisionBlocks);
+	ProcessEnemies(m_gameScene.enemies);
+	if (player.DoesAttacking())
 	{
 		TryPlayerToAttackEnemies(m_gameScene.enemies);
 	}
+	CleanDeadBodies(m_gameScene.enemies);
 	SetCameraCenter(player.GetPosition().x + m_windowSize.x / 4, m_windowSize.y);
 }
 
@@ -84,11 +85,11 @@ void CGameView::DrawEnemies(const std::vector<CEnemy*> & enemies)
 	}
 }
 
-void CGameView::EnemiesMoveProcess(std::vector<CEnemy*> & enemies)
+void CGameView::ProcessEnemies(std::vector<CEnemy*> & enemies)
 {
 	for (CEnemy * enemy : enemies)
 	{
-		enemy->MoveProcess(m_gameScene.collisionBlocks);
+		enemy->Process(m_gameScene.collisionBlocks);
 	}
 }
 
@@ -100,16 +101,45 @@ void CGameView::SetCameraCenter(float cameraX, float cameraY)
 
 bool CGameView::DoesPlayerAttackEnemy(const CEnemy * enemy) const
 {
-	return false;
+	const CPlayer & player = m_gameScene.player;
+
+	float collisionBlockTop = 0;
+	float collisionBlockBottom = 0;
+	Collision collisionWithEnemy;
+
+	CUnit::GetCollision(enemy->GetSpriteRect(),
+	                    player.GetSpriteRect(),
+	                    player.GetSpriteRect(),
+	                    player.GetDirection().x,
+	                    player.GetWidth(),
+	                    collisionBlockTop, collisionBlockBottom, collisionWithEnemy);
+
+
+	sf::Vector2f playerDirection = player.GetDirection();
+	return ((collisionWithEnemy.left && playerDirection.x == -1) || (collisionWithEnemy.right && playerDirection.x == 1));
 }
 
-void CGameView::TryPlayerToAttackEnemies(std::vector<CEnemy*> & enemies) const
+void CGameView::TryPlayerToAttackEnemies(const std::vector<CEnemy*> & enemies) const
 {
+	const CPlayer & player = m_gameScene.player;
 	for (CEnemy * enemy : enemies)
 	{
-		if (DoesPlayerAttackEnemy(enemy))
+		if (enemy->IsAlive() && DoesPlayerAttackEnemy(enemy))
 		{
-			enemy->Die(enemies);
+			enemy->SetImpuls(player.GetDirection().x * 5.0f, enemy->GetUpSpeed() * 2.0f);
+			enemy->Die();
+		}
+	}
+}
+
+void CGameView::CleanDeadBodies(std::vector<CEnemy *> &enemies) const
+{
+	for (auto it = enemies.begin(); it != enemies.end(); ++it)
+	{
+		if (!(*it)->IsAlive() && (*it)->GetDyingClockSec() >= (*it)->GetDyingTimeSec())
+		{
+			enemies.erase(it);
+			break;
 		}
 	}
 }

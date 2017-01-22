@@ -3,13 +3,96 @@
 #include "../stdafx.h"
 #include "Unit.h"
 
-void CUnit::Init(sf::Vector2f startPosition, float movementSpeed, float upSpeed, float downSpeed, float gravity)
+bool CUnit::DoesObjectsPlacesInOneVertical(float object1LeftX, float object1RightX, float object2LeftX, float object2RightX)
+{
+	return object1RightX >= object2LeftX && object1LeftX <= object2RightX;
+}
+
+bool CUnit::DoesObjectsPlacesInOneHorizontal(float object1TopY, float object1BottomY, float object2TopY, float object2BottomY)
+{
+	return object1BottomY > object2TopY && object1TopY < object2BottomY;
+}
+
+void CUnit::GetCollision(const sf::IntRect & objectRect,
+                         const sf::IntRect & unitRect,
+                         const sf::IntRect & unitFutureRect,
+                         float unitDirectionX,
+                         float playerWidth,
+                         float & out_collisionBlockTop,
+                         float & out_collisionBlockBottom,
+                         Collision & out_collision)
+{
+
+	float unitTop = unitRect.top;
+	float unitBottom = unitTop + unitRect.height;
+	float unitLeft = unitRect.left;
+	float unitRight = unitLeft + unitRect.width;
+
+	float unitFutureTop = unitFutureRect.top;
+	float unitFutureBottom = unitFutureTop + unitFutureRect.height;
+	float unitFutureLeft = unitFutureRect.left;
+	float unitFutureRight = unitFutureLeft + unitFutureRect.width;
+
+	if(unitDirectionX == -1)
+	{
+		unitRight = unitRect.left + playerWidth;
+		unitLeft = unitRight - unitRect.width;
+		unitFutureRight = unitFutureRect.left + playerWidth;
+		unitFutureLeft = unitFutureRight - unitFutureRect.width;
+	}
+
+	float objectLeft = objectRect.left;
+	float objectRight = objectLeft + objectRect.width;
+	float objectTop = objectRect.top;
+	float objectBottom = objectTop + objectRect.height;
+
+	if (DoesObjectsPlacesInOneHorizontal(unitTop, unitBottom, objectTop, objectBottom))
+	{
+		bool isLeftCollision = unitFutureLeft <= objectRight && unitFutureRight >= objectRight;
+		if (unitLeft != unitFutureLeft)
+		{
+			isLeftCollision = isLeftCollision && unitLeft >= objectRight;
+		}
+		bool isRightCollision = unitFutureRight >= objectLeft && unitFutureLeft <= objectLeft;
+		if (unitRight != unitFutureRight)
+		{
+			isRightCollision = isRightCollision && unitRight <= objectLeft;
+		}
+		if (isLeftCollision)
+		{
+			out_collision.left = true;
+		}
+		if (isRightCollision)
+		{
+			out_collision.right = true;
+		}
+	}
+
+	if (DoesObjectsPlacesInOneVertical(unitLeft, unitRight, objectLeft, objectRight))
+	{
+		bool isTopCollision = unitFutureTop <= objectBottom && unitFutureBottom >= objectBottom;
+		bool isBottomCollision = unitFutureBottom >= objectTop && unitFutureTop <= objectTop;
+		if (isTopCollision)
+		{
+			out_collision.top = true;
+			out_collisionBlockBottom = objectBottom;
+		}
+		if (isBottomCollision)
+		{
+			out_collision.bottom = true;
+			out_collisionBlockTop = objectTop;
+		}
+	}
+}
+
+void CUnit::Init(sf::Vector2f startPosition, float movementSpeed, float upSpeed, float downSpeed, float gravity, float dyingTime)
 {
 	SetPosition(startPosition);
 	this->movementSpeed = movementSpeed;
 	this->upSpeed = upSpeed;
 	this->startDownSpeed = downSpeed;
 	this->gravity = gravity;
+	this->m_dyingTimeSec = dyingTime;
 }
 
 void CUnit::Draw(sf::RenderTarget & target) const
@@ -32,7 +115,6 @@ void CUnit::SetSprite(const std::string & spritePath, const sf::IntRect & player
 	m_sprite.setScale(zoom, zoom);
 	m_width = m_sprite.getGlobalBounds().width;
 	m_height = m_sprite.getGlobalBounds().height;
-	m_startHeight = m_height;
 }
 
 void CUnit::SetPosition(float x, float y)
@@ -43,6 +125,20 @@ void CUnit::SetPosition(float x, float y)
 void CUnit::SetPosition(const sf::Vector2f & position)
 {
 	m_sprite.setPosition(position);
+}
+
+void CUnit::SetImpuls(float x, float y)
+{
+	jumping = true;
+	downSpeed -= y;
+	if (x > 0)
+	{
+		direction.x = 1;
+	}
+	else if (x < 0)
+	{
+		direction.x = -1;
+	}
 }
 
 void CUnit::MoveX()
@@ -62,12 +158,22 @@ void CUnit::Gravity()
 
 float CUnit::GetWidth() const
 {
+	return m_width;
+}
+
+float CUnit::GetSpriteWidth() const
+{
 	return m_sprite.getGlobalBounds().width;
 }
 
 float CUnit::GetHeight() const
 {
 	return m_sprite.getGlobalBounds().height;
+}
+
+float CUnit::GetSpriteHeight() const
+{
+	return m_height;
 }
 
 float CUnit::GetTop() const
@@ -80,27 +186,97 @@ float CUnit::GetLeft() const
 	return m_sprite.getPosition().x;
 }
 
+sf::IntRect CUnit::GetRect() const
+{
+	return sf::IntRect(static_cast<int>(GetLeft()),
+	                   static_cast<int>(GetTop()),
+	                   static_cast<int>(GetWidth()),
+	                   static_cast<int>(GetHeight()));
+}
+
+sf::IntRect CUnit::GetFutureRect() const
+{
+	sf::Vector2f unitMovement = GetMovement();
+	return sf::IntRect(static_cast<int>(GetLeft() + unitMovement.x),
+	                   static_cast<int>(GetTop() + unitMovement.y),
+	                   static_cast<int>(GetWidth()),
+	                   static_cast<int>(GetHeight()));
+}
+
+sf::IntRect CUnit::GetSpriteRect() const
+{
+	return sf::IntRect(static_cast<int>(GetLeft()),
+	                   static_cast<int>(GetTop()),
+	                   static_cast<int>(GetSpriteWidth()),
+	                   static_cast<int>(GetSpriteHeight()));
+}
+
+sf::IntRect CUnit::GetFutureSpriteRect() const
+{
+	sf::Vector2f unitMovement = GetMovement();
+	return sf::IntRect(static_cast<int>(GetLeft() + unitMovement.x),
+	                   static_cast<int>(GetTop() + unitMovement.y),
+	                   static_cast<int>(GetSpriteWidth()),
+	                   static_cast<int>(GetSpriteHeight()));
+}
+
 sf::Vector2f CUnit::GetPosition() const
 {
 	return sf::Vector2f(GetLeft(), GetTop());
 }
 
-static bool DoesObjectsPlacesInOneVertical(float object1LeftX, float object1RightX, float object2LeftX, float object2RightX)
+sf::Vector2f CUnit::GetMovement() const
 {
-	return object1RightX >= object2LeftX && object1LeftX <= object2RightX;
+	return sf::Vector2f(roundf(direction.x * movementSpeed), roundf(direction.y * downSpeed));
 }
 
-static bool DoesObjectsPlacesInOneHorizontal(float object1TopY, float object1BottomY, float object2TopY, float object2BottomY)
+sf::Vector2f CUnit::GetDirection() const
 {
-	return object1BottomY > object2TopY && object1TopY < object2BottomY;
+	return m_lastDirection;
 }
+
+float CUnit::GetDyingTimeSec() const
+{
+	return m_dyingTimeSec;
+}
+
+float CUnit::GetDyingClockSec() const
+{
+	return m_dyingClock.getElapsedTime().asSeconds();
+}
+
+float CUnit::GetUpSpeed() const
+{
+	return upSpeed;
+}
+
+bool CUnit::IsStaying() const
+{
+	return (direction.x == 0 && direction.y == 0);
+}
+
+bool CUnit::IsAlive() const
+{
+	return !m_dead;
+}
+
+bool CUnit::DoesAttacking() const
+{
+	return m_attacking;
+}
+
+bool CUnit::DoesJumping() const
+{
+	return jumping;
+}
+
 
 void CUnit::UpdateCollision(const std::vector<TmxObject> & collisionBlocks)
 {
 	float collisionBlockTop = 0;
 	float collisionBlockBottom = 0;
 	collision = GetCollision(collisionBlocks, GetLeft(), GetTop(), collisionBlockTop, collisionBlockBottom);
-	if (collision.bottom && downSpeed > 0)
+	if (collision.bottom && downSpeed > 0 && IsAlive())
 	{
 		SetPosition(GetPosition().x, collisionBlockTop - m_height + downSpeed);
 	}
@@ -123,21 +299,22 @@ Collision CUnit::GetCollision(const std::vector<TmxObject> & collisionBlocks,
 {
 	Collision result;
 
-	float unitRight = unitLeft + m_width;
-	float unitBottom = unitTop + m_height;
+	sf::IntRect unitRect = {unitLeft, unitTop, GetWidth(), GetHeight()};
 
 	sf::Vector2f unitMovement = GetMovement();
-	float futureUnitTop = unitTop + unitMovement.y;
-	float futureUnitBottom = futureUnitTop + m_height;
-	float futureUnitLeft = unitLeft + unitMovement.x;
-	float futureUnitRight = futureUnitLeft + m_width;
+	float unitFutureLeft = unitLeft + unitMovement.x;
+	float unitFutureTop = unitTop + unitMovement.y;
+
+	sf::IntRect unitFutureRect = {unitFutureLeft, unitFutureTop, GetWidth(), GetHeight()};
 
 	for (const TmxObject & collisionBlock : collisionBlocks)
 	{
-		GetCollision(collisionBlock,
-					 unitTop, unitRight, unitBottom, unitLeft,
-					 futureUnitTop, futureUnitRight, futureUnitBottom, futureUnitLeft,
-					 out_collisionBlockTop, out_collisionBlockBottom, result);
+		GetCollision(collisionBlock.rect,
+		             unitRect,
+		             unitFutureRect,
+		             GetDirection().x,
+		             GetWidth(),
+		             out_collisionBlockTop, out_collisionBlockBottom, result);
 		if ((result.left || result.right) && (result.top || result.bottom))
 		{
 			break;
@@ -146,80 +323,8 @@ Collision CUnit::GetCollision(const std::vector<TmxObject> & collisionBlocks,
 	return result;
 }
 
-void CUnit::GetCollision(const TmxObject & collisionBlock,
-							  float unitTop,
-							  float unitRight,
-							  float unitBottom,
-							  float unitLeft,
-							  float futureUnitTop,
-							  float futureUnitRight,
-							  float futureUnitBottom,
-							  float futureUnitLeft,
-							  float & out_collisionBlockTop,
-							  float & out_collisionBlockBottom,
-							  Collision & out_collision) const
-{
-	float collisionBlockLeft = collisionBlock.rect.left;
-	float collisionBlockRight = collisionBlockLeft + collisionBlock.rect.width;
-	float collisionBlockTop = collisionBlock.rect.top;
-	float collisionBlockBottom = collisionBlockTop + collisionBlock.rect.height;
-
-	bool playerPlacesInOneHorizontalWithTile = DoesObjectsPlacesInOneHorizontal(unitTop, unitBottom, collisionBlockTop, collisionBlockBottom);
-	bool isLeftCollision = futureUnitLeft <= collisionBlockRight && futureUnitRight >= collisionBlockRight && unitLeft >= collisionBlockRight;
-	bool isRightCollision = futureUnitRight >= collisionBlockLeft && futureUnitLeft <= collisionBlockLeft && unitRight <= collisionBlockLeft;
-
-	if (playerPlacesInOneHorizontalWithTile)
-	{
-		if (isLeftCollision)
-		{
-			out_collision.left = isLeftCollision;
-		}
-		if (isRightCollision)
-		{
-			out_collision.right = isRightCollision;
-		}
-	}
-
-	bool playerPlacesInOneVerticalWithTile = DoesObjectsPlacesInOneVertical(unitLeft, unitRight, collisionBlockLeft, collisionBlockRight);
-	bool isTopCollision = futureUnitTop <= collisionBlockBottom && futureUnitBottom >= collisionBlockBottom;
-	bool isBottomCollision = futureUnitBottom >= collisionBlockTop && futureUnitTop <= collisionBlockTop;
-
-	if (playerPlacesInOneVerticalWithTile)
-	{
-		if (isTopCollision)
-		{
-			out_collision.top = isTopCollision;
-			out_collisionBlockBottom = collisionBlockBottom;
-		}
-		if (isBottomCollision)
-		{
-			out_collision.bottom = isBottomCollision;
-			out_collisionBlockTop = collisionBlockTop;
-		}
-	}
-}
-
-static sf::Vector2f Round(const sf::Vector2f &value)
-{
-	return sf::Vector2f(roundf(value.x), roundf(value.y));
-}
-
-sf::Vector2f CUnit::GetMovement() const
-{
-	return Round({direction.x * movementSpeed, direction.y * downSpeed});
-}
-
-bool CUnit::IsStaying() const
-{
-	return (direction.x == 0 && direction.y == 0);
-}
-
-bool CUnit::IsAlive() const
-{
-	return !m_dead;
-}
-
 void CUnit::Die()
 {
+	m_dyingClock.restart();
 	m_dead = true;
 }

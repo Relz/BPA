@@ -8,8 +8,7 @@
 class CPlayer : public CUnit
 {
 public:
-	void MoveProcess(const std::vector<TmxObject> & collisionBlocks) override;
-	bool DoesAttack() const;
+	void Process(const std::vector<TmxObject> & collisionBlocks) override;
 	void Die() override;
 
 private:
@@ -19,6 +18,7 @@ private:
 	void UpdateMovingSprite();
 	void UpdateJumpingSprite();
 	void UpdateAttackingSprite();
+	bool DoesAttack() const;
 
 	sf::Clock m_animationClock;
 	size_t m_currentStayingSprite = 0;
@@ -26,8 +26,6 @@ private:
 	size_t m_currentAttackingSprite = 0;
 
 	sf::Clock m_attackingClock;
-
-	sf::Vector2f m_lastDirection;
 };
 
 

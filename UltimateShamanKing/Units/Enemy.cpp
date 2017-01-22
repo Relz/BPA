@@ -3,9 +3,9 @@
 #include "../stdafx.h"
 #include "Enemy.h"
 
-void CEnemy::Init(sf::Vector2f startPosition, float movementSpeed, float upSpeed, float downSpeed, float gravity, size_t movingCooldownSec)
+void CEnemy::Init(sf::Vector2f startPosition, float movementSpeed, float upSpeed, float downSpeed, float gravity, float dyingTimeSec, float movingCooldownSec)
 {
-	CUnit::Init(startPosition, movementSpeed, upSpeed, downSpeed, gravity);
+	CUnit::Init(startPosition, movementSpeed, upSpeed, downSpeed, gravity, dyingTimeSec);
 	m_movingCooldownSec = movingCooldownSec;
 	if (!m_snowBallTextrure.loadFromFile("../res/Images/Sprites/snowball.png"))
 	{
@@ -14,26 +14,40 @@ void CEnemy::Init(sf::Vector2f startPosition, float movementSpeed, float upSpeed
 	m_snowBall.setTexture(m_snowBallTextrure);
 }
 
-void CEnemy::MoveProcess(const std::vector<TmxObject> & collisionBlocks)
+void CEnemy::Process(const std::vector<TmxObject> & collisionBlocks)
 {
-	UpdateDirection();
 	Animate(m_animationClock);
 	UpdateCollision(collisionBlocks);
 	if ((direction.x > 0 && !collision.right) || (direction.x < 0 && !collision.left))
 	{
 		MoveX();
 	}
-	if (IsStaying() && m_stayingClock.getElapsedTime().asSeconds() > m_stayingTime)
+	if (IsAlive())
 	{
-		direction.x = (CEnemy::m_random.getRandomValue(0, 1) == 0) ? -1 : 1;
-		m_movingClock.restart();
+		UpdateDirection();
+		if (IsStaying() && m_stayingClock.getElapsedTime().asSeconds() > m_stayingTime)
+		{
+			direction.x = (CEnemy::m_random.getRandomValue(0, 1) == 0) ? -1 : 1;
+			m_movingClock.restart();
+		}
+		bool isAbyssOnSide = IsAbyssOnSide(collisionBlocks);
+		if (collision.left || collision.right ||
+		    (isAbyssOnSide && collision.bottom && direction.x == 1) ||
+		    (isAbyssOnSide && collision.bottom && direction.x == -1))
+		{
+			direction.x = -direction.x;
+		}
 	}
-	bool isAbyssOnSide = IsAbyssOnSide(collisionBlocks);
-	if (collision.left || collision.right ||
-			(isAbyssOnSide && collision.bottom && direction.x == 1) ||
-			(isAbyssOnSide && collision.bottom && direction.x == -1))
+	else
 	{
-		direction.x = -direction.x;
+		if ((collision.right || collision.left) && !IsAlive())
+		{
+			direction.x = 0;
+		}
+		if ((collision.top || collision.bottom) && movementSpeed > 0)
+		{
+			movementSpeed -= 0.2;
+		}
 	}
 	if (collision.top)
 	{
@@ -52,6 +66,12 @@ void CEnemy::MoveProcess(const std::vector<TmxObject> & collisionBlocks)
 	}
 }
 
+void CEnemy::Die()
+{
+	CUnit::Die();
+	m_justDied = true;
+}
+
 void CEnemy::UpdateDirection()
 {
 	if (m_movingClock.getElapsedTime().asSeconds() >= m_movingCooldownSec && !IsStaying())
@@ -68,27 +88,33 @@ void CEnemy::UpdateDirection()
 void CEnemy::Animate(sf::Clock & animationClock)
 {
 	float deltaSec = animationClock.getElapsedTime().asSeconds();
-	if (deltaSec > 0.1)
+	if (IsAlive())
 	{
-		if (!jumping)
+		if (deltaSec > 0.1)
 		{
-			if (!IsStaying())
+			if (jumping)
+			{
+				UpdateJumpingSprite();
+			}
+			else if (!IsStaying())
 			{
 				UpdateMovingSprite();
 				animationClock.restart();
 			}
-		}
-		else
-		{
-			UpdateJumpingSprite();
+			if (deltaSec > 0.3)
+			{
+				if (!jumping && IsStaying())
+				{
+					UpdateStayingSprite();
+				}
+				animationClock.restart();
+			}
 		}
 	}
-	if (deltaSec > 0.3)
+	else if (deltaSec > 1.0 || m_justDied)
 	{
-		if (!jumping && IsStaying())
-		{
-			UpdateStayingSprite();
-		}
+		m_justDied = false;
+		UpdateDyingSprite();
 		animationClock.restart();
 	}
 }
@@ -187,14 +213,32 @@ void CEnemy::UpdateJumpingSprite()
 	m_sprite.setTextureRect(textureRect);
 }
 
-void CEnemy::Die(std::vector<CEnemy*> & enemies)
+void CEnemy::UpdateDyingSprite()
 {
-	CUnit::Die();
-	m_dyingClock.restart();
-	if (m_dyingClock.getElapsedTime().asSeconds() > 8)
+	m_currentDyingSprite = (m_currentDyingSprite == 1) ? 0 : m_currentDyingSprite + 1;
+	sf::IntRect textureRect = m_sprite.getTextureRect();
+	int offsetLeft = 0;
+	textureRect.width = m_startSpriteHeight;
+	textureRect.height = abs(textureRect.width) / 2;
+	if (m_lastDirection.x == 1)
 	{
-		enemies.erase(std::find(enemies.begin(), enemies.end(), this));
+		offsetLeft = textureRect.width;
+		textureRect.width = -textureRect.width;
 	}
+	switch (m_currentDyingSprite)
+	{
+		case 0:
+			textureRect.top = 50;
+			textureRect.left = offsetLeft + 213;
+			break;
+		case 1:
+			textureRect.top = 75;
+			textureRect.left = offsetLeft + 211;
+			break;
+		default:
+			break;
+	}
+	m_sprite.setTextureRect(textureRect);
 }
 
 Random CEnemy::m_random;
