@@ -56,6 +56,10 @@ void CGameView::UpdateGameScene()
 	{
 		TryPlayerToAttackEnemies(m_gameScene.enemies);
 	}
+	else if (!m_enemiesToIgnore.empty())
+	{
+		m_enemiesToIgnore.clear();
+	}
 	CleanDeadBodies(m_gameScene.enemies);
 	SetCameraCenter(player.GetPosition().x + m_windowSize.x / 4, m_windowSize.y);
 }
@@ -119,15 +123,17 @@ bool CGameView::DoesPlayerAttackEnemy(const CEnemy * enemy) const
 	return ((collisionWithEnemy.left && playerDirection.x == -1) || (collisionWithEnemy.right && playerDirection.x == 1));
 }
 
-void CGameView::TryPlayerToAttackEnemies(const std::vector<CEnemy*> & enemies) const
+void CGameView::TryPlayerToAttackEnemies(const std::vector<CEnemy*> & enemies)
 {
 	const CPlayer & player = m_gameScene.player;
 	for (CEnemy * enemy : enemies)
 	{
-		if (enemy->IsAlive() && DoesPlayerAttackEnemy(enemy))
+		bool enemyNotProcessed = std::find(m_enemiesToIgnore.begin(), m_enemiesToIgnore.end(), enemy) == m_enemiesToIgnore.end();
+		if (enemyNotProcessed && enemy->IsAlive() && DoesPlayerAttackEnemy(enemy))
 		{
+			m_enemiesToIgnore.push_back(enemy);
 			enemy->SetImpuls(player.GetDirection().x * 5.0f, enemy->GetUpSpeed() * 2.0f);
-			enemy->Die();
+			enemy->ReduceHP(player.GetStrength());
 		}
 	}
 }

@@ -21,7 +21,15 @@ struct Random
 class CEnemy : public CUnit
 {
 public:
-	void Init(sf::Vector2f startPosition, float movementSpeed, float upSpeed, float downSpeed, float gravity, float dyingTimeSec, float movingCooldownSec);
+	void Init(sf::Vector2f startPosition,
+	          float movementSpeed,
+	          float upSpeed,
+	          float downSpeed,
+	          float gravity,
+	          float dyingTimeSec,
+	          float movingCooldownSec,
+	          size_t HP,
+	          size_t strength);
 	void Process(const std::vector<TmxObject> & collisionBlocks) override;
 	void Die() override;
 

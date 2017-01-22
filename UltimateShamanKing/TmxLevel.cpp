@@ -438,7 +438,7 @@ bool TmxLevel::LoadFromFile(const std::string &filepath)
 			object.bottomCollision = bottomCollision;
 			object.leftCollision = leftCollision;
 
-			sf::IntRect objectRect;
+			sf::FloatRect objectRect;
 			objectRect.top = (objectName == TMX_PLAYER || objectType == TMX_ENEMY) ? y - height : y;
 			objectRect.left = x;
 			objectRect.height = height;
@@ -479,18 +479,6 @@ bool TmxLevel::LoadFromFile(const std::string &filepath)
 	return true;
 }
 
-TmxObject TmxLevel::GetFirstObject(const std::string & name)const
-{
-	for (size_t i = 0; i < m_objects.size(); i++)
-	{
-		if (m_objects[i].name == name)
-		{
-			return m_objects[i];
-		}
-	}
-	throw std::runtime_error("Object with name " + name + " was not found");
-}
-
 std::vector<TmxObject> TmxLevel::GetAllObjectsByName(const std::string & name) const
 {
 	std::vector<TmxObject> vec;
@@ -517,11 +505,6 @@ std::vector<TmxObject> TmxLevel::GetAllObjectsByType(const std::string & type) c
 	return vec;
 }
 
-sf::Vector2i TmxLevel::GetTileSize() const
-{
-	return sf::Vector2i(m_tileWidth, m_tileHeight);
-}
-
 void TmxLevel::Draw(sf::RenderTarget & target)const
 {
 	const sf::FloatRect viewportRect = target.getView().getViewport();
@@ -538,7 +521,7 @@ void TmxLevel::Draw(sf::RenderTarget & target)const
 	}
 }
 
-sf::IntRect TmxLevel::GetPlayerRect() const
+sf::FloatRect TmxLevel::GetPlayerRect() const
 {
 	return m_playerRect;
 }

@@ -4,6 +4,7 @@
 #define ULTIMATE_SHAMAN_KING_UNIT_H
 
 #include "../TmxLevel.h"
+#include "../HPLine.h"
 
 struct Collision
 {
@@ -16,8 +17,15 @@ struct Collision
 class CUnit
 {
 public:
-	void Init(sf::Vector2f startPosition, float movementSpeed, float upSpeed, float downSpeed, float gravity, float dyingTime);
-	void Draw(sf::RenderTarget &target) const;
+	void Init(sf::Vector2f startPosition,
+	          float movementSpeed,
+	          float upSpeed,
+	          float downSpeed,
+	          float gravity,
+	          float dyingTime,
+	          size_t HP,
+	          size_t strength);
+	void Draw(sf::RenderTarget & target) const;
 	void SetSprite(const std::string & spritePath, const sf::IntRect & playerSpriteRect, float zoom);
 	void SetPosition(float x, float y);
 	void SetPosition(const sf::Vector2f & position);
@@ -29,27 +37,30 @@ public:
 	float GetSpriteHeight() const;
 	float GetTop() const;
 	float GetLeft() const;
-	sf::IntRect GetRect() const;
-	sf::IntRect GetFutureRect() const;
-	sf::IntRect GetSpriteRect() const;
-	sf::IntRect GetFutureSpriteRect() const;
+	sf::FloatRect GetRect() const;
+	sf::FloatRect GetFutureRect() const;
+	sf::FloatRect GetSpriteRect() const;
+	sf::FloatRect GetFutureSpriteRect() const;
 	sf::Vector2f GetPosition() const;
 	sf::Vector2f GetMovement() const;
 	sf::Vector2f GetDirection() const;
 	float GetDyingTimeSec() const;
 	float GetDyingClockSec() const;
 	float GetUpSpeed() const;
+	size_t GetHP() const;
+	size_t GetStrength() const;
 	bool IsStaying() const;
 	bool IsAlive() const;
 	bool DoesAttacking() const;
 	bool DoesJumping() const;
+	void ReduceHP(size_t value);
 
 	virtual void Process(const std::vector<TmxObject> & collisionBlocks) = 0;
 	virtual void Die();
 
-	static void GetCollision(const sf::IntRect & objectRect,
-	                         const sf::IntRect & unitRect,
-	                         const sf::IntRect & unitFutureRect,
+	static void GetCollision(const sf::FloatRect & objectRect,
+	                         const sf::FloatRect & unitRect,
+	                         const sf::FloatRect & unitFutureRect,
 	                         float unitDirectionX,
 	                         float playerWidth,
 	                         float & out_collisionBlockTop,
@@ -91,8 +102,13 @@ protected:
 
 	sf::Clock m_dyingClock;
 
+	size_t HP = 100;
+	size_t strength = 0;
+
 private:
 	sf::Texture m_texture;
+
+	CHPLine m_HPLine;
 
 	float m_width = 0;
 	float m_height = 0;

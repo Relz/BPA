@@ -8,7 +8,7 @@ struct TmxObject
 {
 	std::string name;
 	std::string type;
-	sf::IntRect rect;
+	sf::FloatRect rect;
 	bool topCollision;
 	bool rightCollision;
 	bool bottomCollision;
@@ -38,13 +38,11 @@ class TmxLevel
 public:
 	bool LoadFromFile(const std::string & filepath);
 
-	TmxObject GetFirstObject(const std::string & name) const;
 	std::vector<TmxObject> GetAllObjectsByName(const std::string & name) const;
 	std::vector<TmxObject> GetAllObjectsByType(const std::string & type) const;
-	sf::Vector2i GetTileSize() const;
 
 	void Draw(sf::RenderTarget & target) const;
-	sf::IntRect GetPlayerRect() const;
+	sf::FloatRect GetPlayerRect() const;
 
 private:
 	int m_width = 0;
@@ -55,7 +53,7 @@ private:
 	sf::Texture m_tilesetImage;
 	std::vector<TmxObject> m_objects;
 	std::vector<TmxLayer> m_layers;
-	sf::IntRect m_playerRect;
+	sf::FloatRect m_playerRect;
 
 	int m_firstEnvironmentObjectID = 0;
 	std::map<int, EnvironmentObject> m_environmentObjects;

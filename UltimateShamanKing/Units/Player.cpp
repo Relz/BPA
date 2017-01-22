@@ -57,13 +57,10 @@ void CPlayer::UpdateDirection()
 	direction = sf::Vector2f();
 
 	static bool canJump = true;
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && canJump)
 	{
-		if (canJump)
-		{
-			canJump = false;
-			direction.y = -1;
-		}
+		canJump = false;
+		direction.y = -1;
 	}
 	else
 	{
@@ -302,5 +299,15 @@ void CPlayer::UpdateAttackingSprite()
 
 bool CPlayer::DoesAttack() const
 {
-	return (sf::Keyboard::isKeyPressed(sf::Keyboard::Z));
+	static bool canAttack = true;
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z) && canAttack)
+	{
+		canAttack = false;
+		return true;
+	}
+	else
+	{
+		canAttack = true;
+	}
+	return false;
 }

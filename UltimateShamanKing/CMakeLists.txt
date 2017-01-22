@@ -4,7 +4,7 @@ project(Ultimate_Shaman_King)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -pedantic")
 
-set(SOURCE_FILES main.cpp stdafx.cpp stdafx.h constant.cpp constant.h TmxLevel.cpp TmxLevel.h GameView.cpp GameView.h GameScene.cpp GameScene.h Units/Player.cpp Units/Player.h lib/tinyxml2/tinyxml2.cpp lib/tinyxml2/tinyxml2.h Units/Unit.cpp Units/Unit.h Units/Enemy.cpp Units/Enemy.h)
+set(SOURCE_FILES main.cpp stdafx.cpp stdafx.h constant.cpp constant.h TmxLevel.cpp TmxLevel.h GameView.cpp GameView.h GameScene.cpp GameScene.h Units/Player.cpp Units/Player.h lib/tinyxml2/tinyxml2.cpp lib/tinyxml2/tinyxml2.h Units/Unit.cpp Units/Unit.h Units/Enemy.cpp Units/Enemy.h HPLine.cpp HPLine.h)
 add_executable(Ultimate_Shaman_King ${SOURCE_FILES})
 
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake_modules")

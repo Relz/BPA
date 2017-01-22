@@ -13,9 +13,9 @@ bool CUnit::DoesObjectsPlacesInOneHorizontal(float object1TopY, float object1Bot
 	return object1BottomY > object2TopY && object1TopY < object2BottomY;
 }
 
-void CUnit::GetCollision(const sf::IntRect & objectRect,
-                         const sf::IntRect & unitRect,
-                         const sf::IntRect & unitFutureRect,
+void CUnit::GetCollision(const sf::FloatRect & objectRect,
+                         const sf::FloatRect & unitRect,
+                         const sf::FloatRect & unitFutureRect,
                          float unitDirectionX,
                          float playerWidth,
                          float & out_collisionBlockTop,
@@ -85,7 +85,14 @@ void CUnit::GetCollision(const sf::IntRect & objectRect,
 	}
 }
 
-void CUnit::Init(sf::Vector2f startPosition, float movementSpeed, float upSpeed, float downSpeed, float gravity, float dyingTime)
+void CUnit::Init(sf::Vector2f startPosition,
+                 float movementSpeed,
+                 float upSpeed,
+                 float downSpeed,
+                 float gravity,
+                 float dyingTime,
+                 size_t HP,
+                 size_t strength)
 {
 	SetPosition(startPosition);
 	this->movementSpeed = movementSpeed;
@@ -93,10 +100,15 @@ void CUnit::Init(sf::Vector2f startPosition, float movementSpeed, float upSpeed,
 	this->startDownSpeed = downSpeed;
 	this->gravity = gravity;
 	this->m_dyingTimeSec = dyingTime;
+	this->HP = HP;
+	this->strength = strength;
+
+	m_HPLine.SetHP(HP);
 }
 
 void CUnit::Draw(sf::RenderTarget & target) const
 {
+	m_HPLine.Draw(target);
 	target.draw(m_sprite);
 }
 
@@ -119,13 +131,20 @@ void CUnit::SetSprite(const std::string & spritePath, const sf::IntRect & player
 
 void CUnit::SetPosition(float x, float y)
 {
+	float HPLinePositionX = x + 30;
+	float HPLinePositionY = y - 50;
+	m_HPLine.SetPosition(HPLinePositionX, HPLinePositionY);
 	m_sprite.setPosition(x, y);
 }
 
 void CUnit::SetPosition(const sf::Vector2f & position)
 {
+	sf::Vector2f HPLinePosition(position);
+	HPLinePosition.x += 30;
+	HPLinePosition.y -= 50;
+	m_HPLine.SetPosition(HPLinePosition);
 	m_sprite.setPosition(position);
-}
+	}
 
 void CUnit::SetImpuls(float x, float y)
 {
@@ -143,6 +162,7 @@ void CUnit::SetImpuls(float x, float y)
 
 void CUnit::MoveX()
 {
+	m_HPLine.Move(GetMovement().x, 0);
 	m_sprite.move(GetMovement().x, 0);
 }
 
@@ -153,6 +173,7 @@ void CUnit::Move(const sf::Vector2f & offset)
 
 void CUnit::Gravity()
 {
+	m_HPLine.Move(0, downSpeed);
 	m_sprite.move(0, downSpeed);
 }
 
@@ -186,38 +207,38 @@ float CUnit::GetLeft() const
 	return m_sprite.getPosition().x;
 }
 
-sf::IntRect CUnit::GetRect() const
+sf::FloatRect CUnit::GetRect() const
 {
-	return sf::IntRect(static_cast<int>(GetLeft()),
-	                   static_cast<int>(GetTop()),
-	                   static_cast<int>(GetWidth()),
-	                   static_cast<int>(GetHeight()));
+	return sf::FloatRect(GetLeft(),
+	                   GetTop(),
+	                   GetWidth(),
+	                   GetHeight());
 }
 
-sf::IntRect CUnit::GetFutureRect() const
+sf::FloatRect CUnit::GetFutureRect() const
 {
 	sf::Vector2f unitMovement = GetMovement();
-	return sf::IntRect(static_cast<int>(GetLeft() + unitMovement.x),
-	                   static_cast<int>(GetTop() + unitMovement.y),
-	                   static_cast<int>(GetWidth()),
-	                   static_cast<int>(GetHeight()));
+	return sf::FloatRect(GetLeft() + unitMovement.x,
+	                   GetTop() + unitMovement.y,
+	                   GetWidth(),
+	                   GetHeight());
 }
 
-sf::IntRect CUnit::GetSpriteRect() const
+sf::FloatRect CUnit::GetSpriteRect() const
 {
-	return sf::IntRect(static_cast<int>(GetLeft()),
-	                   static_cast<int>(GetTop()),
-	                   static_cast<int>(GetSpriteWidth()),
-	                   static_cast<int>(GetSpriteHeight()));
+	return sf::FloatRect(GetLeft(),
+	                   GetTop(),
+	                   GetSpriteWidth(),
+	                   GetSpriteHeight());
 }
 
-sf::IntRect CUnit::GetFutureSpriteRect() const
+sf::FloatRect CUnit::GetFutureSpriteRect() const
 {
 	sf::Vector2f unitMovement = GetMovement();
-	return sf::IntRect(static_cast<int>(GetLeft() + unitMovement.x),
-	                   static_cast<int>(GetTop() + unitMovement.y),
-	                   static_cast<int>(GetSpriteWidth()),
-	                   static_cast<int>(GetSpriteHeight()));
+	return sf::FloatRect(GetLeft() + unitMovement.x,
+	                   GetTop() + unitMovement.y,
+	                   GetSpriteWidth(),
+	                   GetSpriteHeight());
 }
 
 sf::Vector2f CUnit::GetPosition() const
@@ -250,6 +271,16 @@ float CUnit::GetUpSpeed() const
 	return upSpeed;
 }
 
+size_t CUnit::GetHP() const
+{
+	return HP;
+}
+
+size_t CUnit::GetStrength() const
+{
+	return strength;
+}
+
 bool CUnit::IsStaying() const
 {
 	return (direction.x == 0 && direction.y == 0);
@@ -270,6 +301,15 @@ bool CUnit::DoesJumping() const
 	return jumping;
 }
 
+void CUnit::ReduceHP(size_t value)
+{
+	HP = (HP > value) ? HP - value : 0;
+	m_HPLine.SetHP(HP);
+	if (HP == 0)
+	{
+		Die();
+	}
+}
 
 void CUnit::UpdateCollision(const std::vector<TmxObject> & collisionBlocks)
 {
@@ -299,13 +339,13 @@ Collision CUnit::GetCollision(const std::vector<TmxObject> & collisionBlocks,
 {
 	Collision result;
 
-	sf::IntRect unitRect = {unitLeft, unitTop, GetWidth(), GetHeight()};
+	sf::FloatRect unitRect = {unitLeft, unitTop, GetWidth(), GetHeight()};
 
 	sf::Vector2f unitMovement = GetMovement();
 	float unitFutureLeft = unitLeft + unitMovement.x;
 	float unitFutureTop = unitTop + unitMovement.y;
 
-	sf::IntRect unitFutureRect = {unitFutureLeft, unitFutureTop, GetWidth(), GetHeight()};
+	sf::FloatRect unitFutureRect = {unitFutureLeft, unitFutureTop, GetWidth(), GetHeight()};
 
 	for (const TmxObject & collisionBlock : collisionBlocks)
 	{

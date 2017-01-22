@@ -3,9 +3,17 @@
 #include "../stdafx.h"
 #include "Enemy.h"
 
-void CEnemy::Init(sf::Vector2f startPosition, float movementSpeed, float upSpeed, float downSpeed, float gravity, float dyingTimeSec, float movingCooldownSec)
+void CEnemy::Init(sf::Vector2f startPosition,
+                  float movementSpeed,
+                  float upSpeed,
+                  float downSpeed,
+                  float gravity,
+                  float dyingTimeSec,
+                  float movingCooldownSec,
+                  size_t HP,
+                  size_t strength)
 {
-	CUnit::Init(startPosition, movementSpeed, upSpeed, downSpeed, gravity, dyingTimeSec);
+	CUnit::Init(startPosition, movementSpeed, upSpeed, downSpeed, gravity, dyingTimeSec, HP, strength);
 	m_movingCooldownSec = movingCooldownSec;
 	if (!m_snowBallTextrure.loadFromFile("../res/Images/Sprites/snowball.png"))
 	{
