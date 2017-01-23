@@ -53,7 +53,7 @@ public:
 	bool IsAlive() const;
 	bool DoesAttacking() const;
 	bool DoesJumping() const;
-	void ReduceHP(size_t value);
+	void ReduceHP(float value);
 
 	virtual void Process(const std::vector<TmxObject> & collisionBlocks) = 0;
 	virtual void Die();
@@ -102,8 +102,8 @@ protected:
 
 	sf::Clock m_dyingClock;
 
-	size_t HP = 100;
-	size_t strength = 0;
+	float HP = 100;
+	float strength = 0;
 
 private:
 	sf::Texture m_texture;

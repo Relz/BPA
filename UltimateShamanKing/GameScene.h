@@ -10,6 +10,7 @@ class CGameScene
 {
 public:
 	CGameScene();
+	void Init();
 	void InitEnemies(const std::vector<TmxObject> & enemies);
 	void Draw(sf::RenderTarget &target) const;
 

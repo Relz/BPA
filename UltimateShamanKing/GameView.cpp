@@ -5,19 +5,51 @@
 #include "GameView.h"
 
 CGameView::CGameView(const sf::Vector2u screenSize)
+		:m_menuView(screenSize)
 {
 	m_windowSize = screenSize;
+	InitWindow();
+	InitCamera();
 
+	float scale = m_windowSize.x * CAMERA_ZOOM / m_gameOver.GetBackgroundWidth();
+	m_gameOver.SetBackgroundScale(scale, scale);
+
+	InitMenu();
+}
+
+void CGameView::InitWindow()
+{
 	sf::ContextSettings settings;
 	settings.antialiasingLevel = ANTIALIASING_LEVEL;
-	m_window.create(sf::VideoMode(screenSize.x, screenSize.y),
-					WINDOW_TITLE,
-					sf::Style::Close, settings);
+	m_window.create(sf::VideoMode(m_windowSize.x, m_windowSize.y), WINDOW_TITLE, sf::Style::Close, settings);
 	m_window.setFramerateLimit(60);
+}
 
-	m_camera.reset(sf::FloatRect(0.0f, 0.0f, screenSize.x, screenSize.y));
+void CGameView::InitCamera()
+{
+	m_camera.reset(sf::FloatRect(0.0f, 0.0f, m_windowSize.x, m_windowSize.y));
 	m_camera.setViewport(sf::FloatRect(0.0f, 0.0f, 1.0f, 1.0f));
-	m_camera.zoom(2.0f);
+	m_camera.zoom(CAMERA_ZOOM);
+}
+
+void CGameView::InitMenu()
+{
+	m_menuView.SetBackgroundChangingTimeSec(10);
+
+	MenuItem *menuItemStartGame = new MenuItem("Start Game", m_isGameStarted);
+	MenuItem *menuItemHistory = new MenuItem("Story", m_showStory);
+	m_menuView.AddMenuItem(menuItemStartGame);
+	m_menuView.AddMenuItem(menuItemHistory);
+}
+
+void CGameView::MenuStartGame()
+{
+	m_isGameStarted = true;
+}
+
+void CGameView::MenuViewStory()
+{
+	std::cout << "Story!\n";
 }
 
 void CGameView::GameLoop()
@@ -32,16 +64,28 @@ void CGameView::GameLoop()
 				m_window.close();
 				break;
 			}
+			else if (m_isGameStarted && !m_gameScene.player.IsAlive() && sf::Keyboard::isKeyPressed(sf::Keyboard::Return))
+			{
+				m_gameScene.Init();
+			}
 		}
 		m_window.clear(BACKGROUND_COLOR);
-		if (m_gameScene.player.IsAlive())
+		if (m_isGameStarted)
 		{
-			UpdateGameScene();
-			DrawGameScene();
+			if (m_gameScene.player.IsAlive())
+			{
+				UpdateGameScene();
+				DrawGameScene();
+			}
+			else
+			{
+				ShowGameOverScreen();
+			}
 		}
 		else
 		{
-			std::cout << "Game Over!\n";
+			m_menuView.Draw(m_window);
+			m_menuView.Process(m_window);
 		}
 		m_window.display();
 	}
@@ -61,7 +105,7 @@ void CGameView::UpdateGameScene()
 		m_enemiesToIgnore.clear();
 	}
 	CleanDeadBodies(m_gameScene.enemies);
-	SetCameraCenter(player.GetPosition().x + m_windowSize.x / 4, m_windowSize.y);
+	SetCameraCenter(player.GetPosition().x + m_windowSize.x / 2 / CAMERA_ZOOM, m_windowSize.y);
 }
 
 void CGameView::DrawGameScene()
@@ -71,6 +115,13 @@ void CGameView::DrawGameScene()
 	DrawTmxObjects(m_gameScene.coins);
 	DrawEnemies(m_gameScene.enemies);
 	m_gameScene.player.Draw(m_window);
+}
+
+void CGameView::ShowGameOverScreen()
+{
+	m_gameOver.SetWindowCenter(m_camera.getCenter());
+	m_gameOver.SetWindowSize(sf::Vector2u(m_windowSize.x * CAMERA_ZOOM, m_windowSize.y * CAMERA_ZOOM));
+	m_gameOver.Draw(m_window);
 }
 
 void CGameView::DrawTmxObjects(const std::vector<TmxObject> & tmxObjects)
@@ -89,11 +140,70 @@ void CGameView::DrawEnemies(const std::vector<CEnemy*> & enemies)
 	}
 }
 
+void CGameView::CreateNewSnowball(CEnemy * enemy)
+{
+	CPlayer & player = m_gameScene.player;
+	float directionX = 0;
+	if (player.GetLeft() < enemy->GetLeft())
+	{
+		directionX = -1;
+	}
+	else
+	{
+		directionX = 1;
+	}
+	auto tempSnowball = std::find(m_snowballsToIgnore.begin(), m_snowballsToIgnore.end(), enemy->GetSnowball());
+	if (tempSnowball != m_snowballsToIgnore.end())
+	{
+		m_snowballsToIgnore.erase(tempSnowball);
+	}
+	enemy->CreateNewSnowball(directionX);
+}
+
+void CGameView::TryToKillPlayer(CSnowball * enemySnowball)
+{
+	CPlayer & player = m_gameScene.player;
+	float collisionBlockTop = 0;
+	float collisionBlockBottom = 0;
+	Collision collisionWithPlayer;
+
+	CUnit::GetCollision(enemySnowball->GetTextureFloatRect(),
+	                    player.GetSpriteRect(),
+	                    player.GetSpriteRect(),
+	                    player.GetDirection().x,
+	                    player.GetWidth(),
+	                    collisionBlockTop, collisionBlockBottom, collisionWithPlayer);
+	if (collisionWithPlayer.left || collisionWithPlayer.right)
+	{
+		player.ReduceHP(enemySnowball->GetStrength());
+		m_snowballsToIgnore.push_back(enemySnowball);
+		enemySnowball->Hide();
+	}
+}
+
 void CGameView::ProcessEnemies(std::vector<CEnemy*> & enemies)
 {
 	for (CEnemy * enemy : enemies)
 	{
 		enemy->Process(m_gameScene.collisionBlocks);
+		if (enemy->IsAlive())
+		{
+			if (enemy->GetSnowball() == nullptr)
+			{
+				CreateNewSnowball(enemy);
+			}
+			if (enemy->GetSnowball()->GetLivingTimeSec() > enemy->GetSnowball()->GetMaxLivingTimeSec())
+			{
+				CreateNewSnowball(enemy);
+			}
+			enemy->GetSnowball()->Process();
+			enemy->GetSnowball()->Draw(m_window);
+			bool snowballNotProcessed = std::find(m_snowballsToIgnore.begin(), m_snowballsToIgnore.end(), enemy->GetSnowball()) == m_snowballsToIgnore.end();
+			if (snowballNotProcessed)
+			{
+				TryToKillPlayer(enemy->GetSnowball());
+			}
+		}
 	}
 }
 

@@ -4,19 +4,8 @@
 #define ULTIMATE_SHAMAN_KING_ENEMY_H
 
 #include "Unit.h"
-
-struct Random
-{
-	std::random_device randomDevice;
-	std::mt19937 gen;
-
-	size_t getRandomValue(size_t min, size_t max)
-	{
-		gen.seed(randomDevice());
-		std::uniform_int_distribution<size_t> dist(min, max);
-		return dist(gen);
-	}
-};
+#include "../Snowball.h"
+#include "../Random.h"
 
 class CEnemy : public CUnit
 {
@@ -32,6 +21,8 @@ public:
 	          size_t strength);
 	void Process(const std::vector<TmxObject> & collisionBlocks) override;
 	void Die() override;
+	void CreateNewSnowball(float directionX);
+	CSnowball * GetSnowball() const;
 
 private:
 	void UpdateDirection();
@@ -50,14 +41,11 @@ private:
 	size_t m_currentMovingSprite = 0;
 	size_t m_currentDyingSprite = 0;
 
-	sf::Texture m_snowBallTextrure;
-	sf::Sprite m_snowBall;
-
-	static Random m_random;
-
-	float m_stayingTime = (float)(m_random.getRandomValue(40, 60)) / 10;
+	float m_stayingTime = (float)(myRandom.GetRandomValue(40, 60)) / 10;
 
 	bool m_justDied = false;
+
+	std::unique_ptr<CSnowball> m_snowball = nullptr;
 };
 
 #endif //ULTIMATE_SHAMAN_KING_ENEMY_H

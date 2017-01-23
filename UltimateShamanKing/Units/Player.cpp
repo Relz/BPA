@@ -8,7 +8,7 @@ void CPlayer::Process(const std::vector<TmxObject> & collisionBlocks)
 	if (IsAlive())
 	{
 		UpdateDirection();
-		if (DoesAttack() && m_attackingClock.getElapsedTime().asSeconds() > 0.5)
+		if (DoesAttack() && m_attackingClock.getElapsedTime().asSeconds() > 0.5 && !DoesAttacking())
 		{
 			m_attacking = true;
 			m_attackingClock.restart();
@@ -56,15 +56,9 @@ void CPlayer::UpdateDirection()
 {
 	direction = sf::Vector2f();
 
-	static bool canJump = true;
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && canJump)
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 	{
-		canJump = false;
 		direction.y = -1;
-	}
-	else
-	{
-		canJump = true;
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && !DoesAttacking())
 	{
@@ -299,15 +293,5 @@ void CPlayer::UpdateAttackingSprite()
 
 bool CPlayer::DoesAttack() const
 {
-	static bool canAttack = true;
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z) && canAttack)
-	{
-		canAttack = false;
-		return true;
-	}
-	else
-	{
-		canAttack = true;
-	}
-	return false;
+	return sf::Keyboard::isKeyPressed(sf::Keyboard::Z);
 }

@@ -15,11 +15,6 @@ void CEnemy::Init(sf::Vector2f startPosition,
 {
 	CUnit::Init(startPosition, movementSpeed, upSpeed, downSpeed, gravity, dyingTimeSec, HP, strength);
 	m_movingCooldownSec = movingCooldownSec;
-	if (!m_snowBallTextrure.loadFromFile("../res/Images/Sprites/snowball.png"))
-	{
-		throw std::invalid_argument(std::string("\"") + "../res/Images/Sprites/snowball.png" + "\" not found");
-	}
-	m_snowBall.setTexture(m_snowBallTextrure);
 }
 
 void CEnemy::Process(const std::vector<TmxObject> & collisionBlocks)
@@ -35,7 +30,7 @@ void CEnemy::Process(const std::vector<TmxObject> & collisionBlocks)
 		UpdateDirection();
 		if (IsStaying() && m_stayingClock.getElapsedTime().asSeconds() > m_stayingTime)
 		{
-			direction.x = (CEnemy::m_random.getRandomValue(0, 1) == 0) ? -1 : 1;
+			direction.x = (myRandom.GetRandomValue(0, 1) == 0) ? -1 : 1;
 			m_movingClock.restart();
 		}
 		bool isAbyssOnSide = IsAbyssOnSide(collisionBlocks);
@@ -78,6 +73,20 @@ void CEnemy::Die()
 {
 	CUnit::Die();
 	m_justDied = true;
+}
+
+void CEnemy::CreateNewSnowball(float directionX)
+{
+	m_snowball = std::unique_ptr<CSnowball>(new CSnowball);
+	sf::Vector2f playerPosition = GetPosition();
+	playerPosition.y += GetHeight() / 3;
+	m_snowball->Init(playerPosition, directionX, myRandom.GetRandomValue(5, 7), myRandom.GetRandomValue(4, 6), 10);
+	m_snowball->SetImage("../res/Images/snowball.png", 0.2);
+}
+
+CSnowball * CEnemy::GetSnowball() const
+{
+	return m_snowball.get();
 }
 
 void CEnemy::UpdateDirection()
@@ -248,5 +257,3 @@ void CEnemy::UpdateDyingSprite()
 	}
 	m_sprite.setTextureRect(textureRect);
 }
-
-Random CEnemy::m_random;

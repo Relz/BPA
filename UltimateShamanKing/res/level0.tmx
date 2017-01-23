@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="left-up" width="100" height="10" tilewidth="128" tileheight="128" nextobjectid="140">
+<map version="1.0" orientation="orthogonal" renderorder="left-up" width="100" height="10" tilewidth="128" tileheight="128" nextobjectid="141">
  <tileset firstgid="1" name="Тайлы" tilewidth="128" tileheight="128" tilecount="27" columns="9">
   <image source="Images/tileset.png" width="1152" height="384"/>
  </tileset>
@@ -1225,7 +1225,7 @@
     <property name="topCollision" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="118" type="Блок коллизии" x="7937.72" y="524.07" width="117.451" height="382.336">
+  <object id="118" type="Блок коллизии" x="7941.72" y="635.07" width="117.451" height="261.336">
    <properties>
     <property name="bottomCollision" type="bool" value="true"/>
     <property name="leftCollision" type="bool" value="true"/>
@@ -1233,7 +1233,7 @@
     <property name="topCollision" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="119" type="Блок коллизии" x="8062.11" y="524.07" width="885.998" height="111.345">
+  <object id="119" type="Блок коллизии" x="7941.72" y="524.07" width="1008" height="111.345">
    <properties>
     <property name="bottomCollision" type="bool" value="true"/>
     <property name="leftCollision" type="bool" value="true"/>
@@ -1262,6 +1262,14 @@
     <property name="bottomCollision" type="bool" value="true"/>
     <property name="leftCollision" type="bool" value="true"/>
     <property name="rightCollision" type="bool" value="true"/>
+    <property name="topCollision" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="140" type="Блок коллизии" x="7641.58" y="866.59" width="66" height="39">
+   <properties>
+    <property name="bottomCollision" type="bool" value="true"/>
+    <property name="leftCollision" type="bool" value="false"/>
+    <property name="rightCollision" type="bool" value="false"/>
     <property name="topCollision" type="bool" value="true"/>
    </properties>
   </object>

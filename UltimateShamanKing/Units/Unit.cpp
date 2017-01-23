@@ -95,6 +95,7 @@ void CUnit::Init(sf::Vector2f startPosition,
                  size_t strength)
 {
 	SetPosition(startPosition);
+	this->m_dead = false;
 	this->movementSpeed = movementSpeed;
 	this->upSpeed = upSpeed;
 	this->startDownSpeed = downSpeed;
@@ -171,6 +172,11 @@ void CUnit::Move(const sf::Vector2f & offset)
 	m_sprite.move(offset);
 }
 
+sf::Vector2f CUnit::GetPosition() const
+{
+	return m_sprite.getPosition();
+}
+
 void CUnit::Gravity()
 {
 	m_HPLine.Move(0, downSpeed);
@@ -241,11 +247,6 @@ sf::FloatRect CUnit::GetFutureSpriteRect() const
 	                   GetSpriteHeight());
 }
 
-sf::Vector2f CUnit::GetPosition() const
-{
-	return sf::Vector2f(GetLeft(), GetTop());
-}
-
 sf::Vector2f CUnit::GetMovement() const
 {
 	return sf::Vector2f(roundf(direction.x * movementSpeed), roundf(direction.y * downSpeed));
@@ -301,7 +302,7 @@ bool CUnit::DoesJumping() const
 	return jumping;
 }
 
-void CUnit::ReduceHP(size_t value)
+void CUnit::ReduceHP(float value)
 {
 	HP = (HP > value) ? HP - value : 0;
 	m_HPLine.SetHP(HP);
