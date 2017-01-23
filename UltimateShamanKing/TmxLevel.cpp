@@ -365,6 +365,14 @@ bool TmxLevel::LoadFromFile(const std::string &filepath)
 				sprite.setTexture(m_tilesetImage);
 				sprite.setTextureRect(sf::IntRect(0, 0, 0, 0));
 				sprite.setPosition(x, y);
+				if (objectName == MAP_LEFT_BORDER)
+				{
+					m_mapLeftBorder = x;
+				}
+				else if (objectName == MAP_RIGHT_BORDER)
+				{
+					m_mapRightBorder = x;
+				}
 				if (objectElement->QueryIntAttribute("width", &width) != XML_SUCCESS)
 				{
 					PrintWarning(objectName + " width not specified, default is " + std::to_string(width));
@@ -524,4 +532,14 @@ void TmxLevel::Draw(sf::RenderTarget & target)const
 sf::FloatRect TmxLevel::GetPlayerRect() const
 {
 	return m_playerRect;
+}
+
+float TmxLevel::GetMapLeftBorder() const
+{
+	return m_mapLeftBorder;
+}
+
+float TmxLevel::GetMapRightBorder() const
+{
+	return m_mapRightBorder;
 }

@@ -105,7 +105,18 @@ void CGameView::UpdateGameScene()
 		m_enemiesToIgnore.clear();
 	}
 	CleanDeadBodies(m_gameScene.enemies);
-	SetCameraCenter(player.GetPosition().x + m_windowSize.x / 2 / CAMERA_ZOOM, m_windowSize.y);
+	float mapLeftBorder = m_gameScene.mapLeftBorder;
+	float mapRightBorder = m_gameScene.mapRightBorder;
+	float cameraXPosition = player.GetPosition().x + m_windowSize.x / 2 / CAMERA_ZOOM;
+	if (cameraXPosition - m_windowSize.x < mapLeftBorder)
+	{
+		cameraXPosition = mapLeftBorder + m_windowSize.x;
+	}
+	else if (cameraXPosition + m_windowSize.x > mapRightBorder)
+	{
+		cameraXPosition = mapRightBorder - m_windowSize.x;
+	}
+	SetCameraCenter(cameraXPosition, m_windowSize.y);
 }
 
 void CGameView::DrawGameScene()

@@ -14,6 +14,8 @@ CGameScene::CGameScene()
 	coins = m_level.GetAllObjectsByName(TMX_COIN);
 	collisionBlocks = m_level.GetAllObjectsByType(TMX_COLLISION_BLOCK);
 	environmentObjects = m_level.GetAllObjectsByType(TMX_ENVIRONMENT);
+	mapLeftBorder = m_level.GetMapLeftBorder();
+	mapRightBorder = m_level.GetMapRightBorder();
 	Init();
 }
 
@@ -21,7 +23,7 @@ void CGameScene::Init()
 {
 	float leftPosition = m_level.GetPlayerRect().left;
 	float topPosition = m_level.GetPlayerRect().top;
-	player.Init({leftPosition, topPosition}, PLAYER_SPEED_X, PLAYER_SPEED_UP, PLAYER_SPEED_DOWN, GRAVITY, 0, 1, 30);
+	player.Init({leftPosition, topPosition}, PLAYER_SPEED_X, PLAYER_SPEED_UP, PLAYER_SPEED_DOWN, GRAVITY, 0, 100, 30);
 	InitEnemies(m_level.GetAllObjectsByType(TMX_ENEMY));
 }
 

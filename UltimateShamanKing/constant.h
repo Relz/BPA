@@ -25,4 +25,7 @@ static const std::string TMX_COLLISION_BLOCK = "Блок коллизии";
 static const std::string TMX_COIN = "coin";
 static const std::string TMX_ENEMY = "Противник";
 
+static const std::string MAP_LEFT_BORDER = "Левая граница карты";
+static const std::string MAP_RIGHT_BORDER = "Правая граница карты";
+
 #endif //ULTIMATE_SHAMAN_KING_CONSTANT_H

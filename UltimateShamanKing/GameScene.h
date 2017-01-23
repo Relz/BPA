@@ -19,6 +19,9 @@ public:
 	std::vector<TmxObject> coins;
 	std::vector<TmxObject> collisionBlocks;
 	std::vector<TmxObject> environmentObjects;
+	float mapLeftBorder = 0;
+	float mapRightBorder = 0;
+
 private:
 	TmxLevel m_level;
 };

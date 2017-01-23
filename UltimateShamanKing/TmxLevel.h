@@ -43,6 +43,8 @@ public:
 
 	void Draw(sf::RenderTarget & target) const;
 	sf::FloatRect GetPlayerRect() const;
+	float GetMapLeftBorder() const;
+	float GetMapRightBorder() const;
 
 private:
 	int m_width = 0;
@@ -57,6 +59,9 @@ private:
 
 	int m_firstEnvironmentObjectID = 0;
 	std::map<int, EnvironmentObject> m_environmentObjects;
+
+	float m_mapLeftBorder = 0;
+	float m_mapRightBorder = 0;
 };
 
 #endif //ULTIMATE_SHAMAN_KING_TMXLEVEL_H

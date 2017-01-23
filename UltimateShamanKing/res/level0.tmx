@@ -1049,7 +1049,7 @@
   </data>
  </layer>
  <objectgroup name="Коллизия">
-  <object id="1" type="Блок коллизии" x="0" y="0" width="1" height="896">
+  <object id="1" name="Левая граница карты" type="Блок коллизии" x="0" y="0" width="1" height="896">
    <properties>
     <property name="bottomCollision" type="bool" value="true"/>
     <property name="leftCollision" type="bool" value="true"/>
@@ -1057,7 +1057,7 @@
     <property name="topCollision" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="2" type="Блок коллизии" x="12800" y="0" width="1" height="896">
+  <object id="2" name="Правая граница карты" type="Блок коллизии" x="12800" y="0" width="1" height="896">
    <properties>
     <property name="bottomCollision" type="bool" value="true"/>
     <property name="leftCollision" type="bool" value="true"/>
