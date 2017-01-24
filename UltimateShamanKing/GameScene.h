@@ -3,6 +3,7 @@
 
 #include "TmxLevel.h"
 #include "Units/Player.h"
+#include "Units/Beloved.h"
 #include "Units/Enemy.h"
 #include "constant.h"
 
@@ -12,13 +13,14 @@ public:
 	CGameScene();
 	void Init();
 	void InitEnemies(const std::vector<TmxObject> & enemies);
-	void Draw(sf::RenderTarget &target) const;
+	void DrawTiles(sf::RenderTarget &target) const;
 
 	CPlayer player;
+	CBeloved beloved;
 	std::vector<CEnemy*> enemies;
-	std::vector<TmxObject> coins;
 	std::vector<TmxObject> collisionBlocks;
 	std::vector<TmxObject> environmentObjects;
+	std::vector<TmxObject> deadLines;
 	float mapLeftBorder = 0;
 	float mapRightBorder = 0;
 

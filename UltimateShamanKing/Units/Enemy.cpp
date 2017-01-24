@@ -237,7 +237,7 @@ void CEnemy::UpdateDyingSprite()
 	int offsetLeft = 0;
 	textureRect.width = m_startSpriteHeight;
 	textureRect.height = abs(textureRect.width) / 2;
-	if (m_lastDirection.x == 1)
+	if (m_lastDirection.x == -1)
 	{
 		offsetLeft = textureRect.width;
 		textureRect.width = -textureRect.width;

@@ -43,6 +43,7 @@ public:
 
 	void Draw(sf::RenderTarget & target) const;
 	sf::FloatRect GetPlayerRect() const;
+	sf::FloatRect GetBelovedRect() const;
 	float GetMapLeftBorder() const;
 	float GetMapRightBorder() const;
 
@@ -56,6 +57,7 @@ private:
 	std::vector<TmxObject> m_objects;
 	std::vector<TmxLayer> m_layers;
 	sf::FloatRect m_playerRect;
+	sf::FloatRect m_belovedRect;
 
 	int m_firstEnvironmentObjectID = 0;
 	std::map<int, EnvironmentObject> m_environmentObjects;

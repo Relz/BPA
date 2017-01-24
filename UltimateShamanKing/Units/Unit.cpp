@@ -85,6 +85,18 @@ void CUnit::GetCollision(const sf::FloatRect & objectRect,
 	}
 }
 
+void CUnit::GetCollision(const sf::FloatRect & objectRect,
+                         const sf::FloatRect & unitRect,
+                         const sf::FloatRect & unitFutureRect,
+                         float unitDirectionX,
+                         float playerWidth,
+                         Collision & out_collision)
+{
+	float out_collisionBlockTop = 0;
+	float out_collisionBlockBottom = 0;
+	GetCollision(objectRect, unitRect, unitFutureRect, unitDirectionX, playerWidth, out_collisionBlockTop, out_collisionBlockBottom, out_collision);
+}
+
 void CUnit::Init(sf::Vector2f startPosition,
                  float movementSpeed,
                  float upSpeed,
@@ -115,19 +127,24 @@ void CUnit::Draw(sf::RenderTarget & target) const
 
 void CUnit::SetSprite(const std::string & spritePath, const sf::IntRect & playerSpriteRect, float zoom)
 {
+	m_sprite.setTextureRect(sf::IntRect(playerSpriteRect.left, playerSpriteRect.top, playerSpriteRect.width, playerSpriteRect.height));
+	SetSprite(spritePath, zoom);
+}
+
+void CUnit::SetSprite(const std::string & spritePath, float zoom)
+{
 	if (!m_texture.loadFromFile(spritePath))
 	{
 		throw std::invalid_argument("\"" + spritePath + "\" not found");
 	}
 	m_sprite.setTexture(m_texture);
-	m_sprite.setTextureRect(sf::IntRect(playerSpriteRect.left, playerSpriteRect.top, playerSpriteRect.width, playerSpriteRect.height));
-	m_startSpriteOffsetLeft = playerSpriteRect.left;
-	m_startSpriteOffsetTop = playerSpriteRect.top;
-	m_startSpriteWidth = playerSpriteRect.width;
-	m_startSpriteHeight = playerSpriteRect.height;
 	m_sprite.setScale(zoom, zoom);
 	m_width = m_sprite.getGlobalBounds().width;
 	m_height = m_sprite.getGlobalBounds().height;
+	m_startSpriteOffsetLeft = m_sprite.getTextureRect().left;
+	m_startSpriteOffsetTop = m_sprite.getTextureRect().top;
+	m_startSpriteWidth = m_sprite.getTextureRect().width;
+	m_startSpriteHeight = m_sprite.getTextureRect().height;
 }
 
 void CUnit::SetPosition(float x, float y)

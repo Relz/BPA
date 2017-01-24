@@ -42,16 +42,6 @@ void CGameView::InitMenu()
 	m_menuView.AddMenuItem(menuItemHistory);
 }
 
-void CGameView::MenuStartGame()
-{
-	m_isGameStarted = true;
-}
-
-void CGameView::MenuViewStory()
-{
-	std::cout << "Story!\n";
-}
-
 void CGameView::GameLoop()
 {
 	while (m_window.isOpen())
@@ -94,7 +84,10 @@ void CGameView::GameLoop()
 void CGameView::UpdateGameScene()
 {
 	CPlayer &player = m_gameScene.player;
+	CBeloved &beloved = m_gameScene.beloved;
 	player.Process(m_gameScene.collisionBlocks);
+	beloved.UpdateDirection(player.GetLeft());
+	beloved.Process(m_gameScene.collisionBlocks);
 	ProcessEnemies(m_gameScene.enemies);
 	if (player.DoesAttacking())
 	{
@@ -104,6 +97,7 @@ void CGameView::UpdateGameScene()
 	{
 		m_enemiesToIgnore.clear();
 	}
+	TryPlayerToDieFromDeadLine(m_gameScene.deadLines);
 	CleanDeadBodies(m_gameScene.enemies);
 	float mapLeftBorder = m_gameScene.mapLeftBorder;
 	float mapRightBorder = m_gameScene.mapRightBorder;
@@ -121,11 +115,11 @@ void CGameView::UpdateGameScene()
 
 void CGameView::DrawGameScene()
 {
-	m_gameScene.Draw(m_window);
+	m_gameScene.DrawTiles(m_window);
 	DrawTmxObjects(m_gameScene.environmentObjects);
-	DrawTmxObjects(m_gameScene.coins);
 	DrawEnemies(m_gameScene.enemies);
 	m_gameScene.player.Draw(m_window);
+	m_gameScene.beloved.Draw(m_window);
 }
 
 void CGameView::ShowGameOverScreen()
@@ -174,16 +168,15 @@ void CGameView::CreateNewSnowball(CEnemy * enemy)
 void CGameView::TryToKillPlayer(CSnowball * enemySnowball)
 {
 	CPlayer & player = m_gameScene.player;
-	float collisionBlockTop = 0;
-	float collisionBlockBottom = 0;
-	Collision collisionWithPlayer;
 
+	Collision collisionWithPlayer;
 	CUnit::GetCollision(enemySnowball->GetTextureFloatRect(),
 	                    player.GetSpriteRect(),
 	                    player.GetSpriteRect(),
 	                    player.GetDirection().x,
 	                    player.GetWidth(),
-	                    collisionBlockTop, collisionBlockBottom, collisionWithPlayer);
+	                    collisionWithPlayer);
+
 	if (collisionWithPlayer.left || collisionWithPlayer.right)
 	{
 		player.ReduceHP(enemySnowball->GetStrength());
@@ -228,16 +221,13 @@ bool CGameView::DoesPlayerAttackEnemy(const CEnemy * enemy) const
 {
 	const CPlayer & player = m_gameScene.player;
 
-	float collisionBlockTop = 0;
-	float collisionBlockBottom = 0;
 	Collision collisionWithEnemy;
-
 	CUnit::GetCollision(enemy->GetSpriteRect(),
 	                    player.GetSpriteRect(),
 	                    player.GetSpriteRect(),
 	                    player.GetDirection().x,
 	                    player.GetWidth(),
-	                    collisionBlockTop, collisionBlockBottom, collisionWithEnemy);
+	                    collisionWithEnemy);
 
 
 	sf::Vector2f playerDirection = player.GetDirection();
@@ -258,6 +248,27 @@ void CGameView::TryPlayerToAttackEnemies(const std::vector<CEnemy*> & enemies)
 		}
 	}
 }
+
+void CGameView::TryPlayerToDieFromDeadLine(const std::vector<TmxObject> & deadLines)
+{
+	CPlayer & player = m_gameScene.player;
+
+	Collision collisionWithEnemy;
+	for (const TmxObject & deadLine : deadLines)
+	{
+		CUnit::GetCollision(deadLine.rect,
+		                    player.GetSpriteRect(),
+		                    player.GetSpriteRect(),
+		                    player.GetDirection().x,
+		                    player.GetWidth(),
+		                    collisionWithEnemy);
+		if (collisionWithEnemy.Any())
+		{
+			player.Die();
+		}
+	}
+}
+
 
 void CGameView::CleanDeadBodies(std::vector<CEnemy *> &enemies) const
 {

@@ -47,11 +47,6 @@ void CPlayer::Process(const std::vector<TmxObject> & collisionBlocks)
 	Animate(m_animationClock);
 }
 
-void CPlayer::Die()
-{
-	CUnit::Die();
-}
-
 void CPlayer::UpdateDirection()
 {
 	direction = sf::Vector2f();

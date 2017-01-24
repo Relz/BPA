@@ -9,7 +9,6 @@ class CPlayer : public CUnit
 {
 public:
 	void Process(const std::vector<TmxObject> & collisionBlocks) override;
-	void Die() override;
 
 private:
 	void UpdateDirection();

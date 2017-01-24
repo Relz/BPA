@@ -19,13 +19,14 @@ static const std::string WINDOW_TITLE = "Ultimate Shaman King";
 
 static const std::string TMX_PATH = "../res/level0.tmx";
 static const std::string TMX_TILES = "Тайлы";
-static const std::string TMX_ENVIRONMENT = "Окружение";
-static const std::string TMX_PLAYER = "Игрок";
-static const std::string TMX_COLLISION_BLOCK = "Блок коллизии";
-static const std::string TMX_COIN = "coin";
-static const std::string TMX_ENEMY = "Противник";
+static const std::string TMX_ENVIRONMENT_TYPE = "Окружение";
+static const std::string TMX_PLAYER_NAME = "Игрок";
+static const std::string TMX_COLLISION_BLOCK_TYPE = "Блок коллизии";
+static const std::string TMX_ENEMY_TYPE = "Противник";
+static const std::string TMX_BELOVED_NAME = "Любимая";
+static const std::string TMX_DEAD_LINE_TYPE = "Линия смерти";
 
-static const std::string MAP_LEFT_BORDER = "Левая граница карты";
-static const std::string MAP_RIGHT_BORDER = "Правая граница карты";
+static const std::string TMX_MAP_LEFT_BORDER = "Левая граница карты";
+static const std::string TMX_MAP_RIGHT_BORDER = "Правая граница карты";
 
 #endif //ULTIMATE_SHAMAN_KING_CONSTANT_H

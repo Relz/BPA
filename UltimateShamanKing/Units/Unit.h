@@ -12,6 +12,11 @@ struct Collision
 	bool right = false;
 	bool bottom = false;
 	bool left = false;
+
+	bool Any()
+	{
+		return top || right || bottom || left;
+	}
 };
 
 class CUnit
@@ -27,6 +32,7 @@ public:
 	          size_t strength);
 	void Draw(sf::RenderTarget & target) const;
 	void SetSprite(const std::string & spritePath, const sf::IntRect & playerSpriteRect, float zoom);
+	void SetSprite(const std::string & spritePath, float zoom);
 	void SetPosition(float x, float y);
 	void SetPosition(const sf::Vector2f & position);
 	void SetImpuls(float x, float y);
@@ -65,6 +71,13 @@ public:
 	                         float playerWidth,
 	                         float & out_collisionBlockTop,
 	                         float & out_collisionBlockBottom,
+	                         Collision & out_collision);
+
+	static void GetCollision(const sf::FloatRect & objectRect,
+	                         const sf::FloatRect & unitRect,
+	                         const sf::FloatRect & unitFutureRect,
+	                         float unitDirectionX,
+	                         float playerWidth,
 	                         Collision & out_collision);
 	static bool DoesObjectsPlacesInOneVertical(float object1LeftX, float object1RightX, float object2LeftX, float object2RightX);
 	static bool DoesObjectsPlacesInOneHorizontal(float object1TopY, float object1BottomY, float object2TopY, float object2BottomY);

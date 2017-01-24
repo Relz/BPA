@@ -135,7 +135,7 @@ bool TmxLevel::LoadFromFile(const std::string &filepath)
 			tilesetElement = tilesetElement->NextSiblingElement("tileset");
 			continue;
 		}
-		if (tilesetElement->Attribute("name") == TMX_ENVIRONMENT)
+		if (tilesetElement->Attribute("name") == TMX_ENVIRONMENT_TYPE)
 		{
 			m_firstEnvironmentObjectID = 0;
 			if (tilesetElement->QueryIntAttribute("firstgid", &m_firstEnvironmentObjectID) != XML_SUCCESS)
@@ -334,7 +334,7 @@ bool TmxLevel::LoadFromFile(const std::string &filepath)
 
 			sf::Sprite sprite;
 
-			if (objectGroupElement->Attribute("name") == TMX_ENVIRONMENT)
+			if (objectGroupElement->Attribute("name") == TMX_ENVIRONMENT_TYPE)
 			{
 				if (objectElement->QueryIntAttribute("width", &width) != XML_SUCCESS)
 				{
@@ -360,16 +360,16 @@ bool TmxLevel::LoadFromFile(const std::string &filepath)
 				sprite.setPosition(x, y - height);
 				sprite.setScale(width / originalWidth, height / originalHeight);
 			}
-			else if (objectType == TMX_COLLISION_BLOCK)
+			else if (objectType == TMX_COLLISION_BLOCK_TYPE)
 			{
 				sprite.setTexture(m_tilesetImage);
 				sprite.setTextureRect(sf::IntRect(0, 0, 0, 0));
 				sprite.setPosition(x, y);
-				if (objectName == MAP_LEFT_BORDER)
+				if (objectName == TMX_MAP_LEFT_BORDER)
 				{
 					m_mapLeftBorder = x;
 				}
-				else if (objectName == MAP_RIGHT_BORDER)
+				else if (objectName == TMX_MAP_RIGHT_BORDER)
 				{
 					m_mapRightBorder = x;
 				}
@@ -447,7 +447,7 @@ bool TmxLevel::LoadFromFile(const std::string &filepath)
 			object.leftCollision = leftCollision;
 
 			sf::FloatRect objectRect;
-			objectRect.top = (objectName == TMX_PLAYER || objectType == TMX_ENEMY) ? y - height : y;
+			objectRect.top = (objectName == TMX_PLAYER_NAME || objectName == TMX_BELOVED_NAME || objectType == TMX_ENEMY_TYPE) ? y - height : y;
 			objectRect.left = x;
 			objectRect.height = height;
 			objectRect.width = width;
@@ -467,9 +467,13 @@ bool TmxLevel::LoadFromFile(const std::string &filepath)
 					property = property->NextSiblingElement("property");
 				}
 			}
-			if (objectName == TMX_PLAYER)
+			if (objectName == TMX_PLAYER_NAME)
 			{
 				m_playerRect = object.rect;
+			}
+			else if (objectName == TMX_BELOVED_NAME)
+			{
+				m_belovedRect = object.rect;
 			}
 			else
 			{
@@ -532,6 +536,11 @@ void TmxLevel::Draw(sf::RenderTarget & target)const
 sf::FloatRect TmxLevel::GetPlayerRect() const
 {
 	return m_playerRect;
+}
+
+sf::FloatRect TmxLevel::GetBelovedRect() const
+{
+	return m_belovedRect;
 }
 
 float TmxLevel::GetMapLeftBorder() const

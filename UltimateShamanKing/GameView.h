@@ -18,8 +18,6 @@ private:
 	void InitWindow();
 	void InitCamera();
 	void InitMenu();
-	void MenuStartGame();
-	void MenuViewStory();
 	void UpdateGameScene();
 	void SetCameraCenter(float cameraX, float cameraY);
 	void DrawGameScene();
@@ -29,6 +27,7 @@ private:
 	void ProcessEnemies(std::vector<CEnemy*> & enemies);
 	bool DoesPlayerAttackEnemy(const CEnemy * enemy) const;
 	void TryPlayerToAttackEnemies(const std::vector<CEnemy*> & enemies);
+	void TryPlayerToDieFromDeadLine(const std::vector<TmxObject> & tmxObjects);
 	void CleanDeadBodies(std::vector<CEnemy*> & enemies) const;
 	void CreateNewSnowball(CEnemy * enemy);
 	void TryToKillPlayer(CSnowball * enemySnowball);
