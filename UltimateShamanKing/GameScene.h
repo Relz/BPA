@@ -4,7 +4,10 @@
 #include "TmxLevel.h"
 #include "Units/Player.h"
 #include "Units/Beloved.h"
+#include "Units/Villain.h"
+#include "Units/VillainSpirit.h"
 #include "Units/Enemy.h"
+#include "Fire.h"
 #include "constant.h"
 
 class CGameScene
@@ -17,10 +20,14 @@ public:
 
 	CPlayer player;
 	CBeloved beloved;
+	CVillain villain;
+	CVillainSpirit villainSpirit;
+	CFire fire;
 	std::vector<CEnemy*> enemies;
 	std::vector<TmxObject> collisionBlocks;
 	std::vector<TmxObject> environmentObjects;
 	std::vector<TmxObject> deadLines;
+	std::vector<TmxObject> actionLines;
 	float mapLeftBorder = 0;
 	float mapRightBorder = 0;
 

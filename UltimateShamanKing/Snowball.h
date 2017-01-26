@@ -16,6 +16,7 @@ public:
 	float GetMaxLivingTimeSec() const;
 	sf::FloatRect GetTextureFloatRect() const;
 	float GetStrength() const;
+	bool IsVisible() const;
 private:
 	sf::Sprite m_sprite;
 	sf::Texture m_texture;
@@ -24,7 +25,7 @@ private:
 	float m_speed = 0;
 	float m_maxLivingTimeSec = 0;
 	float m_strength = 0;
-	bool m_hidden = false;
+	bool m_visible = true;
 
 	sf::Clock m_livingClock;
 };

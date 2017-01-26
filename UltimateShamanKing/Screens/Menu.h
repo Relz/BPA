@@ -74,7 +74,7 @@ private:
 	void UpdateMenuItemsPosition();
 	std::vector<MenuItem*> m_menuItems;
 	sf::Vector2f m_position;
-	bool m_hidden = false;
+	bool m_visible = true;
 };
 
 

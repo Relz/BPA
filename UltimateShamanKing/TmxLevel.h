@@ -44,6 +44,8 @@ public:
 	void Draw(sf::RenderTarget & target) const;
 	sf::FloatRect GetPlayerRect() const;
 	sf::FloatRect GetBelovedRect() const;
+	sf::FloatRect GetVillainRect() const;
+	sf::FloatRect GetVillainSpiritRect() const;
 	float GetMapLeftBorder() const;
 	float GetMapRightBorder() const;
 
@@ -58,6 +60,8 @@ private:
 	std::vector<TmxLayer> m_layers;
 	sf::FloatRect m_playerRect;
 	sf::FloatRect m_belovedRect;
+	sf::FloatRect m_villainRect;
+	sf::FloatRect m_villainSpiritRect;
 
 	int m_firstEnvironmentObjectID = 0;
 	std::map<int, EnvironmentObject> m_environmentObjects;

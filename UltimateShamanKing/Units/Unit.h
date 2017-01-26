@@ -53,13 +53,16 @@ public:
 	float GetDyingTimeSec() const;
 	float GetDyingClockSec() const;
 	float GetUpSpeed() const;
-	size_t GetHP() const;
-	size_t GetStrength() const;
+	float GetHP() const;
+	float GetStrength() const;
 	bool IsStaying() const;
 	bool IsAlive() const;
 	bool DoesAttacking() const;
 	bool DoesJumping() const;
 	void ReduceHP(float value);
+	void Show();
+	void Hide();
+	bool IsVisible() const;
 
 	virtual void Process(const std::vector<TmxObject> & collisionBlocks) = 0;
 	virtual void Die();
@@ -117,6 +120,8 @@ protected:
 
 	float HP = 100;
 	float strength = 0;
+
+	bool m_visible = true;
 
 private:
 	sf::Texture m_texture;

@@ -475,6 +475,14 @@ bool TmxLevel::LoadFromFile(const std::string &filepath)
 			{
 				m_belovedRect = object.rect;
 			}
+			else if (objectName == TMX_VILLAIN_NAME)
+			{
+				m_villainRect = object.rect;
+			}
+			else if (objectName == TMX_VILLAIN_SPIRIT_NAME)
+			{
+				m_villainSpiritRect = object.rect;
+			}
 			else
 			{
 				m_objects.push_back(object);
@@ -541,6 +549,16 @@ sf::FloatRect TmxLevel::GetPlayerRect() const
 sf::FloatRect TmxLevel::GetBelovedRect() const
 {
 	return m_belovedRect;
+}
+
+sf::FloatRect TmxLevel::GetVillainRect() const
+{
+	return m_villainRect;
+}
+
+sf::FloatRect TmxLevel::GetVillainSpiritRect() const
+{
+	return m_villainSpiritRect;
 }
 
 float TmxLevel::GetMapLeftBorder() const

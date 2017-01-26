@@ -25,7 +25,7 @@ void CSnowball::SetImage(const std::string & imagePath, float zoom)
 
 void CSnowball::Draw(sf::RenderTarget & target) const
 {
-	if (!m_hidden)
+	if (IsVisible())
 	{
 		target.draw(m_sprite);
 	}
@@ -38,7 +38,7 @@ void CSnowball::Process()
 
 void CSnowball::Hide()
 {
-	m_hidden = true;
+	m_visible = false;
 }
 
 float CSnowball::GetLivingTimeSec() const
@@ -59,4 +59,9 @@ sf::FloatRect CSnowball::GetTextureFloatRect() const
 float CSnowball::GetStrength() const
 {
 	return m_strength;
+}
+
+bool CSnowball::IsVisible() const
+{
+	return m_visible;
 }

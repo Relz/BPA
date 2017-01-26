@@ -16,7 +16,7 @@ void CMenu::SetPosition(const sf::Vector2f &position)
 
 void CMenu::Draw(sf::RenderTarget &target)
 {
-	if (!m_hidden)
+	if (IsVisible())
 	{
 		for (MenuItem * menuItem : m_menuItems)
 		{
@@ -36,12 +36,12 @@ void CMenu::UpdateMenuItemsPosition()
 
 void CMenu::Hide()
 {
-	m_hidden = true;
+	m_visible = false;
 }
 
 void CMenu::Show()
 {
-	m_hidden = false;
+	m_visible = true;
 }
 
 static bool IsDotInRect(const sf::Vector2i & dot, const sf::FloatRect & rect)
@@ -77,5 +77,5 @@ void CMenu::Process(sf::RenderWindow & window)
 
 bool CMenu::IsVisible() const
 {
-	return !m_hidden;
+	return m_visible;
 }

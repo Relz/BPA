@@ -24,13 +24,16 @@ private:
 	void ShowGameOverScreen();
 	void DrawTmxObjects(const std::vector<TmxObject> & tmxObjects);
 	void DrawEnemies(const std::vector<CEnemy*> & enemies);
-	void ProcessEnemies(std::vector<CEnemy*> & enemies);
-	bool DoesPlayerAttackEnemy(const CEnemy * enemy) const;
-	void TryPlayerToAttackEnemies(const std::vector<CEnemy*> & enemies);
-	void TryPlayerToDieFromDeadLine(const std::vector<TmxObject> & tmxObjects);
+	void ProcessEnemies(std::vector<CEnemy*> & enemies, CPlayer & player);
+	bool DoesPlayerAttackEnemy(const CPlayer & player, const CEnemy * enemy) const;
+	void TryPlayerToAttackEnemies(const CPlayer & player, const std::vector<CEnemy*> & enemies);
+	void TryPlayerToDieFromDeadLine(CPlayer & player, const std::vector<TmxObject> & deadLines);
 	void CleanDeadBodies(std::vector<CEnemy*> & enemies) const;
-	void CreateNewSnowball(CEnemy * enemy);
-	void TryToKillPlayer(CSnowball * enemySnowball);
+	void CreateNewSnowball(CEnemy * enemy, float playerLeft);
+	void TryToKillPlayer(CSnowball * enemySnowball, CPlayer & player);
+	void UpdatePlayerCamera(const CPlayer & player);
+	void TryPlayerToRunAction(const CPlayer & player, std::vector<TmxObject> & actionLines);
+	void StealBeloved(CBeloved & beloved);
 
 	sf::RenderWindow m_window;
 	sf::View m_camera;

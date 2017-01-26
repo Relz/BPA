@@ -121,8 +121,11 @@ void CUnit::Init(sf::Vector2f startPosition,
 
 void CUnit::Draw(sf::RenderTarget & target) const
 {
-	m_HPLine.Draw(target);
-	target.draw(m_sprite);
+	if (IsVisible())
+	{
+		m_HPLine.Draw(target);
+		target.draw(m_sprite);
+	}
 }
 
 void CUnit::SetSprite(const std::string & spritePath, const sf::IntRect & playerSpriteRect, float zoom)
@@ -162,7 +165,7 @@ void CUnit::SetPosition(const sf::Vector2f & position)
 	HPLinePosition.y -= 50;
 	m_HPLine.SetPosition(HPLinePosition);
 	m_sprite.setPosition(position);
-	}
+}
 
 void CUnit::SetImpuls(float x, float y)
 {
@@ -289,12 +292,12 @@ float CUnit::GetUpSpeed() const
 	return upSpeed;
 }
 
-size_t CUnit::GetHP() const
+float CUnit::GetHP() const
 {
 	return HP;
 }
 
-size_t CUnit::GetStrength() const
+float CUnit::GetStrength() const
 {
 	return strength;
 }
@@ -327,6 +330,21 @@ void CUnit::ReduceHP(float value)
 	{
 		Die();
 	}
+}
+
+void CUnit::Show()
+{
+	m_visible = true;
+}
+
+void CUnit::Hide()
+{
+	m_visible = false;
+}
+
+bool CUnit::IsVisible() const
+{
+	return m_visible;
 }
 
 void CUnit::UpdateCollision(const std::vector<TmxObject> & collisionBlocks)

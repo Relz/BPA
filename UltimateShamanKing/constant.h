@@ -24,7 +24,10 @@ static const std::string TMX_PLAYER_NAME = "Игрок";
 static const std::string TMX_COLLISION_BLOCK_TYPE = "Блок коллизии";
 static const std::string TMX_ENEMY_TYPE = "Противник";
 static const std::string TMX_BELOVED_NAME = "Любимая";
+static const std::string TMX_VILLAIN_NAME = "Злодей";
+static const std::string TMX_VILLAIN_SPIRIT_NAME = "Дух злодея";
 static const std::string TMX_DEAD_LINE_TYPE = "Линия смерти";
+static const std::string TMX_ACTION_LINE_TYPE = "Линия события";
 
 static const std::string TMX_MAP_LEFT_BORDER = "Левая граница карты";
 static const std::string TMX_MAP_RIGHT_BORDER = "Правая граница карты";

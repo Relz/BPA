@@ -83,34 +83,32 @@ void CGameView::GameLoop()
 
 void CGameView::UpdateGameScene()
 {
-	CPlayer &player = m_gameScene.player;
-	CBeloved &beloved = m_gameScene.beloved;
+	CPlayer & player = m_gameScene.player;
+	CBeloved & beloved = m_gameScene.beloved;
+	CVillain & villain = m_gameScene.villain;
+	CFire & fire = m_gameScene.fire;
+	CVillainSpirit & villainSpirit = m_gameScene.villainSpirit;
 	player.Process(m_gameScene.collisionBlocks);
 	beloved.UpdateDirection(player.GetLeft());
 	beloved.Process(m_gameScene.collisionBlocks);
-	ProcessEnemies(m_gameScene.enemies);
+	villain.UpdateDirection(player.GetLeft());
+	villain.Process(m_gameScene.collisionBlocks);
+	villainSpirit.UpdateDirection(player.GetLeft());
+	villainSpirit.Process(m_gameScene.collisionBlocks);
+	fire.Process();
+	ProcessEnemies(m_gameScene.enemies, player);
 	if (player.DoesAttacking())
 	{
-		TryPlayerToAttackEnemies(m_gameScene.enemies);
+		TryPlayerToAttackEnemies(player, m_gameScene.enemies);
 	}
 	else if (!m_enemiesToIgnore.empty())
 	{
 		m_enemiesToIgnore.clear();
 	}
-	TryPlayerToDieFromDeadLine(m_gameScene.deadLines);
+	TryPlayerToDieFromDeadLine(player, m_gameScene.deadLines);
 	CleanDeadBodies(m_gameScene.enemies);
-	float mapLeftBorder = m_gameScene.mapLeftBorder;
-	float mapRightBorder = m_gameScene.mapRightBorder;
-	float cameraXPosition = player.GetPosition().x + m_windowSize.x / 2 / CAMERA_ZOOM;
-	if (cameraXPosition - m_windowSize.x < mapLeftBorder)
-	{
-		cameraXPosition = mapLeftBorder + m_windowSize.x;
-	}
-	else if (cameraXPosition + m_windowSize.x > mapRightBorder)
-	{
-		cameraXPosition = mapRightBorder - m_windowSize.x;
-	}
-	SetCameraCenter(cameraXPosition, m_windowSize.y);
+	UpdatePlayerCamera(player);
+	TryPlayerToRunAction(player, m_gameScene.actionLines);
 }
 
 void CGameView::DrawGameScene()
@@ -119,7 +117,10 @@ void CGameView::DrawGameScene()
 	DrawTmxObjects(m_gameScene.environmentObjects);
 	DrawEnemies(m_gameScene.enemies);
 	m_gameScene.player.Draw(m_window);
+	m_gameScene.villainSpirit.Draw(m_window);
 	m_gameScene.beloved.Draw(m_window);
+	m_gameScene.villain.Draw(m_window);
+	m_gameScene.fire.Draw(m_window);
 }
 
 void CGameView::ShowGameOverScreen()
@@ -145,11 +146,10 @@ void CGameView::DrawEnemies(const std::vector<CEnemy*> & enemies)
 	}
 }
 
-void CGameView::CreateNewSnowball(CEnemy * enemy)
+void CGameView::CreateNewSnowball(CEnemy * enemy, float playerLeft)
 {
-	CPlayer & player = m_gameScene.player;
 	float directionX = 0;
-	if (player.GetLeft() < enemy->GetLeft())
+	if (playerLeft< enemy->GetLeft())
 	{
 		directionX = -1;
 	}
@@ -165,10 +165,8 @@ void CGameView::CreateNewSnowball(CEnemy * enemy)
 	enemy->CreateNewSnowball(directionX);
 }
 
-void CGameView::TryToKillPlayer(CSnowball * enemySnowball)
+void CGameView::TryToKillPlayer(CSnowball * enemySnowball, CPlayer & player)
 {
-	CPlayer & player = m_gameScene.player;
-
 	Collision collisionWithPlayer;
 	CUnit::GetCollision(enemySnowball->GetTextureFloatRect(),
 	                    player.GetSpriteRect(),
@@ -185,27 +183,23 @@ void CGameView::TryToKillPlayer(CSnowball * enemySnowball)
 	}
 }
 
-void CGameView::ProcessEnemies(std::vector<CEnemy*> & enemies)
+void CGameView::ProcessEnemies(std::vector<CEnemy*> & enemies, CPlayer & player)
 {
 	for (CEnemy * enemy : enemies)
 	{
 		enemy->Process(m_gameScene.collisionBlocks);
 		if (enemy->IsAlive())
 		{
-			if (enemy->GetSnowball() == nullptr)
+			if (enemy->GetSnowball() == nullptr || enemy->GetSnowball()->GetLivingTimeSec() > enemy->GetSnowball()->GetMaxLivingTimeSec())
 			{
-				CreateNewSnowball(enemy);
-			}
-			if (enemy->GetSnowball()->GetLivingTimeSec() > enemy->GetSnowball()->GetMaxLivingTimeSec())
-			{
-				CreateNewSnowball(enemy);
+				CreateNewSnowball(enemy, player.GetLeft());
 			}
 			enemy->GetSnowball()->Process();
 			enemy->GetSnowball()->Draw(m_window);
 			bool snowballNotProcessed = std::find(m_snowballsToIgnore.begin(), m_snowballsToIgnore.end(), enemy->GetSnowball()) == m_snowballsToIgnore.end();
 			if (snowballNotProcessed)
 			{
-				TryToKillPlayer(enemy->GetSnowball());
+				TryToKillPlayer(enemy->GetSnowball(), player);
 			}
 		}
 	}
@@ -217,10 +211,8 @@ void CGameView::SetCameraCenter(float cameraX, float cameraY)
 	m_window.setView(m_camera);
 }
 
-bool CGameView::DoesPlayerAttackEnemy(const CEnemy * enemy) const
+bool CGameView::DoesPlayerAttackEnemy(const CPlayer & player, const CEnemy * enemy) const
 {
-	const CPlayer & player = m_gameScene.player;
-
 	Collision collisionWithEnemy;
 	CUnit::GetCollision(enemy->GetSpriteRect(),
 	                    player.GetSpriteRect(),
@@ -229,18 +221,16 @@ bool CGameView::DoesPlayerAttackEnemy(const CEnemy * enemy) const
 	                    player.GetWidth(),
 	                    collisionWithEnemy);
 
-
 	sf::Vector2f playerDirection = player.GetDirection();
 	return ((collisionWithEnemy.left && playerDirection.x == -1) || (collisionWithEnemy.right && playerDirection.x == 1));
 }
 
-void CGameView::TryPlayerToAttackEnemies(const std::vector<CEnemy*> & enemies)
+void CGameView::TryPlayerToAttackEnemies(const CPlayer & player, const std::vector<CEnemy*> & enemies)
 {
-	const CPlayer & player = m_gameScene.player;
 	for (CEnemy * enemy : enemies)
 	{
 		bool enemyNotProcessed = std::find(m_enemiesToIgnore.begin(), m_enemiesToIgnore.end(), enemy) == m_enemiesToIgnore.end();
-		if (enemyNotProcessed && enemy->IsAlive() && DoesPlayerAttackEnemy(enemy))
+		if (enemyNotProcessed && enemy->IsAlive() && DoesPlayerAttackEnemy(player, enemy))
 		{
 			m_enemiesToIgnore.push_back(enemy);
 			enemy->SetImpuls(player.GetDirection().x * 5.0f, enemy->GetUpSpeed() * 2.0f);
@@ -249,11 +239,9 @@ void CGameView::TryPlayerToAttackEnemies(const std::vector<CEnemy*> & enemies)
 	}
 }
 
-void CGameView::TryPlayerToDieFromDeadLine(const std::vector<TmxObject> & deadLines)
+void CGameView::TryPlayerToDieFromDeadLine(CPlayer & player, const std::vector<TmxObject> & deadLines)
 {
-	CPlayer & player = m_gameScene.player;
-
-	Collision collisionWithEnemy;
+	Collision collisionWithDeadLine;
 	for (const TmxObject & deadLine : deadLines)
 	{
 		CUnit::GetCollision(deadLine.rect,
@@ -261,8 +249,8 @@ void CGameView::TryPlayerToDieFromDeadLine(const std::vector<TmxObject> & deadLi
 		                    player.GetSpriteRect(),
 		                    player.GetDirection().x,
 		                    player.GetWidth(),
-		                    collisionWithEnemy);
-		if (collisionWithEnemy.Any())
+		                    collisionWithDeadLine);
+		if (collisionWithDeadLine.Any())
 		{
 			player.Die();
 		}
@@ -280,4 +268,47 @@ void CGameView::CleanDeadBodies(std::vector<CEnemy *> &enemies) const
 			break;
 		}
 	}
+}
+
+void CGameView::UpdatePlayerCamera(const CPlayer & player)
+{
+	float mapLeftBorder = m_gameScene.mapLeftBorder;
+	float mapRightBorder = m_gameScene.mapRightBorder;
+	float cameraXPosition = player.GetPosition().x + m_windowSize.x / 2 / CAMERA_ZOOM;
+	if (cameraXPosition - m_windowSize.x < mapLeftBorder)
+	{
+		cameraXPosition = mapLeftBorder + m_windowSize.x;
+	}
+	else if (cameraXPosition + m_windowSize.x > mapRightBorder)
+	{
+		cameraXPosition = mapRightBorder - m_windowSize.x;
+	}
+	SetCameraCenter(cameraXPosition, m_windowSize.y);
+}
+
+void CGameView::TryPlayerToRunAction(const CPlayer & player, std::vector<TmxObject> & actionLines)
+{
+	Collision collisionWithActionLine;
+	for (auto it = actionLines.begin(); it != actionLines.end(); ++it)
+	{
+		CUnit::GetCollision(it->rect,
+		                    player.GetSpriteRect(),
+		                    player.GetSpriteRect(),
+		                    player.GetDirection().x,
+		                    player.GetWidth(),
+		                    collisionWithActionLine);
+		if (collisionWithActionLine.Any())
+		{
+			actionLines.erase(it);
+			StealBeloved(m_gameScene.beloved);
+			break;
+		}
+	}
+}
+
+void CGameView::StealBeloved(CBeloved & beloved)
+{
+	m_gameScene.fire.Show();
+	m_gameScene.villain.Show();
+	m_gameScene.villainSpirit.Show();
 }
