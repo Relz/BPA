@@ -18,18 +18,14 @@ void CVillainSpirit::UpdateDirection(float playerLeft)
 {
 	if (playerLeft > GetLeft() + GetSpriteWidth() / 2)
 	{
-		direction.x = 1;
+		TurnRight();
 	}
 	else if (playerLeft < GetLeft() + GetSpriteWidth() / 2)
 	{
-		direction.x = -1;
-	}
-	if (direction.x == 1 || direction.x == -1)
-	{
-		m_lastDirection.x = direction.x;
+		TurnLeft();
 	}
 
-	sf::IntRect rect = m_sprite.getTextureRect();
+	sf::IntRect rect = m_modelSprite.getTextureRect();
 	if (GetDirection().x == 1)
 	{
 		rect.left = 0;
@@ -40,5 +36,5 @@ void CVillainSpirit::UpdateDirection(float playerLeft)
 		rect.left = m_startSpriteWidth;
 		rect.width = -m_startSpriteWidth;
 	}
-	m_sprite.setTextureRect(rect);
+	m_modelSprite.setTextureRect(rect);
 }

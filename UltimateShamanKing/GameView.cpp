@@ -44,6 +44,7 @@ void CGameView::InitMenu()
 
 void CGameView::GameLoop()
 {
+	bool enterReleased = true;
 	while (m_window.isOpen())
 	{
 		sf::Event event;
@@ -57,6 +58,15 @@ void CGameView::GameLoop()
 			else if (m_isGameStarted && !m_gameScene.player.IsAlive() && sf::Keyboard::isKeyPressed(sf::Keyboard::Return))
 			{
 				m_gameScene.Init();
+			}
+			else if (!m_gameScene.dialog.IsEmpty() && enterReleased && sf::Keyboard::isKeyPressed(sf::Keyboard::Return))
+			{
+				m_gameScene.dialog.NextReplica();
+				enterReleased = false;
+			}
+			else if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Return))
+			{
+				enterReleased = true;
 			}
 		}
 		m_window.clear(BACKGROUND_COLOR);
@@ -88,27 +98,45 @@ void CGameView::UpdateGameScene()
 	CVillain & villain = m_gameScene.villain;
 	CFire & fire = m_gameScene.fire;
 	CVillainSpirit & villainSpirit = m_gameScene.villainSpirit;
-	player.Process(m_gameScene.collisionBlocks);
-	beloved.UpdateDirection(player.GetLeft());
-	beloved.Process(m_gameScene.collisionBlocks);
-	villain.UpdateDirection(player.GetLeft());
-	villain.Process(m_gameScene.collisionBlocks);
-	villainSpirit.UpdateDirection(player.GetLeft());
-	villainSpirit.Process(m_gameScene.collisionBlocks);
-	fire.Process();
-	ProcessEnemies(m_gameScene.enemies, player);
-	if (player.DoesAttacking())
+	CDialog & dialog = m_gameScene.dialog;
+	if (dialog.IsEmpty())
 	{
-		TryPlayerToAttackEnemies(player, m_gameScene.enemies);
+		player.Process(m_gameScene.collisionBlocks);
+		beloved.UpdateDirection(player.GetLeft());
+		beloved.Process(m_gameScene.collisionBlocks);
+		villain.UpdateDirection(player.GetLeft());
+		villain.Process(m_gameScene.collisionBlocks);
+		villainSpirit.UpdateDirection(player.GetLeft());
+		villainSpirit.Process(m_gameScene.collisionBlocks);
+		ProcessEnemies(m_gameScene.enemies, player);
+		if (player.DoesAttacking())
+		{
+			TryPlayerToAttackEnemies(player, m_gameScene.enemies);
+		}
+		else if (!m_enemiesToIgnore.empty())
+		{
+			m_enemiesToIgnore.clear();
+		}
+		TryPlayerToDieFromDeadLine(player, m_gameScene.deadLines);
+		CleanDeadBodies(m_gameScene.enemies);
+		UpdatePlayerCamera(player);
+		TryPlayerToRunAction(player, m_gameScene.actionLines);
+		if (dialog.IsJustClosed())
+		{
+			StealBeloved();
+		}
 	}
-	else if (!m_enemiesToIgnore.empty())
+	FireState fireState = FireState::SLEEP;
+	fire.Process(fireState);
+	if (fireState == FireState::DISSAPPEARED && fire.DoesInvokeDialogAfterProccessing())
 	{
-		m_enemiesToIgnore.clear();
+		sf::Vector2f avatarPositionYoh(m_camera.getCenter().x - m_camera.getSize().x / 2, m_camera.getSize().y - player.GetDialogAvatarAngry()->getGlobalBounds().height);
+		sf::Vector2f avatarPositionHao(m_camera.getCenter().x - m_camera.getSize().x / 2, m_camera.getSize().y - villain.GetDialogAvatarNormal()->getGlobalBounds().height);
+		dialog.Add(new CReplica(player.GetName(), player.GetDialogAvatarAngry(), L"Хао! Отпусти ее, сейчас же!", avatarPositionYoh, m_camera.getSize().x));
+		dialog.Add(new CReplica(villain.GetName(), villain.GetDialogAvatarNormal(), L"Не так быстро, дорогой братец. И почему такой серьезный? =)", avatarPositionHao, m_camera.getSize().x));
+		dialog.Add(new CReplica(player.GetName(), player.GetDialogAvatarAngry(), L"Что тебе нужно?!", avatarPositionYoh, m_camera.getSize().x));
+		dialog.Add(new CReplica(villain.GetName(), villain.GetDialogAvatarNormal(), L"И неужели она тебе так дорога? Ну что же, докажи это =)", avatarPositionHao, m_camera.getSize().x));
 	}
-	TryPlayerToDieFromDeadLine(player, m_gameScene.deadLines);
-	CleanDeadBodies(m_gameScene.enemies);
-	UpdatePlayerCamera(player);
-	TryPlayerToRunAction(player, m_gameScene.actionLines);
 }
 
 void CGameView::DrawGameScene()
@@ -121,6 +149,7 @@ void CGameView::DrawGameScene()
 	m_gameScene.beloved.Draw(m_window);
 	m_gameScene.villain.Draw(m_window);
 	m_gameScene.fire.Draw(m_window);
+	m_gameScene.dialog.Draw(m_window);
 }
 
 void CGameView::ShowGameOverScreen()
@@ -221,7 +250,7 @@ bool CGameView::DoesPlayerAttackEnemy(const CPlayer & player, const CEnemy * ene
 	                    player.GetWidth(),
 	                    collisionWithEnemy);
 
-	sf::Vector2f playerDirection = player.GetDirection();
+	sf::Vector2f playerDirection = player.GetLastDirection();
 	return ((collisionWithEnemy.left && playerDirection.x == -1) || (collisionWithEnemy.right && playerDirection.x == 1));
 }
 
@@ -300,15 +329,23 @@ void CGameView::TryPlayerToRunAction(const CPlayer & player, std::vector<TmxObje
 		if (collisionWithActionLine.Any())
 		{
 			actionLines.erase(it);
-			StealBeloved(m_gameScene.beloved);
+			AppearVillain();
 			break;
 		}
 	}
 }
 
-void CGameView::StealBeloved(CBeloved & beloved)
+void CGameView::AppearVillain()
 {
-	m_gameScene.fire.Show();
+	m_gameScene.fire.Show(true);
 	m_gameScene.villain.Show();
 	m_gameScene.villainSpirit.Show();
+}
+
+void CGameView::StealBeloved()
+{
+	m_gameScene.fire.Show(false);
+	m_gameScene.villain.Hide();
+	m_gameScene.villainSpirit.Hide();
+	m_gameScene.beloved.Hide();
 }

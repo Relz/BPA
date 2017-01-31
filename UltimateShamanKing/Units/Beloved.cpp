@@ -16,13 +16,16 @@ void CBeloved::Process(const std::vector<TmxObject> &collisionBlocks)
 
 void CBeloved::UpdateDirection(float playerLeft)
 {
-	direction.x = (GetLeft() < playerLeft) ? 1 : -1;
-	if (direction.x == 1 || direction.x == -1)
+	if (GetLeft() < playerLeft)
 	{
-		m_lastDirection.x = direction.x;
+		TurnRight();
+	}
+	else
+	{
+		TurnLeft();
 	}
 
-	sf::IntRect rect = m_sprite.getTextureRect();
+	sf::IntRect rect = m_modelSprite.getTextureRect();
 	if (GetDirection().x == 1)
 	{
 		rect.left = 0;
@@ -33,5 +36,5 @@ void CBeloved::UpdateDirection(float playerLeft)
 		rect.left = m_startSpriteWidth;
 		rect.width = -m_startSpriteWidth;
 	}
-	m_sprite.setTextureRect(rect);
+	m_modelSprite.setTextureRect(rect);
 }

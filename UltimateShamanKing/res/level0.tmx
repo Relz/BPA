@@ -1325,7 +1325,7 @@
   <object id="104" name="Желтое дерево" type="Окружение" gid="56" x="11755.9" y="909.99" width="539.663" height="526.267"/>
  </objectgroup>
  <objectgroup name="Движущиеся">
-  <object id="25" name="Игрок" x="11000" y="600" width="1" height="1"/>
+  <object id="25" name="Игрок" x="11400" y="600" width="1" height="1"/>
   <object id="63" name="Монстр" type="Противник" x="1300" y="615.5" width="1" height="1"/>
   <object id="124" name="Монстр" type="Противник" x="2211.85" y="563.694" width="1" height="1"/>
   <object id="125" name="Монстр" type="Противник" x="3442.41" y="705.853" width="1" height="1"/>

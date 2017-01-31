@@ -18,11 +18,11 @@ void CPlayer::Process(const std::vector<TmxObject> & collisionBlocks)
 			m_attacking = false;
 		}
 		UpdateCollision(collisionBlocks);
-		if ((direction.x > 0 && !collision.right) || (direction.x < 0 && !collision.left))
+		if ((GetDirection().x > 0 && !collision.right) || (GetDirection().x < 0 && !collision.left))
 		{
 			MoveX();
 		}
-		bool canJump = !DoesJumping() && direction.y == -1 && !collision.top && !DoesAttacking();
+		bool canJump = !DoesJumping() && GetDirection().y == -1 && !collision.top && !DoesAttacking();
 		if (canJump)
 		{
 			jumping = true;
@@ -49,7 +49,7 @@ void CPlayer::Process(const std::vector<TmxObject> & collisionBlocks)
 
 void CPlayer::UpdateDirection()
 {
-	direction = sf::Vector2f();
+	sf::Vector2f direction;
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 	{
@@ -63,10 +63,7 @@ void CPlayer::UpdateDirection()
 	{
 		direction.x = 1;
 	}
-	if (direction.x == 1 || direction.x == -1)
-	{
-		m_lastDirection.x = direction.x;
-	}
+	SetDirection(direction);
 }
 
 void CPlayer::Animate(sf::Clock & animationClock)
@@ -110,12 +107,12 @@ void CPlayer::UpdateStayingSprite()
 	m_currentMovingSprite = 0;
 	m_currentAttackingSprite = 0;
 	m_currentStayingSprite = (m_currentStayingSprite == 3) ? 0 : m_currentStayingSprite + 1;
-	sf::IntRect textureRect = m_sprite.getTextureRect();
+	sf::IntRect textureRect = m_modelSprite.getTextureRect();
 	int offsetLeft = 0;
 	textureRect.width = m_startSpriteWidth;
 	textureRect.top = m_startSpriteOffsetTop;
-	m_sprite.setOrigin(0, 0);
-	if (m_lastDirection.x == -1)
+	m_modelSprite.setOrigin(0, 0);
+	if (GetLastDirection().x == -1)
 	{
 		offsetLeft = textureRect.width;
 		textureRect.width = -textureRect.width;
@@ -146,7 +143,7 @@ void CPlayer::UpdateStayingSprite()
 		default:
 			break;
 	}
-	m_sprite.setTextureRect(textureRect);
+	m_modelSprite.setTextureRect(textureRect);
 }
 
 void CPlayer::UpdateMovingSprite()
@@ -154,13 +151,13 @@ void CPlayer::UpdateMovingSprite()
 	m_currentStayingSprite = 0;
 	m_currentAttackingSprite = 0;
 	m_currentMovingSprite = (m_currentMovingSprite == 5) ? 0 : m_currentMovingSprite + 1;
-	sf::IntRect textureRect = m_sprite.getTextureRect();
+	sf::IntRect textureRect = m_modelSprite.getTextureRect();
 	int offsetLeft = 0;
 	textureRect.width = m_startSpriteWidth;
 	textureRect.height = m_startSpriteHeight;
 	textureRect.top = 91;
-	m_sprite.setOrigin(0, 0);
-	if (m_lastDirection.x == -1)
+	m_modelSprite.setOrigin(0, 0);
+	if (GetLastDirection().x == -1)
 	{
 		offsetLeft = textureRect.width;
 		textureRect.width = -textureRect.width;
@@ -190,7 +187,7 @@ void CPlayer::UpdateMovingSprite()
 		default:
 			break;
 	}
-	m_sprite.setTextureRect(textureRect);
+	m_modelSprite.setTextureRect(textureRect);
 }
 
 void CPlayer::UpdateJumpingSprite()
@@ -198,19 +195,19 @@ void CPlayer::UpdateJumpingSprite()
 	m_currentStayingSprite = 0;
 	m_currentMovingSprite = 0;
 	m_currentAttackingSprite = 0;
-	sf::IntRect textureRect = m_sprite.getTextureRect();
+	sf::IntRect textureRect = m_modelSprite.getTextureRect();
 	int offsetLeft = 0;
 	textureRect.width = m_startSpriteWidth;
 	textureRect.height = m_startSpriteHeight;
 	textureRect.top = 149;
-	if (m_lastDirection.x == -1)
+	if (GetLastDirection().x == -1)
 	{
 		offsetLeft = textureRect.width;
 		textureRect.width = -textureRect.width;
 	}
 
 	textureRect.left = (downSpeed > 0) ? offsetLeft + 156 : offsetLeft + 100;
-	m_sprite.setTextureRect(textureRect);
+	m_modelSprite.setTextureRect(textureRect);
 }
 
 void CPlayer::UpdateAttackingSprite()
@@ -218,64 +215,64 @@ void CPlayer::UpdateAttackingSprite()
 	m_currentStayingSprite = 0;
 	m_currentMovingSprite = 0;
 	m_currentAttackingSprite = (m_currentAttackingSprite == 4) ? 0 : m_currentAttackingSprite + 1;
-	sf::IntRect textureRect = m_sprite.getTextureRect();
+	sf::IntRect textureRect = m_modelSprite.getTextureRect();
 	int offsetLeft = 0;
 	textureRect.width = m_startSpriteWidth;
 	textureRect.height = m_startSpriteHeight;
 	textureRect.top = 91;
-	m_sprite.setOrigin(0, 0);
+	m_modelSprite.setOrigin(0, 0);
 	switch (m_currentAttackingSprite)
 	{
 		case 0:
-			if (m_lastDirection.x == -1)
+			if (GetLastDirection().x == -1)
 			{
 				offsetLeft = textureRect.width;
 				textureRect.width = -textureRect.width;
-				m_sprite.setOrigin(-textureRect.width - m_startSpriteWidth, 0);
+				m_modelSprite.setOrigin(-textureRect.width - m_startSpriteWidth, 0);
 			}
 			textureRect.top = 91;
 			textureRect.left = offsetLeft + 412;
 			break;
 		case 1:
 			textureRect.width = 60;
-			if (m_lastDirection.x == -1)
+			if (GetLastDirection().x == -1)
 			{
 				offsetLeft = textureRect.width;
 				textureRect.width = -textureRect.width;
-				m_sprite.setOrigin(-textureRect.width - m_startSpriteWidth, 0);
+				m_modelSprite.setOrigin(-textureRect.width - m_startSpriteWidth, 0);
 			}
 			textureRect.top = 90;
 			textureRect.left = offsetLeft + 445;
 			break;
 		case 2:
 			textureRect.width = 70;
-			if (m_lastDirection.x == -1)
+			if (GetLastDirection().x == -1)
 			{
 				offsetLeft = textureRect.width;
 				textureRect.width = -textureRect.width;
-				m_sprite.setOrigin(-textureRect.width - m_startSpriteWidth, 0);
+				m_modelSprite.setOrigin(-textureRect.width - m_startSpriteWidth, 0);
 			}
 			textureRect.top = 89;
 			textureRect.left = offsetLeft + 511;
 			break;
 		case 3:
 			textureRect.width = 70;
-			if (m_lastDirection.x == -1)
+			if (GetLastDirection().x == -1)
 			{
 				offsetLeft = textureRect.width;
 				textureRect.width = -textureRect.width;
-				m_sprite.setOrigin(-textureRect.width - m_startSpriteWidth, 0);
+				m_modelSprite.setOrigin(-textureRect.width - m_startSpriteWidth, 0);
 			}
 			textureRect.top = 88;
 			textureRect.left = offsetLeft + 590;
 			break;
 		case 4:
 			textureRect.width = 70;
-			if (m_lastDirection.x == -1)
+			if (GetLastDirection().x == -1)
 			{
 				offsetLeft = textureRect.width;
 				textureRect.width = -textureRect.width;
-				m_sprite.setOrigin(-textureRect.width - m_startSpriteWidth, 0);
+				m_modelSprite.setOrigin(-textureRect.width - m_startSpriteWidth, 0);
 			}
 			textureRect.top = 130;
 			textureRect.left = offsetLeft + 629;
@@ -283,7 +280,7 @@ void CPlayer::UpdateAttackingSprite()
 		default:
 			break;
 	}
-	m_sprite.setTextureRect(textureRect);
+	m_modelSprite.setTextureRect(textureRect);
 }
 
 bool CPlayer::DoesAttack() const

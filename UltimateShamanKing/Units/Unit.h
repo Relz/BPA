@@ -22,21 +22,25 @@ struct Collision
 class CUnit
 {
 public:
-	void Init(sf::Vector2f startPosition,
+	void Init(const std::wstring & name,
+	          sf::Vector2f startPosition,
 	          float movementSpeed,
 	          float upSpeed,
 	          float downSpeed,
 	          float gravity,
-	          float dyingTime,
+	          float dyingTimeSec,
 	          size_t HP,
 	          size_t strength);
 	void Draw(sf::RenderTarget & target) const;
 	void SetSprite(const std::string & spritePath, const sf::IntRect & playerSpriteRect, float zoom);
 	void SetSprite(const std::string & spritePath, float zoom);
+	void SetDialogAvatarNormal(const std::string & dialogAvatarPath, float zoom);
+	void SetDialogAvatarAngry(const std::string & dialogAvatarPath, float zoom);
 	void SetPosition(float x, float y);
 	void SetPosition(const sf::Vector2f & position);
 	void SetImpuls(float x, float y);
 	void Move(const sf::Vector2f & offset);
+	std::wstring GetName() const;
 	float GetWidth() const;
 	float GetSpriteWidth() const;
 	float GetHeight() const;
@@ -50,6 +54,7 @@ public:
 	sf::Vector2f GetPosition() const;
 	sf::Vector2f GetMovement() const;
 	sf::Vector2f GetDirection() const;
+	sf::Vector2f GetLastDirection() const;
 	float GetDyingTimeSec() const;
 	float GetDyingClockSec() const;
 	float GetUpSpeed() const;
@@ -63,6 +68,12 @@ public:
 	void Show();
 	void Hide();
 	bool IsVisible() const;
+	void TurnAround();
+	void TurnLeft();
+	void TurnRight();
+	void Stop();
+	sf::Sprite * GetDialogAvatarNormal();
+	sf::Sprite * GetDialogAvatarAngry();
 
 	virtual void Process(const std::vector<TmxObject> & collisionBlocks) = 0;
 	virtual void Die();
@@ -95,8 +106,12 @@ protected:
 	                       float unitTop,
 	                       float & out_collisionBlockTop,
 	                       float & out_collisionBlockBottom) const;
+	Collision GetCollision(const std::vector<TmxObject> & collisionBlocks, float unitLeft, float unitTop) const;
+	void SetDirection(const sf::Vector2f & value);
 
-	sf::Sprite m_sprite;
+	sf::Sprite m_modelSprite;
+	sf::Sprite m_avatarNormalSprite;
+	sf::Sprite m_avatarAngrySprite;
 
 	int m_startSpriteOffsetLeft = 0;
 	int m_startSpriteOffsetTop = 0;
@@ -109,12 +124,9 @@ protected:
 	float startDownSpeed = 0;
 	float gravity = 0;
 	bool jumping = false;
-	sf::Vector2f direction;
 	Collision collision;
 
 	bool m_attacking = false;
-
-	sf::Vector2f m_lastDirection;
 
 	sf::Clock m_dyingClock;
 
@@ -124,7 +136,13 @@ protected:
 	bool m_visible = true;
 
 private:
-	sf::Texture m_texture;
+	void SetTexture(sf::Texture & texture, const std::string & texturePath);
+
+	std::wstring m_name;
+
+	sf::Texture m_modelTexture;
+	sf::Texture m_avatarNormalTexture;
+	sf::Texture m_avatarAngryTexture;
 
 	CHPLine m_HPLine;
 
@@ -133,6 +151,9 @@ private:
 
 	bool m_dead = false;
 	float m_dyingTimeSec = 0;
+
+	sf::Vector2f m_direction;
+	sf::Vector2f m_lastDirection;
 
 };
 

@@ -97,26 +97,28 @@ void CUnit::GetCollision(const sf::FloatRect & objectRect,
 	GetCollision(objectRect, unitRect, unitFutureRect, unitDirectionX, playerWidth, out_collisionBlockTop, out_collisionBlockBottom, out_collision);
 }
 
-void CUnit::Init(sf::Vector2f startPosition,
+void CUnit::Init(const std::wstring & name,
+                 sf::Vector2f startPosition,
                  float movementSpeed,
                  float upSpeed,
                  float downSpeed,
                  float gravity,
-                 float dyingTime,
+                 float dyingTimeSec,
                  size_t HP,
                  size_t strength)
 {
 	SetPosition(startPosition);
+	this->m_name = name;
 	this->m_dead = false;
 	this->movementSpeed = movementSpeed;
 	this->upSpeed = upSpeed;
 	this->startDownSpeed = downSpeed;
 	this->gravity = gravity;
-	this->m_dyingTimeSec = dyingTime;
+	this->m_dyingTimeSec = dyingTimeSec;
 	this->HP = HP;
 	this->strength = strength;
-
 	m_HPLine.SetHP(HP);
+	Show();
 }
 
 void CUnit::Draw(sf::RenderTarget & target) const
@@ -124,47 +126,56 @@ void CUnit::Draw(sf::RenderTarget & target) const
 	if (IsVisible())
 	{
 		m_HPLine.Draw(target);
-		target.draw(m_sprite);
+		target.draw(m_modelSprite);
 	}
 }
 
 void CUnit::SetSprite(const std::string & spritePath, const sf::IntRect & playerSpriteRect, float zoom)
 {
-	m_sprite.setTextureRect(sf::IntRect(playerSpriteRect.left, playerSpriteRect.top, playerSpriteRect.width, playerSpriteRect.height));
+	m_modelSprite.setTextureRect(sf::IntRect(playerSpriteRect.left, playerSpriteRect.top, playerSpriteRect.width, playerSpriteRect.height));
 	SetSprite(spritePath, zoom);
 }
 
 void CUnit::SetSprite(const std::string & spritePath, float zoom)
 {
-	if (!m_texture.loadFromFile(spritePath))
-	{
-		throw std::invalid_argument("\"" + spritePath + "\" not found");
-	}
-	m_sprite.setTexture(m_texture);
-	m_sprite.setScale(zoom, zoom);
-	m_width = m_sprite.getGlobalBounds().width;
-	m_height = m_sprite.getGlobalBounds().height;
-	m_startSpriteOffsetLeft = m_sprite.getTextureRect().left;
-	m_startSpriteOffsetTop = m_sprite.getTextureRect().top;
-	m_startSpriteWidth = m_sprite.getTextureRect().width;
-	m_startSpriteHeight = m_sprite.getTextureRect().height;
+	SetTexture(m_modelTexture, spritePath);
+	m_modelSprite.setTexture(m_modelTexture);
+	m_modelSprite.setScale(zoom, zoom);
+	m_width = m_modelSprite.getGlobalBounds().width;
+	m_height = m_modelSprite.getGlobalBounds().height;
+	m_startSpriteOffsetLeft = m_modelSprite.getTextureRect().left;
+	m_startSpriteOffsetTop = m_modelSprite.getTextureRect().top;
+	m_startSpriteWidth = m_modelSprite.getTextureRect().width;
+	m_startSpriteHeight = m_modelSprite.getTextureRect().height;
+}
+
+void CUnit::SetDialogAvatarNormal(const std::string & dialogAvatarNormalPath, float zoom)
+{
+	SetTexture(m_avatarNormalTexture, dialogAvatarNormalPath);
+	m_avatarNormalSprite.setTexture(m_avatarNormalTexture);
+	m_avatarNormalSprite.setScale(zoom, zoom);
+	m_avatarNormalSprite.setPosition(0, 0);
+}
+
+void CUnit::SetDialogAvatarAngry(const std::string & dialogAvatarAngryPath, float zoom)
+{
+	SetTexture(m_avatarAngryTexture, dialogAvatarAngryPath);
+	m_avatarAngrySprite.setTexture(m_avatarAngryTexture);
+	m_avatarAngrySprite.setScale(zoom, zoom);
+	m_avatarAngrySprite.setPosition(0, 0);
 }
 
 void CUnit::SetPosition(float x, float y)
 {
-	float HPLinePositionX = x + 30;
+	float HPLinePositionX = x + GetWidth() / 2;
 	float HPLinePositionY = y - 50;
 	m_HPLine.SetPosition(HPLinePositionX, HPLinePositionY);
-	m_sprite.setPosition(x, y);
+	m_modelSprite.setPosition(x, y);
 }
 
 void CUnit::SetPosition(const sf::Vector2f & position)
 {
-	sf::Vector2f HPLinePosition(position);
-	HPLinePosition.x += 30;
-	HPLinePosition.y -= 50;
-	m_HPLine.SetPosition(HPLinePosition);
-	m_sprite.setPosition(position);
+	SetPosition(position.x, position.y);
 }
 
 void CUnit::SetImpuls(float x, float y)
@@ -173,34 +184,39 @@ void CUnit::SetImpuls(float x, float y)
 	downSpeed -= y;
 	if (x > 0)
 	{
-		direction.x = 1;
+		TurnRight();
 	}
 	else if (x < 0)
 	{
-		direction.x = -1;
+		TurnLeft();
 	}
 }
 
 void CUnit::MoveX()
 {
 	m_HPLine.Move(GetMovement().x, 0);
-	m_sprite.move(GetMovement().x, 0);
+	m_modelSprite.move(GetMovement().x, 0);
 }
 
 void CUnit::Move(const sf::Vector2f & offset)
 {
-	m_sprite.move(offset);
+	m_modelSprite.move(offset);
+}
+
+std::wstring CUnit::GetName() const
+{
+	return m_name;
 }
 
 sf::Vector2f CUnit::GetPosition() const
 {
-	return m_sprite.getPosition();
+	return m_modelSprite.getPosition();
 }
 
 void CUnit::Gravity()
 {
 	m_HPLine.Move(0, downSpeed);
-	m_sprite.move(0, downSpeed);
+	m_modelSprite.move(0, downSpeed);
 }
 
 float CUnit::GetWidth() const
@@ -210,12 +226,12 @@ float CUnit::GetWidth() const
 
 float CUnit::GetSpriteWidth() const
 {
-	return m_sprite.getGlobalBounds().width;
+	return m_modelSprite.getGlobalBounds().width;
 }
 
 float CUnit::GetHeight() const
 {
-	return m_sprite.getGlobalBounds().height;
+	return m_modelSprite.getGlobalBounds().height;
 }
 
 float CUnit::GetSpriteHeight() const
@@ -225,12 +241,12 @@ float CUnit::GetSpriteHeight() const
 
 float CUnit::GetTop() const
 {
-	return m_sprite.getPosition().y;
+	return m_modelSprite.getPosition().y;
 }
 
 float CUnit::GetLeft() const
 {
-	return m_sprite.getPosition().x;
+	return m_modelSprite.getPosition().x;
 }
 
 sf::FloatRect CUnit::GetRect() const
@@ -269,10 +285,15 @@ sf::FloatRect CUnit::GetFutureSpriteRect() const
 
 sf::Vector2f CUnit::GetMovement() const
 {
-	return sf::Vector2f(roundf(direction.x * movementSpeed), roundf(direction.y * downSpeed));
+	return sf::Vector2f(roundf(m_direction.x * movementSpeed), roundf(m_direction.y * downSpeed));
 }
 
 sf::Vector2f CUnit::GetDirection() const
+{
+	return m_direction;
+}
+
+sf::Vector2f CUnit::GetLastDirection() const
 {
 	return m_lastDirection;
 }
@@ -304,7 +325,7 @@ float CUnit::GetStrength() const
 
 bool CUnit::IsStaying() const
 {
-	return (direction.x == 0 && direction.y == 0);
+	return (GetDirection().x == 0 && GetDirection().y == 0);
 }
 
 bool CUnit::IsAlive() const
@@ -347,6 +368,42 @@ bool CUnit::IsVisible() const
 	return m_visible;
 }
 
+void CUnit::TurnAround()
+{
+	sf::Vector2f direction = m_direction;
+	direction.x = -m_direction.x;
+	SetDirection(direction);
+}
+
+void CUnit::TurnLeft()
+{
+	sf::Vector2f direction = m_direction;
+	direction.x = -1;
+	SetDirection(direction);
+}
+
+void CUnit::TurnRight()
+{
+	sf::Vector2f direction = m_direction;
+	direction.x = 1;
+	SetDirection(direction);
+}
+
+void CUnit::Stop()
+{
+	m_direction.x = 0;
+}
+
+sf::Sprite * CUnit::GetDialogAvatarNormal()
+{
+	return & m_avatarNormalSprite;
+}
+
+sf::Sprite * CUnit::GetDialogAvatarAngry()
+{
+	return & m_avatarAngrySprite;
+}
+
 void CUnit::UpdateCollision(const std::vector<TmxObject> & collisionBlocks)
 {
 	float collisionBlockTop = 0;
@@ -360,18 +417,16 @@ void CUnit::UpdateCollision(const std::vector<TmxObject> & collisionBlocks)
 
 bool CUnit::IsAbyssOnSide(const std::vector<TmxObject> & collisionBlocks) const
 {
-	float collisionBlockTop = 0;
-	float collisionBlockBottom = 0;
-	bool isLeftAbyss = !GetCollision(collisionBlocks, GetLeft() - m_width, GetTop(), collisionBlockTop, collisionBlockBottom).bottom;
-	bool isRightAbyss = !GetCollision(collisionBlocks, GetLeft() + m_width, GetTop(), collisionBlockTop, collisionBlockBottom).bottom;
+	bool isLeftAbyss = !GetCollision(collisionBlocks, GetLeft() - m_width, GetTop()).bottom;
+	bool isRightAbyss = !GetCollision(collisionBlocks, GetLeft() + m_width, GetTop()).bottom;
 	return isLeftAbyss || isRightAbyss;
 }
 
 Collision CUnit::GetCollision(const std::vector<TmxObject> & collisionBlocks,
-							  float unitLeft,
-							  float unitTop,
-							  float & out_collisionBlockTop,
-							  float & out_collisionBlockBottom) const
+                              float unitLeft,
+                              float unitTop,
+                              float & out_collisionBlockTop,
+                              float & out_collisionBlockBottom) const
 {
 	Collision result;
 
@@ -399,8 +454,32 @@ Collision CUnit::GetCollision(const std::vector<TmxObject> & collisionBlocks,
 	return result;
 }
 
+Collision CUnit::GetCollision(const std::vector<TmxObject> & collisionBlocks, float unitLeft, float unitTop) const
+{
+	float collisionBlockTop = 0;
+	float collisionBlockBottom = 0;
+	return GetCollision(collisionBlocks, unitLeft, unitTop, collisionBlockTop, collisionBlockBottom);
+}
+
 void CUnit::Die()
 {
 	m_dyingClock.restart();
 	m_dead = true;
+}
+
+void CUnit::SetTexture(sf::Texture & texture, const std::string & texturePath)
+{
+	if (!texture.loadFromFile(texturePath))
+	{
+		throw std::invalid_argument("\"" + texturePath + "\" not found");
+	}
+}
+
+void CUnit::SetDirection(const sf::Vector2f & value)
+{
+	m_direction = value;
+	if (m_direction.x == 1 || m_direction.x == -1)
+	{
+		m_lastDirection.x = m_direction.x;
+	}
 }

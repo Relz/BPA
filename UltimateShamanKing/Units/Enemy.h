@@ -10,7 +10,8 @@
 class CEnemy : public CUnit
 {
 public:
-	void Init(sf::Vector2f startPosition,
+	void Init(const std::wstring & name,
+	          sf::Vector2f startPosition,
 	          float movementSpeed,
 	          float upSpeed,
 	          float downSpeed,

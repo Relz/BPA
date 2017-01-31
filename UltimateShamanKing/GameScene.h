@@ -8,6 +8,7 @@
 #include "Units/VillainSpirit.h"
 #include "Units/Enemy.h"
 #include "Fire.h"
+#include "Dialog.h"
 #include "constant.h"
 
 class CGameScene
@@ -23,6 +24,7 @@ public:
 	CVillain villain;
 	CVillainSpirit villainSpirit;
 	CFire fire;
+	CDialog dialog;
 	std::vector<CEnemy*> enemies;
 	std::vector<TmxObject> collisionBlocks;
 	std::vector<TmxObject> environmentObjects;

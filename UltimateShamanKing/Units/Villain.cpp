@@ -17,10 +17,13 @@ void CVillain::Process(const std::vector<TmxObject> &collisionBlocks)
 
 void CVillain::UpdateDirection(float playerLeft)
 {
-	direction.x = (GetLeft() < playerLeft) ? 1 : -1;
-	if (direction.x == 1 || direction.x == -1)
+	if (GetLeft() < playerLeft)
 	{
-		m_lastDirection.x = direction.x;
+		TurnRight();
+	}
+	else
+	{
+		TurnLeft();
 	}
 }
 
@@ -37,12 +40,12 @@ void CVillain::Animate(sf::Clock & animationClock)
 void CVillain::UpdateStayingSprite()
 {
 	m_currentStayingSprite = (m_currentStayingSprite == 3) ? 0 : m_currentStayingSprite + 1;
-	sf::IntRect textureRect = m_sprite.getTextureRect();
+	sf::IntRect textureRect = m_modelSprite.getTextureRect();
 	int offsetLeft = 0;
 	textureRect.width = m_startSpriteWidth;
 	textureRect.top = m_startSpriteOffsetTop;
-	m_sprite.setOrigin(0, 0);
-	if (m_lastDirection.x == -1)
+	m_modelSprite.setOrigin(0, 0);
+	if (GetLastDirection().x == -1)
 	{
 		offsetLeft = textureRect.width;
 		textureRect.width = -textureRect.width;
@@ -65,5 +68,5 @@ void CVillain::UpdateStayingSprite()
 		default:
 			break;
 	}
-	m_sprite.setTextureRect(textureRect);
+	m_modelSprite.setTextureRect(textureRect);
 }

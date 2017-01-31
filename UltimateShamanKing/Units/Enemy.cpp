@@ -3,7 +3,8 @@
 #include "../stdafx.h"
 #include "Enemy.h"
 
-void CEnemy::Init(sf::Vector2f startPosition,
+void CEnemy::Init(const std::wstring & name,
+                  sf::Vector2f startPosition,
                   float movementSpeed,
                   float upSpeed,
                   float downSpeed,
@@ -13,7 +14,7 @@ void CEnemy::Init(sf::Vector2f startPosition,
                   size_t HP,
                   size_t strength)
 {
-	CUnit::Init(startPosition, movementSpeed, upSpeed, downSpeed, gravity, dyingTimeSec, HP, strength);
+	CUnit::Init(name, startPosition, movementSpeed, upSpeed, downSpeed, gravity, dyingTimeSec, HP, strength);
 	m_movingCooldownSec = movingCooldownSec;
 }
 
@@ -21,7 +22,7 @@ void CEnemy::Process(const std::vector<TmxObject> & collisionBlocks)
 {
 	Animate(m_animationClock);
 	UpdateCollision(collisionBlocks);
-	if ((direction.x > 0 && !collision.right) || (direction.x < 0 && !collision.left))
+	if ((GetDirection().x > 0 && !collision.right) || (GetDirection().x < 0 && !collision.left))
 	{
 		MoveX();
 	}
@@ -30,22 +31,29 @@ void CEnemy::Process(const std::vector<TmxObject> & collisionBlocks)
 		UpdateDirection();
 		if (IsStaying() && m_stayingClock.getElapsedTime().asSeconds() > m_stayingTime)
 		{
-			direction.x = (myRandom.GetRandomValue(0, 1) == 0) ? -1 : 1;
+			if (myRandom.GetRandomValue(0, 1) == 0)
+			{
+				TurnLeft();
+			}
+			else
+			{
+				TurnRight();
+			}
 			m_movingClock.restart();
 		}
 		bool isAbyssOnSide = IsAbyssOnSide(collisionBlocks);
 		if (collision.left || collision.right ||
-		    (isAbyssOnSide && collision.bottom && direction.x == 1) ||
-		    (isAbyssOnSide && collision.bottom && direction.x == -1))
+		    (isAbyssOnSide && collision.bottom && GetDirection().x == 1) ||
+		    (isAbyssOnSide && collision.bottom && GetDirection().x == -1))
 		{
-			direction.x = -direction.x;
+			TurnAround();
 		}
 	}
 	else
 	{
 		if ((collision.right || collision.left) && !IsAlive())
 		{
-			direction.x = 0;
+			Stop();
 		}
 		if ((collision.top || collision.bottom) && movementSpeed > 0)
 		{
@@ -93,12 +101,8 @@ void CEnemy::UpdateDirection()
 {
 	if (m_movingClock.getElapsedTime().asSeconds() >= m_movingCooldownSec && !IsStaying())
 	{
-		direction.x = 0;
+		Stop();
 		m_stayingClock.restart();
-	}
-	if (direction.x == 1 || direction.x == -1)
-	{
-		m_lastDirection.x = direction.x;
 	}
 }
 
@@ -141,11 +145,11 @@ void CEnemy::UpdateStayingSprite()
 {
 	m_currentMovingSprite = 0;
 	m_currentStayingSprite = (m_currentStayingSprite == 2) ? 0 : m_currentStayingSprite + 1;
-	sf::IntRect textureRect = m_sprite.getTextureRect();
+	sf::IntRect textureRect = m_modelSprite.getTextureRect();
 	int offsetLeft = 0;
 	textureRect.top = m_startSpriteOffsetTop;
 	textureRect.width = abs(textureRect.width);
-	if (m_lastDirection.x == -1)
+	if (GetLastDirection().x == -1)
 	{
 		offsetLeft = textureRect.width;
 		textureRect.width = -textureRect.width;
@@ -168,19 +172,19 @@ void CEnemy::UpdateStayingSprite()
 		default:
 			break;
 	}
-	m_sprite.setTextureRect(textureRect);
+	m_modelSprite.setTextureRect(textureRect);
 }
 
 void CEnemy::UpdateMovingSprite()
 {
 	m_currentStayingSprite = 0;
 	m_currentMovingSprite = (m_currentMovingSprite == 5) ? 0 : m_currentMovingSprite + 1;
-	sf::IntRect textureRect = m_sprite.getTextureRect();
+	sf::IntRect textureRect = m_modelSprite.getTextureRect();
 	int offsetLeft = 0;
 	textureRect.height = m_startSpriteHeight;
 	textureRect.top = 52;
 	textureRect.width = abs(textureRect.width);
-	if (m_lastDirection.x == 1)
+	if (GetLastDirection().x == 1)
 	{
 		offsetLeft = textureRect.width;
 		textureRect.width = -textureRect.width;
@@ -208,36 +212,36 @@ void CEnemy::UpdateMovingSprite()
 		default:
 			break;
 	}
-	m_sprite.setTextureRect(textureRect);
+	m_modelSprite.setTextureRect(textureRect);
 }
 
 void CEnemy::UpdateJumpingSprite()
 {
 	m_currentStayingSprite = 0;
 	m_currentMovingSprite = 0;
-	sf::IntRect textureRect = m_sprite.getTextureRect();
+	sf::IntRect textureRect = m_modelSprite.getTextureRect();
 	int offsetLeft = 0;
 	textureRect.height = m_startSpriteHeight;
 	textureRect.top = 218;
 	textureRect.width = abs(textureRect.width);
-	if (m_lastDirection.x == -1)
+	if (GetLastDirection().x == -1)
 	{
 		offsetLeft = textureRect.width;
 		textureRect.width = -textureRect.width;
 	}
 
 	textureRect.left = (downSpeed > 0) ? offsetLeft + 20 : offsetLeft + 40;
-	m_sprite.setTextureRect(textureRect);
+	m_modelSprite.setTextureRect(textureRect);
 }
 
 void CEnemy::UpdateDyingSprite()
 {
 	m_currentDyingSprite = (m_currentDyingSprite == 1) ? 0 : m_currentDyingSprite + 1;
-	sf::IntRect textureRect = m_sprite.getTextureRect();
+	sf::IntRect textureRect = m_modelSprite.getTextureRect();
 	int offsetLeft = 0;
 	textureRect.width = m_startSpriteHeight;
 	textureRect.height = abs(textureRect.width) / 2;
-	if (m_lastDirection.x == -1)
+	if (GetLastDirection().x == -1)
 	{
 		offsetLeft = textureRect.width;
 		textureRect.width = -textureRect.width;
@@ -255,5 +259,5 @@ void CEnemy::UpdateDyingSprite()
 		default:
 			break;
 	}
-	m_sprite.setTextureRect(textureRect);
+	m_modelSprite.setTextureRect(textureRect);
 }

@@ -33,7 +33,8 @@ private:
 	void TryToKillPlayer(CSnowball * enemySnowball, CPlayer & player);
 	void UpdatePlayerCamera(const CPlayer & player);
 	void TryPlayerToRunAction(const CPlayer & player, std::vector<TmxObject> & actionLines);
-	void StealBeloved(CBeloved & beloved);
+	void AppearVillain();
+	void StealBeloved();
 
 	sf::RenderWindow m_window;
 	sf::View m_camera;

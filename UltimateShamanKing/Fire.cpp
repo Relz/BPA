@@ -19,13 +19,14 @@ void CFire::SetPosition(const sf::Vector2f & position)
 	m_sprite.setPosition(position);
 }
 
-void CFire::Show()
+void CFire::Show(bool doesInvokeDialogAfterProccessing)
 {
+	m_doesInvokeDialogAfterProccessing = doesInvokeDialogAfterProccessing;
 	m_livingTimeClock.restart();
 	m_visible = true;
 }
 
-void CFire::Process()
+void CFire::Process(FireState & fireState)
 {
 	if (IsVisible())
 	{
@@ -34,11 +35,17 @@ void CFire::Process()
 		{
 			UpdateSprite();
 			m_animationClock.restart();
+			fireState = FireState::PROCESSING;
 		}
 		if (m_livingTimeClock.getElapsedTime().asSeconds() > m_maxLivingTimeSec)
 		{
 			m_visible = false;
+			fireState = FireState::DISSAPPEARED;
 		}
+	}
+	else
+	{
+		fireState = FireState::SLEEP;
 	}
 }
 
@@ -77,4 +84,9 @@ void CFire::UpdateSprite()
 bool CFire::IsVisible() const
 {
 	return m_visible;
+}
+
+bool CFire::DoesInvokeDialogAfterProccessing() const
+{
+	return m_doesInvokeDialogAfterProccessing;
 }

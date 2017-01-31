@@ -9,6 +9,8 @@ CHPLine::CHPLine()
 	m_outline.setOutlineColor(sf::Color::Black);
 	m_hp.setFillColor(sf::Color::Red);
 	m_outline.setSize(sf::Vector2f(100, 10));
+	m_hp.setOrigin(50, 0);
+	m_outline.setOrigin(50, 0);
 }
 
 void CHPLine::SetPosition(const sf::Vector2f & position)
