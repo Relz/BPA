@@ -32,7 +32,7 @@ void CGameScene::Init()
 {
 	actionLines = m_level.GetAllObjectsByType(TMX_ACTION_LINE_TYPE);
 	sf::Vector2f playerPosition(m_level.GetPlayerRect().left, m_level.GetPlayerRect().top);
-	player.Init(L"Йо Асакура", playerPosition, PLAYER_SPEED_X, PLAYER_SPEED_UP, PLAYER_SPEED_DOWN, GRAVITY, 0, 100, 30);
+	player.Init(L"Йо Асакура", playerPosition, PLAYER_SPEED_X, PLAYER_SPEED_UP, PLAYER_SPEED_DOWN, GRAVITY, 0, 100, 100, 30);
 	sf::Vector2f belovedPosition(m_level.GetBelovedRect().left, m_level.GetBelovedRect().top);
 	beloved.Init(L"Анна Кеяма", belovedPosition, PLAYER_SPEED_X, PLAYER_SPEED_UP, PLAYER_SPEED_DOWN, GRAVITY, 0, 80, 0);
 	sf::Vector2f villainPosition(m_level.GetVillainRect().left, m_level.GetVillainRect().top);

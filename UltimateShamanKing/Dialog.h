@@ -12,12 +12,15 @@ public:
 	void NextReplica();
 	bool IsEmpty() const;
 	bool IsJustClosed();
+	void SetActionAfterDialogClosing(const std::string & value);
+	std::string GetActionAfterDialogClosing();
 	void Draw(sf::RenderTarget & target) const;
 
 private:
 	std::vector<CReplica*> m_vectorReplica;
 
 	bool m_isJustClosed = false;
+	std::string m_actionAfterDialogClosing;
 };
 
 

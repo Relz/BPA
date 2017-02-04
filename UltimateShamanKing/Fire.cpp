@@ -19,9 +19,8 @@ void CFire::SetPosition(const sf::Vector2f & position)
 	m_sprite.setPosition(position);
 }
 
-void CFire::Show(bool doesInvokeDialogAfterProccessing)
+void CFire::Show()
 {
-	m_doesInvokeDialogAfterProccessing = doesInvokeDialogAfterProccessing;
 	m_livingTimeClock.restart();
 	m_visible = true;
 }
@@ -47,6 +46,18 @@ void CFire::Process(FireState & fireState)
 	{
 		fireState = FireState::SLEEP;
 	}
+}
+
+void CFire::SetActionAfterProcessing(const std::string & value)
+{
+	m_actionAfterProcessing = value;
+}
+
+std::string CFire::GetActionAfterProcessing()
+{
+	std::string result = m_actionAfterProcessing;
+	m_actionAfterProcessing = "";
+	return result;
 }
 
 void CFire::Draw(sf::RenderTarget & target) const
@@ -84,9 +95,4 @@ void CFire::UpdateSprite()
 bool CFire::IsVisible() const
 {
 	return m_visible;
-}
-
-bool CFire::DoesInvokeDialogAfterProccessing() const
-{
-	return m_doesInvokeDialogAfterProccessing;
 }

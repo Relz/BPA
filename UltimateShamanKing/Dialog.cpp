@@ -42,3 +42,15 @@ void CDialog::Draw(sf::RenderTarget & target) const
 		(*m_vectorReplica.begin())->Draw(target);
 	}
 }
+
+void CDialog::SetActionAfterDialogClosing(const std::string & value)
+{
+	m_actionAfterDialogClosing = value;
+}
+
+std::string CDialog::GetActionAfterDialogClosing()
+{
+	std::string result = m_actionAfterDialogClosing;
+	m_actionAfterDialogClosing = "";
+	return result;
+}

@@ -8,7 +8,25 @@
 class CPlayer : public CUnit
 {
 public:
+	CPlayer();
+	void Init(const std::wstring & name,
+			sf::Vector2f startPosition,
+			float movementSpeed,
+			float upSpeed,
+			float downSpeed,
+			float gravity,
+			float dyingTimeSec,
+			size_t HP,
+			size_t SP,
+			size_t strength);
 	void Process(const std::vector<TmxObject> & collisionBlocks) override;
+	void Draw(sf::RenderTarget & target) const override;
+	void SetPosition(float x, float y) override;
+	void SetPosition(const sf::Vector2f & position) override;
+	void MoveX() override;
+	void Gravity() override;
+	void ReduceSP(float value);
+	float GetSP() const;
 
 private:
 	void UpdateDirection();
@@ -25,6 +43,11 @@ private:
 	size_t m_currentAttackingSprite = 0;
 
 	sf::Clock m_attackingClock;
+
+	CLine m_SPLine;
+
+	float m_SP = 100;
+
 };
 
 

@@ -97,6 +97,11 @@ void CUnit::GetCollision(const sf::FloatRect & objectRect,
 	GetCollision(objectRect, unitRect, unitFutureRect, unitDirectionX, playerWidth, out_collisionBlockTop, out_collisionBlockBottom, out_collision);
 }
 
+CUnit::CUnit()
+		: m_HPLine(sf::Color::Red)
+{
+}
+
 void CUnit::Init(const std::wstring & name,
                  sf::Vector2f startPosition,
                  float movementSpeed,
@@ -115,9 +120,9 @@ void CUnit::Init(const std::wstring & name,
 	this->startDownSpeed = downSpeed;
 	this->gravity = gravity;
 	this->m_dyingTimeSec = dyingTimeSec;
-	this->HP = HP;
+	this->m_HP = HP;
 	this->strength = strength;
-	m_HPLine.SetHP(HP);
+	m_HPLine.SetPoints(HP);
 	Show();
 }
 
@@ -315,7 +320,7 @@ float CUnit::GetUpSpeed() const
 
 float CUnit::GetHP() const
 {
-	return HP;
+	return m_HP;
 }
 
 float CUnit::GetStrength() const
@@ -345,9 +350,9 @@ bool CUnit::DoesJumping() const
 
 void CUnit::ReduceHP(float value)
 {
-	HP = (HP > value) ? HP - value : 0;
-	m_HPLine.SetHP(HP);
-	if (HP == 0)
+	m_HP = (GetHP() > value) ? GetHP() - value : 0;
+	m_HPLine.SetPoints(GetHP());
+	if (GetHP() == 0)
 	{
 		Die();
 	}

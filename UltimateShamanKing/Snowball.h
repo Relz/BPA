@@ -17,6 +17,7 @@ public:
 	sf::FloatRect GetTextureFloatRect() const;
 	float GetStrength() const;
 	bool IsVisible() const;
+	float GetDirectionX() const;
 private:
 	sf::Sprite m_sprite;
 	sf::Texture m_texture;

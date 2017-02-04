@@ -28,11 +28,14 @@ private:
 	bool DoesPlayerAttackEnemy(const CPlayer & player, const CEnemy * enemy) const;
 	void TryPlayerToAttackEnemies(const CPlayer & player, const std::vector<CEnemy*> & enemies);
 	void TryPlayerToDieFromDeadLine(CPlayer & player, const std::vector<TmxObject> & deadLines);
-	void CleanDeadBodies(std::vector<CEnemy*> & enemies) const;
+	void CleanDeadBodies(std::vector<CEnemy*> & enemies);
 	void CreateNewSnowball(CEnemy * enemy, float playerLeft);
+	void RemoveSnowballFromIgnored(CEnemy * enemy);
 	void TryToKillPlayer(CSnowball * enemySnowball, CPlayer & player);
 	void UpdatePlayerCamera(const CPlayer & player);
+	void AddToDialog(CUnit * unit, sf::Sprite * avatarSprite, const std::wstring & message);
 	void TryPlayerToRunAction(const CPlayer & player, std::vector<TmxObject> & actionLines);
+	void RunAction(const std::string & basic_string);
 	void AppearVillain();
 	void StealBeloved();
 
@@ -47,6 +50,7 @@ private:
 	CMenuView m_menuView;
 	bool m_isGameStarted = false;
 	bool m_showStory = false;
+
 };
 
 

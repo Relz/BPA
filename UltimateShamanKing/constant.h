@@ -32,4 +32,10 @@ static const std::string TMX_ACTION_LINE_TYPE = "Линия события";
 static const std::string TMX_MAP_LEFT_BORDER = "Левая граница карты";
 static const std::string TMX_MAP_RIGHT_BORDER = "Правая граница карты";
 
+static const std::string TMX_ACTION_GAME_BEGINNING = "Начало игры";
+static const std::string TMX_ACTION_BELOVED_FOUND= "Нахождение любимой";
+static const std::string TMX_ACTION_VILLAIN_APPEARING = "Появление злодея";
+static const std::string ACTION_VILLAIN_APPEARED = "Злодей появился";
+static const std::string ACTION_FIRE_VILLAIN_DISAPPEARING = "Исчезновение злодея";
+
 #endif //ULTIMATE_SHAMAN_KING_CONSTANT_H

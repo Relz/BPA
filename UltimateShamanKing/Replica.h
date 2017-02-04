@@ -6,7 +6,7 @@
 class CReplica
 {
 public:
-	CReplica(const std::wstring & name, sf::Sprite * avatarSprite, const std::wstring & message, const sf::Vector2f & position, float width);
+	CReplica(const std::wstring & name, sf::Sprite * avatarSprite, const sf::View & camera, const std::wstring & message);
 	void Draw(sf::RenderTarget & target) const;
 
 private:

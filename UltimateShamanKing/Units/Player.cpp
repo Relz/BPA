@@ -3,6 +3,27 @@
 #include "../stdafx.h"
 #include "Player.h"
 
+CPlayer::CPlayer()
+		: m_SPLine(sf::Color::Blue)
+{
+}
+
+void CPlayer::Init(const std::wstring & name,
+				sf::Vector2f startPosition,
+				float movementSpeed,
+				float upSpeed,
+				float downSpeed,
+				float gravity,
+				float dyingTimeSec,
+				size_t HP,
+				size_t SP,
+				size_t strength)
+{
+	this->m_SP = SP;
+	m_SPLine.SetPoints(SP);
+	CUnit::Init(name, startPosition, movementSpeed, upSpeed, downSpeed, gravity, dyingTimeSec, HP, strength);
+}
+
 void CPlayer::Process(const std::vector<TmxObject> & collisionBlocks)
 {
 	if (IsAlive())
@@ -45,6 +66,52 @@ void CPlayer::Process(const std::vector<TmxObject> & collisionBlocks)
 		}
 	}
 	Animate(m_animationClock);
+}
+
+void CPlayer::Draw(sf::RenderTarget & target) const
+{
+	m_SPLine.Draw(target);
+	CUnit::Draw(target);
+}
+
+void CPlayer::SetPosition(float x, float y)
+{
+	float SPLinePositionX = x + GetWidth() / 2;
+	float SPLinePositionY = y - 40;
+	m_SPLine.SetPosition(SPLinePositionX, SPLinePositionY);
+	CUnit::SetPosition(x, y);
+}
+
+void CPlayer::SetPosition(const sf::Vector2f & position)
+{
+	SetPosition(position.x, position.y);
+}
+
+void CPlayer::MoveX()
+{
+	m_SPLine.Move(GetMovement().x, 0);
+	CUnit::MoveX();
+}
+
+void CPlayer::Gravity()
+{
+	m_SPLine.Move(0, downSpeed);
+	CUnit::Gravity();
+}
+
+void CPlayer::ReduceSP(float value)
+{
+	m_SP = (GetSP() > value) ? GetSP() - value : 0;
+	m_SPLine.SetPoints(GetSP());
+	if (GetSP() == 0)
+	{
+		Die();
+	}
+}
+
+float CPlayer::GetSP() const
+{
+	return m_SP;
 }
 
 void CPlayer::UpdateDirection()

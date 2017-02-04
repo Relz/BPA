@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="left-up" width="100" height="10" tilewidth="128" tileheight="128" nextobjectid="146">
+<map version="1.0" orientation="orthogonal" renderorder="left-up" width="100" height="10" tilewidth="128" tileheight="128" nextobjectid="148">
  <tileset firstgid="1" name="Тайлы" tilewidth="128" tileheight="128" tilecount="27" columns="9">
   <image source="Images/tileset.png" width="1152" height="384"/>
  </tileset>
@@ -1325,7 +1325,7 @@
   <object id="104" name="Желтое дерево" type="Окружение" gid="56" x="11755.9" y="909.99" width="539.663" height="526.267"/>
  </objectgroup>
  <objectgroup name="Движущиеся">
-  <object id="25" name="Игрок" x="11400" y="600" width="1" height="1"/>
+  <object id="25" name="Игрок" x="100" y="600" width="1" height="1"/>
   <object id="63" name="Монстр" type="Противник" x="1300" y="615.5" width="1" height="1"/>
   <object id="124" name="Монстр" type="Противник" x="2211.85" y="563.694" width="1" height="1"/>
   <object id="125" name="Монстр" type="Противник" x="3442.41" y="705.853" width="1" height="1"/>
@@ -1345,6 +1345,8 @@
   <object id="142" type="Линия смерти" x="0" y="1280" width="12794" height="1"/>
  </objectgroup>
  <objectgroup name="Линии событий">
-  <object id="143" type="Линия события" x="11800" y="0" width="1" height="900"/>
+  <object id="143" name="Появление злодея" type="Линия события" x="11500" y="0" width="1" height="900"/>
+  <object id="146" name="Начало игры" type="Линия события" x="251" y="0" width="1" height="900"/>
+  <object id="147" name="Нахождение любимой" type="Линия события" x="11300" y="0" width="1" height="900"/>
  </objectgroup>
 </map>

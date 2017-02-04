@@ -118,24 +118,18 @@ void CGameView::UpdateGameScene()
 			m_enemiesToIgnore.clear();
 		}
 		TryPlayerToDieFromDeadLine(player, m_gameScene.deadLines);
-		CleanDeadBodies(m_gameScene.enemies);
 		UpdatePlayerCamera(player);
 		TryPlayerToRunAction(player, m_gameScene.actionLines);
 		if (dialog.IsJustClosed())
 		{
-			StealBeloved();
+			RunAction(dialog.GetActionAfterDialogClosing());
 		}
 	}
 	FireState fireState = FireState::SLEEP;
 	fire.Process(fireState);
-	if (fireState == FireState::DISSAPPEARED && fire.DoesInvokeDialogAfterProccessing())
+	if (fireState == FireState::DISSAPPEARED)
 	{
-		sf::Vector2f avatarPositionYoh(m_camera.getCenter().x - m_camera.getSize().x / 2, m_camera.getSize().y - player.GetDialogAvatarAngry()->getGlobalBounds().height);
-		sf::Vector2f avatarPositionHao(m_camera.getCenter().x - m_camera.getSize().x / 2, m_camera.getSize().y - villain.GetDialogAvatarNormal()->getGlobalBounds().height);
-		dialog.Add(new CReplica(player.GetName(), player.GetDialogAvatarAngry(), L"Хао! Отпусти ее, сейчас же!", avatarPositionYoh, m_camera.getSize().x));
-		dialog.Add(new CReplica(villain.GetName(), villain.GetDialogAvatarNormal(), L"Не так быстро, дорогой братец. И почему такой серьезный? =)", avatarPositionHao, m_camera.getSize().x));
-		dialog.Add(new CReplica(player.GetName(), player.GetDialogAvatarAngry(), L"Что тебе нужно?!", avatarPositionYoh, m_camera.getSize().x));
-		dialog.Add(new CReplica(villain.GetName(), villain.GetDialogAvatarNormal(), L"И неужели она тебе так дорога? Ну что же, докажи это =)", avatarPositionHao, m_camera.getSize().x));
+		RunAction(fire.GetActionAfterProcessing());
 	}
 }
 
@@ -175,6 +169,15 @@ void CGameView::DrawEnemies(const std::vector<CEnemy*> & enemies)
 	}
 }
 
+void CGameView::RemoveSnowballFromIgnored(CEnemy * enemy)
+{
+	auto snowballToRemove = std::find(m_snowballsToIgnore.begin(), m_snowballsToIgnore.end(), enemy->GetSnowball());
+	if (snowballToRemove != m_snowballsToIgnore.end())
+	{
+		m_snowballsToIgnore.erase(snowballToRemove);
+	}
+}
+
 void CGameView::CreateNewSnowball(CEnemy * enemy, float playerLeft)
 {
 	float directionX = 0;
@@ -186,11 +189,7 @@ void CGameView::CreateNewSnowball(CEnemy * enemy, float playerLeft)
 	{
 		directionX = 1;
 	}
-	auto tempSnowball = std::find(m_snowballsToIgnore.begin(), m_snowballsToIgnore.end(), enemy->GetSnowball());
-	if (tempSnowball != m_snowballsToIgnore.end())
-	{
-		m_snowballsToIgnore.erase(tempSnowball);
-	}
+	RemoveSnowballFromIgnored(enemy);
 	enemy->CreateNewSnowball(directionX);
 }
 
@@ -204,11 +203,24 @@ void CGameView::TryToKillPlayer(CSnowball * enemySnowball, CPlayer & player)
 	                    player.GetWidth(),
 	                    collisionWithPlayer);
 
-	if (collisionWithPlayer.left || collisionWithPlayer.right)
+	if (collisionWithPlayer.Any())
 	{
 		player.ReduceHP(enemySnowball->GetStrength());
 		m_snowballsToIgnore.push_back(enemySnowball);
 		enemySnowball->Hide();
+	}
+}
+
+void CGameView::CleanDeadBodies(std::vector<CEnemy *> & enemies)
+{
+	for (auto it = enemies.begin(); it != enemies.end(); ++it)
+	{
+		if (!(*it)->IsAlive() && (*it)->GetDyingClockSec() >= (*it)->GetDyingTimeSec())
+		{
+			RemoveSnowballFromIgnored(*it);
+			enemies.erase(it);
+			break;
+		}
 	}
 }
 
@@ -230,8 +242,26 @@ void CGameView::ProcessEnemies(std::vector<CEnemy*> & enemies, CPlayer & player)
 			{
 				TryToKillPlayer(enemy->GetSnowball(), player);
 			}
+
+			Collision collisionWithBlocks;
+			for (const TmxObject & collisionBlock : m_gameScene.collisionBlocks)
+			{
+				CUnit::GetCollision(collisionBlock.rect,
+				                    enemy->GetSnowball()->GetTextureFloatRect(),
+				                    enemy->GetSnowball()->GetTextureFloatRect(),
+				                    enemy->GetSnowball()->GetDirectionX(),
+				                    enemy->GetSnowball()->GetTextureFloatRect().width,
+				                    collisionWithBlocks);
+				snowballNotProcessed = std::find(m_snowballsToIgnore.begin(), m_snowballsToIgnore.end(), enemy->GetSnowball()) == m_snowballsToIgnore.end();
+				if (snowballNotProcessed && collisionWithBlocks.Any())
+				{
+					m_snowballsToIgnore.push_back(enemy->GetSnowball());
+					enemy->GetSnowball()->Hide();
+				}
+			}
 		}
 	}
+	CleanDeadBodies(enemies);
 }
 
 void CGameView::SetCameraCenter(float cameraX, float cameraY)
@@ -286,19 +316,6 @@ void CGameView::TryPlayerToDieFromDeadLine(CPlayer & player, const std::vector<T
 	}
 }
 
-
-void CGameView::CleanDeadBodies(std::vector<CEnemy *> &enemies) const
-{
-	for (auto it = enemies.begin(); it != enemies.end(); ++it)
-	{
-		if (!(*it)->IsAlive() && (*it)->GetDyingClockSec() >= (*it)->GetDyingTimeSec())
-		{
-			enemies.erase(it);
-			break;
-		}
-	}
-}
-
 void CGameView::UpdatePlayerCamera(const CPlayer & player)
 {
 	float mapLeftBorder = m_gameScene.mapLeftBorder;
@@ -315,6 +332,11 @@ void CGameView::UpdatePlayerCamera(const CPlayer & player)
 	SetCameraCenter(cameraXPosition, m_windowSize.y);
 }
 
+void CGameView::AddToDialog(CUnit * unit, sf::Sprite * avatarSprite, const std::wstring & message)
+{
+	m_gameScene.dialog.Add(new CReplica(unit->GetName(), avatarSprite, m_camera, message));
+}
+
 void CGameView::TryPlayerToRunAction(const CPlayer & player, std::vector<TmxObject> & actionLines)
 {
 	Collision collisionWithActionLine;
@@ -328,23 +350,63 @@ void CGameView::TryPlayerToRunAction(const CPlayer & player, std::vector<TmxObje
 		                    collisionWithActionLine);
 		if (collisionWithActionLine.Any())
 		{
+			RunAction(it->name);
 			actionLines.erase(it);
-			AppearVillain();
 			break;
 		}
 	}
 }
 
+void CGameView::RunAction(const std::string & actionName)
+{
+	if (actionName.empty())
+	{
+		return;
+	}
+	CDialog & dialog = m_gameScene.dialog;
+	CPlayer & player = m_gameScene.player;
+	CBeloved & beloved = m_gameScene.beloved;
+	CVillain & villain = m_gameScene.villain;
+	if (actionName == TMX_ACTION_GAME_BEGINNING)
+	{
+		AddToDialog(&player, player.GetDialogAvatarAngry(), L"Что происходит?! Почему все стали себя так странно вести?");
+		AddToDialog(&player, player.GetDialogAvatarNormal(), L"И где Анна?");
+	}
+	else if (actionName == TMX_ACTION_BELOVED_FOUND)
+	{
+		AddToDialog(&player, player.GetDialogAvatarNormal(), L"Вот ты где!");
+		AddToDialog(&beloved, beloved.GetDialogAvatarNormal(), L"Йо!");
+	}
+	else if (actionName == TMX_ACTION_VILLAIN_APPEARING)
+	{
+		AppearVillain();
+	}
+	else if (actionName == ACTION_VILLAIN_APPEARED)
+	{
+		dialog.SetActionAfterDialogClosing(ACTION_FIRE_VILLAIN_DISAPPEARING);
+		AddToDialog(&villain, villain.GetDialogAvatarNormal(), L"Не так быстро, дорогой братец.");
+		AddToDialog(&player, player.GetDialogAvatarAngry(), L"Хао! Отпусти ее, сейчас же!");
+		AddToDialog(&villain, villain.GetDialogAvatarNormal(), L"И почему такой серьезный? =)");
+		AddToDialog(&player, player.GetDialogAvatarAngry(), L"Что тебе нужно?!");
+		AddToDialog(&villain, villain.GetDialogAvatarNormal(), L"И неужели она тебе так дорога? Ну что же, докажи это =)");
+	}
+	else if (actionName == ACTION_FIRE_VILLAIN_DISAPPEARING)
+	{
+		StealBeloved();
+	}
+}
+
 void CGameView::AppearVillain()
 {
-	m_gameScene.fire.Show(true);
+	m_gameScene.fire.SetActionAfterProcessing(ACTION_VILLAIN_APPEARED);
+	m_gameScene.fire.Show();
 	m_gameScene.villain.Show();
 	m_gameScene.villainSpirit.Show();
 }
 
 void CGameView::StealBeloved()
 {
-	m_gameScene.fire.Show(false);
+	m_gameScene.fire.Show();
 	m_gameScene.villain.Hide();
 	m_gameScene.villainSpirit.Hide();
 	m_gameScene.beloved.Hide();

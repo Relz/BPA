@@ -20,8 +20,7 @@ static std::wstring GetMultilineString(const sf::Text & text, float stringWidth)
 	return result;
 }
 
-CReplica::CReplica(const std::wstring & name, sf::Sprite * avatarSprite, const std::wstring & message,
-                   const sf::Vector2f & position, float width)
+CReplica::CReplica(const std::wstring & name, sf::Sprite * avatarSprite, const sf::View & camera, const std::wstring & message)
 		: m_avatarSprite(avatarSprite)
 {
 	if (!m_nameFont.loadFromFile("../res/Fonts/arial.ttf"))
@@ -32,13 +31,16 @@ CReplica::CReplica(const std::wstring & name, sf::Sprite * avatarSprite, const s
 	{
 		throw std::invalid_argument("Failed to load \"../res/Fonts/CyrilicOld.ttf\"");
 	}
-	avatarSprite->setPosition(position);
+	float windowWidth = camera.getSize().x;
+	float windowHeight = camera.getSize().y;
 	float avatarWidth = avatarSprite->getGlobalBounds().width;
 	float avatarHeight = avatarSprite->getGlobalBounds().height;
+	sf::Vector2f avatarSpritePosition(camera.getCenter().x - windowWidth / 2, windowHeight - avatarHeight);
+	avatarSprite->setPosition(avatarSpritePosition);
 	float messageBackgroundThickness = 5;
-	float messageBackgroundWidth = width - avatarWidth - (messageBackgroundThickness + 1);
+	float messageBackgroundWidth = windowWidth - avatarWidth - (messageBackgroundThickness + 1);
 	float messageBackgroundHeight = avatarHeight - (messageBackgroundThickness + 1);
-	m_messageBackground.setPosition(position.x + avatarWidth, position.y);
+	m_messageBackground.setPosition(avatarSpritePosition.x + avatarWidth, avatarSpritePosition.y);
 	m_messageBackground.setSize(sf::Vector2f(messageBackgroundWidth, messageBackgroundHeight));
 	m_messageBackground.setFillColor(sf::Color(0, 0, 0, 128));
 	m_messageBackground.setOutlineThickness(messageBackgroundThickness);

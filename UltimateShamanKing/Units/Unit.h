@@ -4,7 +4,7 @@
 #define ULTIMATE_SHAMAN_KING_UNIT_H
 
 #include "../TmxLevel.h"
-#include "../HPLine.h"
+#include "../Line.h"
 
 struct Collision
 {
@@ -22,6 +22,7 @@ struct Collision
 class CUnit
 {
 public:
+	CUnit();
 	void Init(const std::wstring & name,
 	          sf::Vector2f startPosition,
 	          float movementSpeed,
@@ -31,13 +32,13 @@ public:
 	          float dyingTimeSec,
 	          size_t HP,
 	          size_t strength);
-	void Draw(sf::RenderTarget & target) const;
+	virtual void Draw(sf::RenderTarget & target) const;
 	void SetSprite(const std::string & spritePath, const sf::IntRect & playerSpriteRect, float zoom);
 	void SetSprite(const std::string & spritePath, float zoom);
 	void SetDialogAvatarNormal(const std::string & dialogAvatarPath, float zoom);
 	void SetDialogAvatarAngry(const std::string & dialogAvatarPath, float zoom);
-	void SetPosition(float x, float y);
-	void SetPosition(const sf::Vector2f & position);
+	virtual void SetPosition(float x, float y);
+	virtual void SetPosition(const sf::Vector2f & position);
 	void SetImpuls(float x, float y);
 	void Move(const sf::Vector2f & offset);
 	std::wstring GetName() const;
@@ -99,8 +100,8 @@ public:
 protected:
 	void UpdateCollision(const std::vector<TmxObject> & collisionBlocks);
 	bool IsAbyssOnSide(const std::vector<TmxObject> & collisionBlocks) const;
-	void MoveX();
-	void Gravity();
+	virtual void MoveX();
+	virtual void Gravity();
 	Collision GetCollision(const std::vector<TmxObject> & collisionBlocks,
 	                       float unitLeft,
 	                       float unitTop,
@@ -130,7 +131,6 @@ protected:
 
 	sf::Clock m_dyingClock;
 
-	float HP = 100;
 	float strength = 0;
 
 	bool m_visible = true;
@@ -144,7 +144,9 @@ private:
 	sf::Texture m_avatarNormalTexture;
 	sf::Texture m_avatarAngryTexture;
 
-	CHPLine m_HPLine;
+	CLine m_HPLine;
+
+	float m_HP = 100;
 
 	float m_width = 0;
 	float m_height = 0;

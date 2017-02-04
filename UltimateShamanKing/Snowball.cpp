@@ -65,3 +65,8 @@ bool CSnowball::IsVisible() const
 {
 	return m_visible;
 }
+
+float CSnowball::GetDirectionX() const
+{
+	return m_directionX;
+}
