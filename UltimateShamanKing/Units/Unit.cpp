@@ -256,36 +256,24 @@ float CUnit::GetLeft() const
 
 sf::FloatRect CUnit::GetRect() const
 {
-	return sf::FloatRect(GetLeft(),
-	                   GetTop(),
-	                   GetWidth(),
-	                   GetHeight());
+	return sf::FloatRect(GetLeft(), GetTop(), GetWidth(), GetHeight());
 }
 
 sf::FloatRect CUnit::GetFutureRect() const
 {
 	sf::Vector2f unitMovement = GetMovement();
-	return sf::FloatRect(GetLeft() + unitMovement.x,
-	                   GetTop() + unitMovement.y,
-	                   GetWidth(),
-	                   GetHeight());
+	return sf::FloatRect(GetLeft() + unitMovement.x, GetTop() + unitMovement.y, GetWidth(), GetHeight());
 }
 
 sf::FloatRect CUnit::GetSpriteRect() const
 {
-	return sf::FloatRect(GetLeft(),
-	                   GetTop(),
-	                   GetSpriteWidth(),
-	                   GetSpriteHeight());
+	return sf::FloatRect(GetLeft(), GetTop(), GetSpriteWidth(), GetSpriteHeight());
 }
 
 sf::FloatRect CUnit::GetFutureSpriteRect() const
 {
 	sf::Vector2f unitMovement = GetMovement();
-	return sf::FloatRect(GetLeft() + unitMovement.x,
-	                   GetTop() + unitMovement.y,
-	                   GetSpriteWidth(),
-	                   GetSpriteHeight());
+	return sf::FloatRect(GetLeft() + unitMovement.x, GetTop() + unitMovement.y, GetSpriteWidth(), GetSpriteHeight());
 }
 
 sf::Vector2f CUnit::GetMovement() const

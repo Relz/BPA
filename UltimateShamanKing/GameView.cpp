@@ -181,14 +181,7 @@ void CGameView::RemoveSnowballFromIgnored(CEnemy * enemy)
 void CGameView::CreateNewSnowball(CEnemy * enemy, float playerLeft)
 {
 	float directionX = 0;
-	if (playerLeft< enemy->GetLeft())
-	{
-		directionX = -1;
-	}
-	else
-	{
-		directionX = 1;
-	}
+	directionX = (playerLeft < enemy->GetLeft()) ? -1 : 1;
 	RemoveSnowballFromIgnored(enemy);
 	enemy->CreateNewSnowball(directionX);
 }
@@ -197,9 +190,9 @@ void CGameView::TryToKillPlayer(CSnowball * enemySnowball, CPlayer & player)
 {
 	Collision collisionWithPlayer;
 	CUnit::GetCollision(enemySnowball->GetTextureFloatRect(),
-	                    player.GetSpriteRect(),
-	                    player.GetSpriteRect(),
-	                    player.GetDirection().x,
+	                    player.GetRect(),
+	                    player.GetFutureRect(),
+	                    player.GetLastDirection().x,
 	                    player.GetWidth(),
 	                    collisionWithPlayer);
 
@@ -275,8 +268,8 @@ bool CGameView::DoesPlayerAttackEnemy(const CPlayer & player, const CEnemy * ene
 	Collision collisionWithEnemy;
 	CUnit::GetCollision(enemy->GetSpriteRect(),
 	                    player.GetSpriteRect(),
-	                    player.GetSpriteRect(),
-	                    player.GetDirection().x,
+	                    player.GetFutureSpriteRect(),
+	                    player.GetLastDirection().x,
 	                    player.GetWidth(),
 	                    collisionWithEnemy);
 
@@ -304,9 +297,9 @@ void CGameView::TryPlayerToDieFromDeadLine(CPlayer & player, const std::vector<T
 	for (const TmxObject & deadLine : deadLines)
 	{
 		CUnit::GetCollision(deadLine.rect,
-		                    player.GetSpriteRect(),
-		                    player.GetSpriteRect(),
-		                    player.GetDirection().x,
+		                    player.GetRect(),
+		                    player.GetRect(),
+		                    player.GetLastDirection().x,
 		                    player.GetWidth(),
 		                    collisionWithDeadLine);
 		if (collisionWithDeadLine.Any())
@@ -343,9 +336,9 @@ void CGameView::TryPlayerToRunAction(const CPlayer & player, std::vector<TmxObje
 	for (auto it = actionLines.begin(); it != actionLines.end(); ++it)
 	{
 		CUnit::GetCollision(it->rect,
-		                    player.GetSpriteRect(),
-		                    player.GetSpriteRect(),
-		                    player.GetDirection().x,
+		                    player.GetRect(),
+		                    player.GetFutureRect(),
+		                    player.GetLastDirection().x,
 		                    player.GetWidth(),
 		                    collisionWithActionLine);
 		if (collisionWithActionLine.Any())
