@@ -114,7 +114,6 @@ void CUnit::Init(const std::wstring & name,
 {
 	SetPosition(startPosition);
 	this->m_name = name;
-	this->m_dead = false;
 	this->movementSpeed = movementSpeed;
 	this->upSpeed = upSpeed;
 	this->startDownSpeed = downSpeed;
@@ -122,6 +121,7 @@ void CUnit::Init(const std::wstring & name,
 	this->m_dyingTimeSec = dyingTimeSec;
 	this->m_HP = HP;
 	this->strength = strength;
+	this->m_dead = false;
 	m_HPLine.SetPoints(HP);
 	Show();
 }
@@ -326,12 +326,12 @@ bool CUnit::IsAlive() const
 	return !m_dead;
 }
 
-bool CUnit::DoesAttacking() const
+bool CUnit::IsAttacking() const
 {
 	return m_attacking;
 }
 
-bool CUnit::DoesJumping() const
+bool CUnit::IsJumping() const
 {
 	return jumping;
 }

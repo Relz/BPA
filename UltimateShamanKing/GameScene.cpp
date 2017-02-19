@@ -25,6 +25,13 @@ CGameScene::CGameScene()
 	deadLines = m_level.GetAllObjectsByType(TMX_DEAD_LINE_TYPE);
 	mapLeftBorder = m_level.GetMapLeftBorder();
 	mapRightBorder = m_level.GetMapRightBorder();
+	skillPanel.SetOffsetY(5);
+	skillPanel.SetSkills(new std::vector<CSkill*>
+			{
+					new CSkill("../res/Images/Skills/spirit_icon.png", SKILL_SPIRIT, 128, false, 10),
+					new CSkill("../res/Images/Skills/cloudstrike_icon.png", SKILL_CLOUDSTRIKE, 128, true, 20),
+					new CSkill("../res/Images/Skills/shield_icon.png", SKILL_SHIELD, 128, true, 10)
+			});
 	Init();
 }
 
@@ -32,7 +39,7 @@ void CGameScene::Init()
 {
 	actionLines = m_level.GetAllObjectsByType(TMX_ACTION_LINE_TYPE);
 	sf::Vector2f playerPosition(m_level.GetPlayerRect().left, m_level.GetPlayerRect().top);
-	player.Init(L"Йо Асакура", playerPosition, PLAYER_SPEED_X, PLAYER_SPEED_UP, PLAYER_SPEED_DOWN, GRAVITY, 0, 100, 100, 30);
+	player.Init(L"Йо Асакура", playerPosition, PLAYER_SPEED_X, PLAYER_SPEED_UP, PLAYER_SPEED_DOWN, GRAVITY, 0, 100, 100, 15, skillPanel.GetSkillCount());
 	sf::Vector2f belovedPosition(m_level.GetBelovedRect().left, m_level.GetBelovedRect().top);
 	beloved.Init(L"Анна Кеяма", belovedPosition, PLAYER_SPEED_X, PLAYER_SPEED_UP, PLAYER_SPEED_DOWN, GRAVITY, 0, 80, 0);
 	sf::Vector2f villainPosition(m_level.GetVillainRect().left, m_level.GetVillainRect().top);
@@ -44,6 +51,8 @@ void CGameScene::Init()
 	sf::Vector2f firePosition(villainSpiritPosition.x - 100, villainSpiritPosition.y - 250);
 	fire.SetPosition(firePosition);
 	InitEnemies(m_level.GetAllObjectsByType(TMX_ENEMY_TYPE));
+	snowballsToIgnore.clear();
+	enemiesToIgnore.clear();
 }
 
 void CGameScene::InitEnemies(const std::vector<TmxObject> & enemies)

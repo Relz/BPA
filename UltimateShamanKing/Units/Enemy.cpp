@@ -97,6 +97,11 @@ CSnowball * CEnemy::GetSnowball() const
 	return m_snowball.get();
 }
 
+void CEnemy::DestroySnowball()
+{
+	m_snowball = nullptr;
+}
+
 void CEnemy::UpdateDirection()
 {
 	if (m_movingClock.getElapsedTime().asSeconds() >= m_movingCooldownSec && !IsStaying())

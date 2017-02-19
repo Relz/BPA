@@ -417,7 +417,6 @@ bool TmxLevel::LoadFromFile(const std::string &filepath)
 				int index = 0;
 				if (objectElement->QueryIntAttribute("gid", &index) != XML_SUCCESS)
 				{
-					PrintWarning(objectName + " gid not specified");
 					if (objectElement->QueryIntAttribute("width", &width) != XML_SUCCESS)
 					{
 						PrintWarning(objectName + " width not specified, default is " + std::to_string(width));

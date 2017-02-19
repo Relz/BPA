@@ -38,4 +38,8 @@ static const std::string TMX_ACTION_VILLAIN_APPEARING = "Появление зл
 static const std::string ACTION_VILLAIN_APPEARED = "Злодей появился";
 static const std::string ACTION_FIRE_VILLAIN_DISAPPEARING = "Исчезновение злодея";
 
+static const std::string SKILL_SPIRIT = "Spirit";
+static const std::string SKILL_CLOUDSTRIKE = "Cloudstrike";
+static const std::string SKILL_SHIELD = "Shield";
+
 #endif //ULTIMATE_SHAMAN_KING_CONSTANT_H

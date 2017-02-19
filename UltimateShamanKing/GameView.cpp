@@ -1,6 +1,5 @@
 // This is a personal academic project. Dear PVS-Studio, please check it.
 // PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
-
 #include "stdafx.h"
 #include "GameView.h"
 
@@ -109,21 +108,25 @@ void CGameView::UpdateGameScene()
 		villainSpirit.UpdateDirection(player.GetLeft());
 		villainSpirit.Process(m_gameScene.collisionBlocks);
 		ProcessEnemies(m_gameScene.enemies, player);
-		if (player.DoesAttacking())
+		if (!player.IsWithShield())
 		{
-			TryPlayerToAttackEnemies(player, m_gameScene.enemies);
-		}
-		else if (!m_enemiesToIgnore.empty())
-		{
-			m_enemiesToIgnore.clear();
+			if (player.IsAttacking() || player.IsUsingCloudstrike())
+			{
+				TryPlayerToAttackEnemies(player, m_gameScene.enemies);
+			}
+			else if (!m_gameScene.enemiesToIgnore.empty())
+			{
+				m_gameScene.enemiesToIgnore.clear();
+			}
 		}
 		TryPlayerToDieFromDeadLine(player, m_gameScene.deadLines);
-		UpdatePlayerCamera(player);
 		TryPlayerToRunAction(player, m_gameScene.actionLines);
 		if (dialog.IsJustClosed())
 		{
 			RunAction(dialog.GetActionAfterDialogClosing());
 		}
+		TryPlayerToUseSkill(player.GetUsingSkill());
+		UpdatePlayerCamera(player);
 	}
 	FireState fireState = FireState::SLEEP;
 	fire.Process(fireState);
@@ -131,6 +134,7 @@ void CGameView::UpdateGameScene()
 	{
 		RunAction(fire.GetActionAfterProcessing());
 	}
+	UpdateSkillPanel();
 }
 
 void CGameView::DrawGameScene()
@@ -144,6 +148,7 @@ void CGameView::DrawGameScene()
 	m_gameScene.villain.Draw(m_window);
 	m_gameScene.fire.Draw(m_window);
 	m_gameScene.dialog.Draw(m_window);
+	m_gameScene.skillPanel.Draw(m_window, m_gameScene.player.IsWithSpirit());
 }
 
 void CGameView::ShowGameOverScreen()
@@ -166,15 +171,27 @@ void CGameView::DrawEnemies(const std::vector<CEnemy*> & enemies)
 	for (const CEnemy * enemy : enemies)
 	{
 		enemy->Draw(m_window);
+		if (enemy->GetSnowball() != nullptr)
+		{
+			enemy->GetSnowball()->Draw(m_window);
+		}
 	}
 }
 
-void CGameView::RemoveSnowballFromIgnored(CEnemy * enemy)
+void CGameView::UpdateSkillPanel()
 {
-	auto snowballToRemove = std::find(m_snowballsToIgnore.begin(), m_snowballsToIgnore.end(), enemy->GetSnowball());
-	if (snowballToRemove != m_snowballsToIgnore.end())
+	CSkillPanel & skillPanel = m_gameScene.skillPanel;
+	skillPanel.SetPosition(sf::Vector2f(m_camera.getCenter().x - m_windowSize.x / 2 * CAMERA_ZOOM,
+	                                    m_camera.getCenter().y - skillPanel.GetHeight() / 2));
+}
+
+void CGameView::RemoveSnowballFromIgnored(CSnowball * snowball)
+{
+	std::vector<CSnowball*> & snowballsToIgnore = m_gameScene.snowballsToIgnore;
+	auto snowballToRemove = std::find(snowballsToIgnore.begin(), snowballsToIgnore.end(), snowball);
+	if (snowballToRemove != snowballsToIgnore.end())
 	{
-		m_snowballsToIgnore.erase(snowballToRemove);
+		snowballsToIgnore.erase(snowballToRemove);
 	}
 }
 
@@ -182,12 +199,13 @@ void CGameView::CreateNewSnowball(CEnemy * enemy, float playerLeft)
 {
 	float directionX = 0;
 	directionX = (playerLeft < enemy->GetLeft()) ? -1 : 1;
-	RemoveSnowballFromIgnored(enemy);
+	RemoveSnowballFromIgnored(enemy->GetSnowball());
 	enemy->CreateNewSnowball(directionX);
 }
 
-void CGameView::TryToKillPlayer(CSnowball * enemySnowball, CPlayer & player)
+bool CGameView::TrySnowballToTouchPlayer(CSnowball * enemySnowball, CPlayer & player) const
 {
+	bool result = false;
 	Collision collisionWithPlayer;
 	CUnit::GetCollision(enemySnowball->GetTextureFloatRect(),
 	                    player.GetRect(),
@@ -198,10 +216,36 @@ void CGameView::TryToKillPlayer(CSnowball * enemySnowball, CPlayer & player)
 
 	if (collisionWithPlayer.Any())
 	{
-		player.ReduceHP(enemySnowball->GetStrength());
-		m_snowballsToIgnore.push_back(enemySnowball);
-		enemySnowball->Hide();
+		result = true;
+		if ((collisionWithPlayer.right && !(player.IsWithShield() && player.GetLastDirection().x == 1))
+		    || (collisionWithPlayer.left && !(player.IsWithShield() && player.GetLastDirection().x == -1))
+			|| ((collisionWithPlayer.top || collisionWithPlayer.bottom) && !collisionWithPlayer.right && !collisionWithPlayer.left))
+		{
+			player.ReduceHP(enemySnowball->GetStrength());
+		}
 	}
+	return result;
+}
+
+bool CGameView::TrySnowballToTouchCollisionBlocks(CSnowball * enemySnowball, const std::vector<TmxObject> & collisionBlocks) const
+{
+	bool result = false;
+	Collision collisionWithBlocks;
+	for (const TmxObject & collisionBlock : collisionBlocks)
+	{
+		CUnit::GetCollision(collisionBlock.rect,
+		                    enemySnowball->GetTextureFloatRect(),
+		                    enemySnowball->GetTextureFloatRect(),
+		                    enemySnowball->GetDirectionX(),
+		                    enemySnowball->GetTextureFloatRect().width,
+		                    collisionWithBlocks);
+		if (collisionWithBlocks.Any())
+		{
+			result = true;
+			break;
+		}
+	}
+	return result;
 }
 
 void CGameView::CleanDeadBodies(std::vector<CEnemy *> & enemies)
@@ -210,7 +254,7 @@ void CGameView::CleanDeadBodies(std::vector<CEnemy *> & enemies)
 	{
 		if (!(*it)->IsAlive() && (*it)->GetDyingClockSec() >= (*it)->GetDyingTimeSec())
 		{
-			RemoveSnowballFromIgnored(*it);
+			RemoveSnowballFromIgnored((*it)->GetSnowball());
 			enemies.erase(it);
 			break;
 		}
@@ -219,38 +263,31 @@ void CGameView::CleanDeadBodies(std::vector<CEnemy *> & enemies)
 
 void CGameView::ProcessEnemies(std::vector<CEnemy*> & enemies, CPlayer & player)
 {
+	std::vector<CSnowball*> & snowballsToIgnore = m_gameScene.snowballsToIgnore;
 	for (CEnemy * enemy : enemies)
 	{
 		enemy->Process(m_gameScene.collisionBlocks);
-		if (enemy->IsAlive())
+		if (!enemy->IsAlive())
 		{
-			if (enemy->GetSnowball() == nullptr || enemy->GetSnowball()->GetLivingTimeSec() > enemy->GetSnowball()->GetMaxLivingTimeSec())
-			{
-				CreateNewSnowball(enemy, player.GetLeft());
-			}
+			RemoveSnowballFromIgnored(enemy->GetSnowball());
+			enemy->DestroySnowball();
+			continue;
+		}
+		if (enemy->GetSnowball() == nullptr || enemy->GetSnowball()->GetLivingTimeSec() > enemy->GetSnowball()->GetMaxLivingTimeSec())
+		{
+			RemoveSnowballFromIgnored(enemy->GetSnowball());
+			enemy->DestroySnowball();
+			CreateNewSnowball(enemy, player.GetLeft());
+		}
+		CSnowball * enemySnowball = enemy->GetSnowball();
+		bool snowballNotProcessed = std::find(snowballsToIgnore.begin(), snowballsToIgnore.end(), enemySnowball) == snowballsToIgnore.end();
+		if (snowballNotProcessed)
+		{
 			enemy->GetSnowball()->Process();
-			enemy->GetSnowball()->Draw(m_window);
-			bool snowballNotProcessed = std::find(m_snowballsToIgnore.begin(), m_snowballsToIgnore.end(), enemy->GetSnowball()) == m_snowballsToIgnore.end();
-			if (snowballNotProcessed)
+			if (TrySnowballToTouchPlayer(enemySnowball, player) || TrySnowballToTouchCollisionBlocks(enemySnowball, m_gameScene.collisionBlocks))
 			{
-				TryToKillPlayer(enemy->GetSnowball(), player);
-			}
-
-			Collision collisionWithBlocks;
-			for (const TmxObject & collisionBlock : m_gameScene.collisionBlocks)
-			{
-				CUnit::GetCollision(collisionBlock.rect,
-				                    enemy->GetSnowball()->GetTextureFloatRect(),
-				                    enemy->GetSnowball()->GetTextureFloatRect(),
-				                    enemy->GetSnowball()->GetDirectionX(),
-				                    enemy->GetSnowball()->GetTextureFloatRect().width,
-				                    collisionWithBlocks);
-				snowballNotProcessed = std::find(m_snowballsToIgnore.begin(), m_snowballsToIgnore.end(), enemy->GetSnowball()) == m_snowballsToIgnore.end();
-				if (snowballNotProcessed && collisionWithBlocks.Any())
-				{
-					m_snowballsToIgnore.push_back(enemy->GetSnowball());
-					enemy->GetSnowball()->Hide();
-				}
+					m_gameScene.snowballsToIgnore.push_back(enemySnowball);
+					enemySnowball->Hide();
 			}
 		}
 	}
@@ -277,16 +314,21 @@ bool CGameView::DoesPlayerAttackEnemy(const CPlayer & player, const CEnemy * ene
 	return ((collisionWithEnemy.left && playerDirection.x == -1) || (collisionWithEnemy.right && playerDirection.x == 1));
 }
 
-void CGameView::TryPlayerToAttackEnemies(const CPlayer & player, const std::vector<CEnemy*> & enemies)
+void CGameView::TryPlayerToAttackEnemies(CPlayer & player, const std::vector<CEnemy*> & enemies)
 {
+	std::vector<CEnemy*> & enemiesToIgnore = m_gameScene.enemiesToIgnore;
 	for (CEnemy * enemy : enemies)
 	{
-		bool enemyNotProcessed = std::find(m_enemiesToIgnore.begin(), m_enemiesToIgnore.end(), enemy) == m_enemiesToIgnore.end();
+		bool enemyNotProcessed = std::find(enemiesToIgnore.begin(), enemiesToIgnore.end(), enemy) == enemiesToIgnore.end();
 		if (enemyNotProcessed && enemy->IsAlive() && DoesPlayerAttackEnemy(player, enemy))
 		{
-			m_enemiesToIgnore.push_back(enemy);
+			enemiesToIgnore.push_back(enemy);
 			enemy->SetImpuls(player.GetDirection().x * 5.0f, enemy->GetUpSpeed() * 2.0f);
-			enemy->ReduceHP(player.GetStrength());
+			enemy->ReduceHP(player.IsUsingCloudstrike() ? player.GetStrength() * 3 : player.GetStrength());
+			if (!enemy->IsAlive())
+			{
+				player.IncreaseSP(10);
+			}
 		}
 	}
 }
@@ -313,7 +355,7 @@ void CGameView::UpdatePlayerCamera(const CPlayer & player)
 {
 	float mapLeftBorder = m_gameScene.mapLeftBorder;
 	float mapRightBorder = m_gameScene.mapRightBorder;
-	float cameraXPosition = player.GetPosition().x + m_windowSize.x / 2 / CAMERA_ZOOM;
+	float cameraXPosition = player.GetPosition().x + (float)m_windowSize.x / 2 / CAMERA_ZOOM;
 	if (cameraXPosition - m_windowSize.x < mapLeftBorder)
 	{
 		cameraXPosition = mapLeftBorder + m_windowSize.x;
@@ -403,4 +445,18 @@ void CGameView::StealBeloved()
 	m_gameScene.villain.Hide();
 	m_gameScene.villainSpirit.Hide();
 	m_gameScene.beloved.Hide();
+}
+
+void CGameView::TryPlayerToUseSkill(int usingSkill)
+{
+	CSkill * skill = m_gameScene.skillPanel.GetSkillByIndex(usingSkill);
+	if (skill == nullptr)
+	{
+		return;
+	}
+	CPlayer & player = m_gameScene.player;
+	if (player.IsWithSpirit() || !skill->IsCanBeUsedOnlyWithSpirit())
+	{
+		player.UseSkill(skill->GetName(), skill->GetSpReduce());
+	}
 }

@@ -1,6 +1,7 @@
 #ifndef ULTIMATE_SHAMAN_KING_GAMESCENE_H
 #define ULTIMATE_SHAMAN_KING_GAMESCENE_H
 
+#include "constant.h"
 #include "TmxLevel.h"
 #include "Units/Player.h"
 #include "Units/Beloved.h"
@@ -9,7 +10,7 @@
 #include "Units/Enemy.h"
 #include "Fire.h"
 #include "Dialog.h"
-#include "constant.h"
+#include "SkillPanel.h"
 
 class CGameScene
 {
@@ -25,6 +26,7 @@ public:
 	CVillainSpirit villainSpirit;
 	CFire fire;
 	CDialog dialog;
+	CSkillPanel skillPanel;
 	std::vector<CEnemy*> enemies;
 	std::vector<TmxObject> collisionBlocks;
 	std::vector<TmxObject> environmentObjects;
@@ -32,6 +34,9 @@ public:
 	std::vector<TmxObject> actionLines;
 	float mapLeftBorder = 0;
 	float mapRightBorder = 0;
+
+	std::vector<CEnemy*> enemiesToIgnore;
+	std::vector<CSnowball*> snowballsToIgnore;
 
 private:
 	TmxLevel m_level;

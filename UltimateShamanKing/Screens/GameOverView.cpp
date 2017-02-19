@@ -1,14 +1,16 @@
+// This is a personal academic project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 #include "../stdafx.h"
-#include "GameOver.h"
+#include "GameOverView.h"
 
-CGameOver::CGameOver()
+CGameOverView::CGameOverView()
 {
 	InitBackground("../res/Images/Game Over.png");
 	InitText("Game Over", "../res/Fonts/Wizards Magic.ttf");
 	InitSubText("Press Enter to continue", "../res/Fonts/arial.ttf");
 }
 
-void CGameOver::Draw(sf::RenderTarget & target)
+void CGameOverView::Draw(sf::RenderTarget & target)
 {
 	m_background.setPosition(m_windowCenter.x - m_windowSize.x / 2, m_windowCenter.y - m_windowSize.y / 2);
 	m_text.setPosition(m_windowCenter.x - (m_text.getGlobalBounds().width / 2),
@@ -20,27 +22,27 @@ void CGameOver::Draw(sf::RenderTarget & target)
 	target.draw(m_subText);
 }
 
-void CGameOver::SetWindowCenter(const sf::Vector2f & windowCenter)
+void CGameOverView::SetWindowCenter(const sf::Vector2f & windowCenter)
 {
 	m_windowCenter = windowCenter;
 }
 
-void CGameOver::SetWindowSize(const sf::Vector2u & windowSize)
+void CGameOverView::SetWindowSize(const sf::Vector2u & windowSize)
 {
 	m_windowSize = windowSize;
 }
 
-void CGameOver::SetBackgroundScale(float x, float y)
+void CGameOverView::SetBackgroundScale(float x, float y)
 {
 	m_background.setScale(x, y);
 }
 
-float CGameOver::GetBackgroundWidth() const
+float CGameOverView::GetBackgroundWidth() const
 {
 	return m_background.getLocalBounds().width;
 }
 
-void CGameOver::InitBackground(const std::string & imagePath)
+void CGameOverView::InitBackground(const std::string & imagePath)
 {
 	if (!m_backgroundTexture.loadFromFile(imagePath))
 	{
@@ -49,7 +51,7 @@ void CGameOver::InitBackground(const std::string & imagePath)
 	m_background.setTexture(m_backgroundTexture);
 }
 
-void CGameOver::InitTextFont(const std::string &fontPath)
+void CGameOverView::InitTextFont(const std::string &fontPath)
 {
 	if (!m_textFont.loadFromFile(fontPath))
 	{
@@ -57,7 +59,7 @@ void CGameOver::InitTextFont(const std::string &fontPath)
 	}
 }
 
-void CGameOver::InitSubTextFont(const std::string &fontPath)
+void CGameOverView::InitSubTextFont(const std::string &fontPath)
 {
 	if (!m_subTextFont.loadFromFile(fontPath))
 	{
@@ -65,7 +67,7 @@ void CGameOver::InitSubTextFont(const std::string &fontPath)
 	}
 }
 
-void CGameOver::InitText(const std::string & textMessage, const std::string & fontPath)
+void CGameOverView::InitText(const std::string & textMessage, const std::string & fontPath)
 {
 	InitTextFont(fontPath);
 	m_text.setFont(m_textFont);
@@ -76,7 +78,7 @@ void CGameOver::InitText(const std::string & textMessage, const std::string & fo
 	m_text.setCharacterSize(300);
 }
 
-void CGameOver::InitSubText(const std::string & textMessage, const std::string & fontPath)
+void CGameOverView::InitSubText(const std::string & textMessage, const std::string & fontPath)
 {
 	InitSubTextFont(fontPath);
 	m_subText.setFont(m_subTextFont);

@@ -63,8 +63,8 @@ public:
 	float GetStrength() const;
 	bool IsStaying() const;
 	bool IsAlive() const;
-	bool DoesAttacking() const;
-	bool DoesJumping() const;
+	bool IsAttacking() const;
+	bool IsJumping() const;
 	void ReduceHP(float value);
 	void Show();
 	void Hide();
@@ -154,8 +154,8 @@ private:
 	bool m_dead = false;
 	float m_dyingTimeSec = 0;
 
-	sf::Vector2f m_direction;
-	sf::Vector2f m_lastDirection;
+	sf::Vector2f m_direction = {1, 0};
+	sf::Vector2f m_lastDirection = {1, 0};
 
 };
 

@@ -24,6 +24,7 @@ public:
 	void Die() override;
 	void CreateNewSnowball(float directionX);
 	CSnowball * GetSnowball() const;
+	void DestroySnowball();
 
 private:
 	void UpdateDirection();
