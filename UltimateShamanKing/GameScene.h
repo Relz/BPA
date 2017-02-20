@@ -4,6 +4,7 @@
 #include "constant.h"
 #include "TmxLevel.h"
 #include "Units/Player.h"
+#include "Units/Enemy.h"
 #include "Units/Beloved.h"
 #include "Units/Villain.h"
 #include "Units/VillainSpirit.h"
@@ -11,6 +12,8 @@
 #include "Fire.h"
 #include "Dialog.h"
 #include "SkillPanel.h"
+#include "Coin.h"
+#include "MoneyPanel.h"
 
 class CGameScene
 {
@@ -18,6 +21,7 @@ public:
 	CGameScene();
 	void Init();
 	void InitEnemies(const std::vector<TmxObject> & enemies);
+	void InitCoins(const std::vector<TmxObject> & coins);
 	void DrawTiles(sf::RenderTarget &target) const;
 
 	CPlayer player;
@@ -32,6 +36,8 @@ public:
 	std::vector<TmxObject> environmentObjects;
 	std::vector<TmxObject> deadLines;
 	std::vector<TmxObject> actionLines;
+	std::vector<CCoin*> coins;
+	CMoneyPanel moneyPanel;
 	float mapLeftBorder = 0;
 	float mapRightBorder = 0;
 

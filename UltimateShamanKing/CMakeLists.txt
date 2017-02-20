@@ -3,7 +3,7 @@ project(Ultimate_Shaman_King)
 
 set(CMAKE_CXX_STANDARD 11)
 
-set(SOURCE_FILES main.cpp stdafx.cpp stdafx.h constant.cpp constant.h TmxLevel.cpp TmxLevel.h GameView.cpp GameView.h GameScene.cpp GameScene.h Units/Player.cpp Units/Player.h lib/tinyxml2/tinyxml2.cpp lib/tinyxml2/tinyxml2.h Units/Unit.cpp Units/Unit.h Units/Enemy.cpp Units/Enemy.h Snowball.cpp Snowball.h Screens/GameOverView.cpp Screens/GameOverView.h Screens/MenuView.cpp Screens/MenuView.h Random.h Screens/MenuBackground.cpp Screens/MenuBackground.h Screens/Menu.cpp Screens/Menu.h Units/Beloved.cpp Units/Beloved.h Units/Villain.cpp Units/Villain.h Units/VillainSpirit.cpp Units/VillainSpirit.h Fire.cpp Fire.h Dialog.cpp Dialog.h Replica.cpp Replica.h Line.cpp Line.h SkillPanel.cpp SkillPanel.h Skill.cpp Skill.h Shield.cpp Shield.h)
+set(SOURCE_FILES main.cpp stdafx.cpp stdafx.h constant.cpp constant.h TmxLevel.cpp TmxLevel.h GameView.cpp GameView.h GameScene.cpp GameScene.h Units/Player.cpp Units/Player.h lib/tinyxml2/tinyxml2.cpp lib/tinyxml2/tinyxml2.h Units/Unit.cpp Units/Unit.h Units/Enemy.cpp Units/Enemy.h Snowball.cpp Snowball.h Screens/GameOverView.cpp Screens/GameOverView.h Screens/MenuView.cpp Screens/MenuView.h Random.h Screens/MenuBackground.cpp Screens/MenuBackground.h Screens/Menu.cpp Screens/Menu.h Units/Beloved.cpp Units/Beloved.h Units/Villain.cpp Units/Villain.h Units/VillainSpirit.cpp Units/VillainSpirit.h Fire.cpp Fire.h Dialog.cpp Dialog.h Replica.cpp Replica.h Line.cpp Line.h SkillPanel.cpp SkillPanel.h Skill.cpp Skill.h Shield.cpp Shield.h Coin.cpp Coin.h MoneyPanel.cpp MoneyPanel.h)
 add_executable(Ultimate_Shaman_King ${SOURCE_FILES})
 
 # enable warnings

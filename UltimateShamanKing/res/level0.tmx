@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="left-up" width="100" height="10" tilewidth="128" tileheight="128" nextobjectid="148">
+<map version="1.0" orientation="orthogonal" renderorder="left-up" width="100" height="10" tilewidth="128" tileheight="128" nextobjectid="174">
  <tileset firstgid="1" name="Тайлы" tilewidth="128" tileheight="128" tilecount="27" columns="9">
   <image source="Images/tileset.png" width="1152" height="384"/>
  </tileset>
@@ -1325,7 +1325,7 @@
   <object id="104" name="Желтое дерево" type="Окружение" gid="56" x="11755.9" y="909.99" width="539.663" height="526.267"/>
  </objectgroup>
  <objectgroup name="Движущиеся">
-  <object id="25" name="Игрок" x="1000" y="10" width="1" height="1"/>
+  <object id="25" name="Игрок" x="50" y="700" width="1" height="1"/>
   <object id="63" name="Монстр" type="Противник" x="1300" y="615.5" width="1" height="1"/>
   <object id="124" name="Монстр" type="Противник" x="2211.85" y="563.694" width="1" height="1"/>
   <object id="125" name="Монстр" type="Противник" x="3442.41" y="705.853" width="1" height="1"/>
@@ -1340,6 +1340,103 @@
   <object id="141" name="Любимая" x="12600" y="600" width="1" height="1"/>
   <object id="144" name="Дух злодея" x="12000" y="500" width="1" height="1"/>
   <object id="145" name="Злодей" x="12200" y="600" width="1" height="1"/>
+ </objectgroup>
+ <objectgroup name="Монеты">
+  <object id="150" name="10 Зени" type="Монета" x="552" y="406" width="1" height="1">
+   <properties>
+    <property name="value" value="10"/>
+   </properties>
+  </object>
+  <object id="151" name="1 Зени" type="Монета" x="1138" y="180" width="1" height="1">
+   <properties>
+    <property name="value" value="1"/>
+   </properties>
+  </object>
+  <object id="152" name="10 Зени" type="Монета" x="1377.5" y="795.5" width="1" height="1">
+   <properties>
+    <property name="value" value="10"/>
+   </properties>
+  </object>
+  <object id="155" name="1 Зени" type="Монета" x="1783.5" y="153.5" width="1" height="1">
+   <properties>
+    <property name="value" value="1"/>
+   </properties>
+  </object>
+  <object id="157" name="1 Зени" type="Монета" x="3087.5" y="537.5" width="1" height="1">
+   <properties>
+    <property name="value" value="1"/>
+   </properties>
+  </object>
+  <object id="158" name="1 Зени" type="Монета" x="2769.5" y="543.5" width="1" height="1">
+   <properties>
+    <property name="value" value="1"/>
+   </properties>
+  </object>
+  <object id="159" name="1 Зени" type="Монета" x="2915.5" y="421.5" width="1" height="1">
+   <properties>
+    <property name="value" value="1"/>
+   </properties>
+  </object>
+  <object id="160" name="10 Зени" type="Монета" x="1973.5" y="791.5" width="1" height="1">
+   <properties>
+    <property name="value" value="10"/>
+   </properties>
+  </object>
+  <object id="161" name="10 Зени" type="Монета" x="3701.5" y="903.5" width="1" height="1">
+   <properties>
+    <property name="value" value="10"/>
+   </properties>
+  </object>
+  <object id="162" name="1 Зени" type="Монета" x="4429.5" y="427.5" width="1" height="1">
+   <properties>
+    <property name="value" value="1"/>
+   </properties>
+  </object>
+  <object id="164" name="1 Зени" type="Монета" x="6049.5" y="447.5" width="1" height="1">
+   <properties>
+    <property name="value" value="1"/>
+   </properties>
+  </object>
+  <object id="165" name="100 Зени" type="Монета" x="7169.5" y="751.5" width="1" height="1">
+   <properties>
+    <property name="value" value="100"/>
+   </properties>
+  </object>
+  <object id="166" name="100 Зени" type="Монета" x="7465.5" y="753.5" width="1" height="1">
+   <properties>
+    <property name="value" value="100"/>
+   </properties>
+  </object>
+  <object id="168" name="100 Зени" type="Монета" x="8101.5" y="795.5" width="1" height="1">
+   <properties>
+    <property name="value" value="100"/>
+   </properties>
+  </object>
+  <object id="169" name="1 Зени" type="Монета" x="9427.5" y="819.5" width="1" height="1">
+   <properties>
+    <property name="value" value="1"/>
+   </properties>
+  </object>
+  <object id="170" name="1 Зени" type="Монета" x="9885.5" y="835.5" width="1" height="1">
+   <properties>
+    <property name="value" value="1"/>
+   </properties>
+  </object>
+  <object id="171" name="100 Зени" type="Монета" x="11835.5" y="553.5" width="1" height="1">
+   <properties>
+    <property name="value" value="100"/>
+   </properties>
+  </object>
+  <object id="172" name="10 Зени" type="Монета" x="12005.5" y="467.5" width="1" height="1">
+   <properties>
+    <property name="value" value="10"/>
+   </properties>
+  </object>
+  <object id="173" name="1 Зени" type="Монета" x="12137.5" y="545.5" width="1" height="1">
+   <properties>
+    <property name="value" value="1"/>
+   </properties>
+  </object>
  </objectgroup>
  <objectgroup name="Линии смерти">
   <object id="142" type="Линия смерти" x="0" y="1280" width="12794" height="1"/>

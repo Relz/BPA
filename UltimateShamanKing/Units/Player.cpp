@@ -218,6 +218,16 @@ void CPlayer::UseSkill(const std::string skillName, float spReduce)
 	}
 }
 
+float CPlayer::GetMoney() const
+{
+	return m_money;
+}
+
+void CPlayer::IncreaseMoney(float value)
+{
+	m_money += value;
+}
+
 void CPlayer::UpdateDirection()
 {
 	sf::Vector2f direction;

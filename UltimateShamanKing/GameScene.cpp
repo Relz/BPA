@@ -32,6 +32,7 @@ CGameScene::CGameScene()
 					new CSkill("../res/Images/Skills/cloudstrike_icon.png", SKILL_CLOUDSTRIKE, 128, true, 20),
 					new CSkill("../res/Images/Skills/shield_icon.png", SKILL_SHIELD, 128, true, 10)
 			});
+	moneyPanel.Init("Zeny", 20);
 	Init();
 }
 
@@ -51,6 +52,7 @@ void CGameScene::Init()
 	sf::Vector2f firePosition(villainSpiritPosition.x - 100, villainSpiritPosition.y - 250);
 	fire.SetPosition(firePosition);
 	InitEnemies(m_level.GetAllObjectsByType(TMX_ENEMY_TYPE));
+	InitCoins(m_level.GetAllObjectsByType(TMX_COIN_TYPE));
 	snowballsToIgnore.clear();
 	enemiesToIgnore.clear();
 }
@@ -64,6 +66,37 @@ void CGameScene::InitEnemies(const std::vector<TmxObject> & enemies)
 		enemy->SetSprite("../res/Images/Sprites/monster.png", {6, 0, 30, 42}, 5);
 		enemy->Init(L"Монстр", {enemyObject.rect.left, enemyObject.rect.top}, MONSTER_SPEED_X, MONSTER_SPEED_UP, MONSTER_SPEED_DOWN, GRAVITY, 5, 3, 100, 5);
 		this->enemies.push_back(enemy);
+	}
+}
+
+static int GetCoinSpriteYPosForValue(float value, int coinHeight)
+{
+	int result = 0;
+	if (value == 10)
+	{
+		result = coinHeight;
+	}
+	else if (value == 1)
+	{
+		result = coinHeight * 2;
+	}
+	return result;
+}
+
+void CGameScene::InitCoins(const std::vector<TmxObject> & coins)
+{
+	this->coins.clear();
+	int coinWidth= 82;
+	int coinHeight = 80;
+	for (const TmxObject & coinObject : coins)
+	{
+		float value = stof(coinObject.properties.at("value"));
+		int spriteYPos = GetCoinSpriteYPosForValue(value, coinHeight);
+
+		CCoin *coin = new CCoin;
+		coin->SetSprite("../res/Images/Sprites/coin.png", {0, spriteYPos, coinWidth, coinHeight}, 1);
+		coin->Init(value, {coinObject.rect.left, coinObject.rect.top});
+		this->coins.push_back(coin);
 	}
 }
 
