@@ -6,8 +6,6 @@
 #include "constant.h"
 #include "TmxLevel.h"
 #include "GameScene.h"
-#include "Units/Player.h"
-#include "Units/Enemy.h"
 #include "Screens/GameOverView.h"
 #include "Screens/MenuView.h"
 
@@ -26,8 +24,11 @@ private:
 	void ShowGameOverScreen();
 	void DrawTmxObjects(const std::vector<TmxObject> & tmxObjects);
 	void DrawEnemies(const std::vector<CEnemy*> & enemies);
+	void DrawCoins(const std::vector<CCoin*> & coins);
 	void ProcessEnemies(std::vector<CEnemy*> & enemies, CPlayer & player);
+	void ProcessCoins(std::vector<CCoin*> & coins);
 	bool DoesPlayerAttackEnemy(const CPlayer & player, const CEnemy * enemy) const;
+	void TryPlayerToPickUpCoin(CPlayer & player, CCoin* coin);
 	void TryPlayerToAttackEnemies(CPlayer & player, const std::vector<CEnemy*> & enemies);
 	void TryPlayerToDieFromDeadLine(CPlayer & player, const std::vector<TmxObject> & deadLines);
 	void CleanDeadBodies(std::vector<CEnemy*> & enemies);
@@ -54,6 +55,7 @@ private:
 	bool m_showStory = false;
 
 	void UpdateSkillPanel();
+	void UpdateMoneyPanel(float money);
 };
 
 

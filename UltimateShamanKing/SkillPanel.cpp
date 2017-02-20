@@ -60,7 +60,7 @@ float CSkillPanel::GetHeight() const
 CSkill * CSkillPanel::GetSkillByIndex(int skillIndex)
 {
 	CSkill * result = nullptr;
-	if (skillIndex >= 0 && skillIndex < m_skills->size())
+	if (skillIndex >= 0 && skillIndex < static_cast<int>(m_skills->size()))
 	{
 		result = m_skills->at(skillIndex);
 	}

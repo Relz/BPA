@@ -22,6 +22,7 @@ static const std::string TMX_TILES = "Тайлы";
 static const std::string TMX_ENVIRONMENT_TYPE = "Окружение";
 static const std::string TMX_PLAYER_NAME = "Игрок";
 static const std::string TMX_COLLISION_BLOCK_TYPE = "Блок коллизии";
+static const std::string TMX_COIN_TYPE = "Монета";
 static const std::string TMX_ENEMY_TYPE = "Противник";
 static const std::string TMX_BELOVED_NAME = "Любимая";
 static const std::string TMX_VILLAIN_NAME = "Злодей";

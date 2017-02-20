@@ -108,6 +108,7 @@ void CGameView::UpdateGameScene()
 		villainSpirit.UpdateDirection(player.GetLeft());
 		villainSpirit.Process(m_gameScene.collisionBlocks);
 		ProcessEnemies(m_gameScene.enemies, player);
+		ProcessCoins(m_gameScene.coins);
 		if (!player.IsWithShield())
 		{
 			if (player.IsAttacking() || player.IsUsingCloudstrike())
@@ -135,6 +136,7 @@ void CGameView::UpdateGameScene()
 		RunAction(fire.GetActionAfterProcessing());
 	}
 	UpdateSkillPanel();
+	UpdateMoneyPanel(player.GetMoney());
 }
 
 void CGameView::DrawGameScene()
@@ -142,6 +144,7 @@ void CGameView::DrawGameScene()
 	m_gameScene.DrawTiles(m_window);
 	DrawTmxObjects(m_gameScene.environmentObjects);
 	DrawEnemies(m_gameScene.enemies);
+	DrawCoins(m_gameScene.coins);
 	m_gameScene.player.Draw(m_window);
 	m_gameScene.villainSpirit.Draw(m_window);
 	m_gameScene.beloved.Draw(m_window);
@@ -149,6 +152,7 @@ void CGameView::DrawGameScene()
 	m_gameScene.fire.Draw(m_window);
 	m_gameScene.dialog.Draw(m_window);
 	m_gameScene.skillPanel.Draw(m_window, m_gameScene.player.IsWithSpirit());
+	m_gameScene.moneyPanel.Draw(m_window);
 }
 
 void CGameView::ShowGameOverScreen()
@@ -178,11 +182,26 @@ void CGameView::DrawEnemies(const std::vector<CEnemy*> & enemies)
 	}
 }
 
+void CGameView::DrawCoins(const std::vector<CCoin*> & coins)
+{
+	for (const CCoin * coin : coins)
+	{
+		coin->Draw(m_window);
+	}
+}
+
 void CGameView::UpdateSkillPanel()
 {
 	CSkillPanel & skillPanel = m_gameScene.skillPanel;
 	skillPanel.SetPosition(sf::Vector2f(m_camera.getCenter().x - m_windowSize.x / 2 * CAMERA_ZOOM,
 	                                    m_camera.getCenter().y - skillPanel.GetHeight() / 2));
+}
+
+void CGameView::UpdateMoneyPanel(float money)
+{
+	CMoneyPanel & moneyPanel = m_gameScene.moneyPanel;
+	moneyPanel.SetMoney(money);
+	moneyPanel.SetPosition(sf::Vector2f(m_camera.getCenter().x - m_windowSize.x / 2 * CAMERA_ZOOM, 0));
 }
 
 void CGameView::RemoveSnowballFromIgnored(CSnowball * snowball)
@@ -294,6 +313,15 @@ void CGameView::ProcessEnemies(std::vector<CEnemy*> & enemies, CPlayer & player)
 	CleanDeadBodies(enemies);
 }
 
+void CGameView::ProcessCoins(std::vector<CCoin*> & coins)
+{
+	for (CCoin * coin : coins)
+	{
+		coin->Process();
+		TryPlayerToPickUpCoin(m_gameScene.player, coin);
+	}
+}
+
 void CGameView::SetCameraCenter(float cameraX, float cameraY)
 {
 	m_camera.setCenter(cameraX, cameraY);
@@ -312,6 +340,27 @@ bool CGameView::DoesPlayerAttackEnemy(const CPlayer & player, const CEnemy * ene
 
 	sf::Vector2f playerDirection = player.GetLastDirection();
 	return ((collisionWithEnemy.left && playerDirection.x == -1) || (collisionWithEnemy.right && playerDirection.x == 1));
+}
+
+void CGameView::TryPlayerToPickUpCoin(CPlayer & player, CCoin * coin)
+{
+	std::vector<CCoin*> & coins = m_gameScene.coins;
+	Collision collisionWithCoin;
+	CUnit::GetCollision(coin->GetSpriteRect(),
+	                    player.GetSpriteRect(),
+	                    player.GetFutureSpriteRect(),
+	                    player.GetLastDirection().x,
+	                    player.GetWidth(),
+	                    collisionWithCoin);
+	if (collisionWithCoin.Any())
+	{
+		auto coinIt = std::find(coins.begin(), coins.end(), coin);
+		if (coinIt != coins.end())
+		{
+			player.IncreaseMoney(coin->GetValue());
+			coins.erase(coinIt);
+		}
+	}
 }
 
 void CGameView::TryPlayerToAttackEnemies(CPlayer & player, const std::vector<CEnemy*> & enemies)

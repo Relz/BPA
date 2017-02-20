@@ -37,6 +37,8 @@ public:
 	bool IsUsingCloudstrike() const;
 	bool IsWithShield() const;
 	void UseSkill(const std::string skillName, float spReduce);
+	float GetMoney() const;
+	void IncreaseMoney(float value);
 
 private:
 	void UpdateDirection();
@@ -74,6 +76,8 @@ private:
 	bool m_isWithShield = false;
 
 	CShield m_shield;
+
+	float m_money = 0;
 
 };
 
