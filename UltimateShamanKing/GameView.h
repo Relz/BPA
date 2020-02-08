@@ -43,6 +43,7 @@ private:
 	void AppearVillain();
 	void StealBeloved();
 	void TryPlayerToUseSkill(int usingSkill);
+	void TryPlayerToFinishLevel(CPlayer & player);
 
 	sf::RenderWindow m_window;
 	sf::View m_camera;

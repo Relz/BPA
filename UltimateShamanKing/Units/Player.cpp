@@ -24,6 +24,8 @@ void CPlayer::Init(const std::wstring & name,
 	this->m_skillCount = skillCount;
 	m_SPLine.SetPoints(SP);
 	m_shield.SetSprite("../res/Images/Skills/shield.png", 0.6);
+	SetShield(false);
+	SetSpirit(false);
 	CUnit::Init(name, startPosition, movementSpeed, upSpeed, downSpeed, gravity, dyingTimeSec, HP, strength);
 }
 
@@ -226,6 +228,12 @@ float CPlayer::GetMoney() const
 void CPlayer::IncreaseMoney(float value)
 {
 	m_money += value;
+}
+
+void CPlayer::Die()
+{
+	m_money = 0;
+	CUnit::Die();
 }
 
 void CPlayer::UpdateDirection()

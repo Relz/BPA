@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="Ultimate_Shaman_King"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;CMake Files\cmake_modules\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/home/relz/workspace/Clion/BPA/UltimateShamanKing/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j2 -f &quot;/home/relz/workspace/Clion/BPA/UltimateShamanKing/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j2 -f &quot;/home/relz/workspace/Clion/BPA/UltimateShamanKing/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j2 -f &quot;/home/relz/workspace/Clion/BPA/UltimateShamanKing/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j2 -f &quot;/home/relz/workspace/Clion/BPA/UltimateShamanKing/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/home/relz/workspace/Clion/BPA/UltimateShamanKing/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j2 -f &quot;/home/relz/workspace/Clion/BPA/UltimateShamanKing/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -j2 -f &quot;/home/relz/workspace/Clion/BPA/UltimateShamanKing/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j2 -f &quot;/home/relz/workspace/Clion/BPA/UltimateShamanKing/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j2 -f &quot;/home/relz/workspace/Clion/BPA/UltimateShamanKing/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="all_pch">
+				<Option working_dir="/home/relz/workspace/Clion/BPA/UltimateShamanKing/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j2 -f &quot;/home/relz/workspace/Clion/BPA/UltimateShamanKing/cmake-build-debug/Makefile&quot;  VERBOSE=1 all_pch"/>
+					<CompileFile command="/usr/bin/make -j2 -f &quot;/home/relz/workspace/Clion/BPA/UltimateShamanKing/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j2 -f &quot;/home/relz/workspace/Clion/BPA/UltimateShamanKing/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j2 -f &quot;/home/relz/workspace/Clion/BPA/UltimateShamanKing/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/home/relz/workspace/Clion/BPA/UltimateShamanKing/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j2 -f &quot;/home/relz/workspace/Clion/BPA/UltimateShamanKing/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -j2 -f &quot;/home/relz/workspace/Clion/BPA/UltimateShamanKing/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j2 -f &quot;/home/relz/workspace/Clion/BPA/UltimateShamanKing/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j2 -f &quot;/home/relz/workspace/Clion/BPA/UltimateShamanKing/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="all_unity">
+				<Option working_dir="/home/relz/workspace/Clion/BPA/UltimateShamanKing/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j2 -f &quot;/home/relz/workspace/Clion/BPA/UltimateShamanKing/cmake-build-debug/Makefile&quot;  VERBOSE=1 all_unity"/>
+					<CompileFile command="/usr/bin/make -j2 -f &quot;/home/relz/workspace/Clion/BPA/UltimateShamanKing/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j2 -f &quot;/home/relz/workspace/Clion/BPA/UltimateShamanKing/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j2 -f &quot;/home/relz/workspace/Clion/BPA/UltimateShamanKing/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Ultimate_Shaman_King_pch">
+				<Option working_dir="/home/relz/workspace/Clion/BPA/UltimateShamanKing/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j2 -f &quot;/home/relz/workspace/Clion/BPA/UltimateShamanKing/cmake-build-debug/Makefile&quot;  VERBOSE=1 Ultimate_Shaman_King_pch"/>
+					<CompileFile command="/usr/bin/make -j2 -f &quot;/home/relz/workspace/Clion/BPA/UltimateShamanKing/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j2 -f &quot;/home/relz/workspace/Clion/BPA/UltimateShamanKing/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j2 -f &quot;/home/relz/workspace/Clion/BPA/UltimateShamanKing/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Ultimate_Shaman_King_unity">
+				<Option output="/home/relz/workspace/Clion/BPA/UltimateShamanKing/cmake-build-debug/Ultimate_Shaman_King" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/relz/workspace/Clion/BPA/UltimateShamanKing/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/6.3.1/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/6.3.1/include-fixed"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/6.3.1/../../../../include/c++/6.3.1"/>
+					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/6.3.1/../../../../include/c++/6.3.1/x86_64-pc-linux-gnu"/>
+					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/6.3.1/../../../../include/c++/6.3.1/backward"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j2 -f &quot;/home/relz/workspace/Clion/BPA/UltimateShamanKing/cmake-build-debug/Makefile&quot;  VERBOSE=1 Ultimate_Shaman_King_unity"/>
+					<CompileFile command="/usr/bin/make -j2 -f &quot;/home/relz/workspace/Clion/BPA/UltimateShamanKing/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j2 -f &quot;/home/relz/workspace/Clion/BPA/UltimateShamanKing/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j2 -f &quot;/home/relz/workspace/Clion/BPA/UltimateShamanKing/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Ultimate_Shaman_King_unity/fast">
+				<Option output="/home/relz/workspace/Clion/BPA/UltimateShamanKing/cmake-build-debug/Ultimate_Shaman_King" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/relz/workspace/Clion/BPA/UltimateShamanKing/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/6.3.1/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/6.3.1/include-fixed"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/6.3.1/../../../../include/c++/6.3.1"/>
+					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/6.3.1/../../../../include/c++/6.3.1/x86_64-pc-linux-gnu"/>
+					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/6.3.1/../../../../include/c++/6.3.1/backward"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j2 -f &quot;/home/relz/workspace/Clion/BPA/UltimateShamanKing/cmake-build-debug/Makefile&quot;  VERBOSE=1 Ultimate_Shaman_King_unity/fast"/>
+					<CompileFile command="/usr/bin/make -j2 -f &quot;/home/relz/workspace/Clion/BPA/UltimateShamanKing/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j2 -f &quot;/home/relz/workspace/Clion/BPA/UltimateShamanKing/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j2 -f &quot;/home/relz/workspace/Clion/BPA/UltimateShamanKing/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="clean_cotire">
+				<Option working_dir="/home/relz/workspace/Clion/BPA/UltimateShamanKing/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j2 -f &quot;/home/relz/workspace/Clion/BPA/UltimateShamanKing/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean_cotire"/>
+					<CompileFile command="/usr/bin/make -j2 -f &quot;/home/relz/workspace/Clion/BPA/UltimateShamanKing/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j2 -f &quot;/home/relz/workspace/Clion/BPA/UltimateShamanKing/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j2 -f &quot;/home/relz/workspace/Clion/BPA/UltimateShamanKing/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="analyze">
+				<Option working_dir="/home/relz/workspace/Clion/BPA/UltimateShamanKing/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j2 -f &quot;/home/relz/workspace/Clion/BPA/UltimateShamanKing/cmake-build-debug/Makefile&quot;  VERBOSE=1 analyze"/>
+					<CompileFile command="/usr/bin/make -j2 -f &quot;/home/relz/workspace/Clion/BPA/UltimateShamanKing/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j2 -f &quot;/home/relz/workspace/Clion/BPA/UltimateShamanKing/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j2 -f &quot;/home/relz/workspace/Clion/BPA/UltimateShamanKing/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Ultimate_Shaman_King">
+				<Option output="/home/relz/workspace/Clion/BPA/UltimateShamanKing/cmake-build-debug/Ultimate_Shaman_King" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/relz/workspace/Clion/BPA/UltimateShamanKing/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/6.3.1/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/6.3.1/include-fixed"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/6.3.1/../../../../include/c++/6.3.1"/>
+					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/6.3.1/../../../../include/c++/6.3.1/x86_64-pc-linux-gnu"/>
+					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/6.3.1/../../../../include/c++/6.3.1/backward"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j2 -f &quot;/home/relz/workspace/Clion/BPA/UltimateShamanKing/cmake-build-debug/Makefile&quot;  VERBOSE=1 Ultimate_Shaman_King"/>
+					<CompileFile command="/usr/bin/make -j2 -f &quot;/home/relz/workspace/Clion/BPA/UltimateShamanKing/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j2 -f &quot;/home/relz/workspace/Clion/BPA/UltimateShamanKing/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j2 -f &quot;/home/relz/workspace/Clion/BPA/UltimateShamanKing/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Ultimate_Shaman_King/fast">
+				<Option output="/home/relz/workspace/Clion/BPA/UltimateShamanKing/cmake-build-debug/Ultimate_Shaman_King" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/relz/workspace/Clion/BPA/UltimateShamanKing/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/6.3.1/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/6.3.1/include-fixed"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/6.3.1/../../../../include/c++/6.3.1"/>
+					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/6.3.1/../../../../include/c++/6.3.1/x86_64-pc-linux-gnu"/>
+					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/6.3.1/../../../../include/c++/6.3.1/backward"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j2 -f &quot;/home/relz/workspace/Clion/BPA/UltimateShamanKing/cmake-build-debug/Makefile&quot;  VERBOSE=1 Ultimate_Shaman_King/fast"/>
+					<CompileFile command="/usr/bin/make -j2 -f &quot;/home/relz/workspace/Clion/BPA/UltimateShamanKing/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j2 -f &quot;/home/relz/workspace/Clion/BPA/UltimateShamanKing/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j2 -f &quot;/home/relz/workspace/Clion/BPA/UltimateShamanKing/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/home/relz/workspace/Clion/BPA/UltimateShamanKing/Coin.cpp">
+			<Option target="Ultimate_Shaman_King"/>
+		</Unit>
+		<Unit filename="/home/relz/workspace/Clion/BPA/UltimateShamanKing/Coin.h">
+			<Option target="Ultimate_Shaman_King_unity"/>
+			<Option target="Ultimate_Shaman_King"/>
+		</Unit>
+		<Unit filename="/home/relz/workspace/Clion/BPA/UltimateShamanKing/Dialog.cpp">
+			<Option target="Ultimate_Shaman_King"/>
+		</Unit>
+		<Unit filename="/home/relz/workspace/Clion/BPA/UltimateShamanKing/Dialog.h">
+			<Option target="Ultimate_Shaman_King_unity"/>
+			<Option target="Ultimate_Shaman_King"/>
+		</Unit>
+		<Unit filename="/home/relz/workspace/Clion/BPA/UltimateShamanKing/Fire.cpp">
+			<Option target="Ultimate_Shaman_King"/>
+		</Unit>
+		<Unit filename="/home/relz/workspace/Clion/BPA/UltimateShamanKing/Fire.h">
+			<Option target="Ultimate_Shaman_King_unity"/>
+			<Option target="Ultimate_Shaman_King"/>
+		</Unit>
+		<Unit filename="/home/relz/workspace/Clion/BPA/UltimateShamanKing/GameScene.cpp">
+			<Option target="Ultimate_Shaman_King"/>
+		</Unit>
+		<Unit filename="/home/relz/workspace/Clion/BPA/UltimateShamanKing/GameScene.h">
+			<Option target="Ultimate_Shaman_King_unity"/>
+			<Option target="Ultimate_Shaman_King"/>
+		</Unit>
+		<Unit filename="/home/relz/workspace/Clion/BPA/UltimateShamanKing/GameView.cpp">
+			<Option target="Ultimate_Shaman_King"/>
+		</Unit>
+		<Unit filename="/home/relz/workspace/Clion/BPA/UltimateShamanKing/GameView.h">
+			<Option target="Ultimate_Shaman_King_unity"/>
+			<Option target="Ultimate_Shaman_King"/>
+		</Unit>
+		<Unit filename="/home/relz/workspace/Clion/BPA/UltimateShamanKing/Line.cpp">
+			<Option target="Ultimate_Shaman_King"/>
+		</Unit>
+		<Unit filename="/home/relz/workspace/Clion/BPA/UltimateShamanKing/Line.h">
+			<Option target="Ultimate_Shaman_King_unity"/>
+			<Option target="Ultimate_Shaman_King"/>
+		</Unit>
+		<Unit filename="/home/relz/workspace/Clion/BPA/UltimateShamanKing/MoneyPanel.cpp">
+			<Option target="Ultimate_Shaman_King"/>
+		</Unit>
+		<Unit filename="/home/relz/workspace/Clion/BPA/UltimateShamanKing/MoneyPanel.h">
+			<Option target="Ultimate_Shaman_King_unity"/>
+			<Option target="Ultimate_Shaman_King"/>
+		</Unit>
+		<Unit filename="/home/relz/workspace/Clion/BPA/UltimateShamanKing/Random.h">
+			<Option target="Ultimate_Shaman_King_unity"/>
+			<Option target="Ultimate_Shaman_King"/>
+		</Unit>
+		<Unit filename="/home/relz/workspace/Clion/BPA/UltimateShamanKing/Replica.cpp">
+			<Option target="Ultimate_Shaman_King"/>
+		</Unit>
+		<Unit filename="/home/relz/workspace/Clion/BPA/UltimateShamanKing/Replica.h">
+			<Option target="Ultimate_Shaman_King_unity"/>
+			<Option target="Ultimate_Shaman_King"/>
+		</Unit>
+		<Unit filename="/home/relz/workspace/Clion/BPA/UltimateShamanKing/Screens/GameOverView.cpp">
+			<Option target="Ultimate_Shaman_King"/>
+		</Unit>
+		<Unit filename="/home/relz/workspace/Clion/BPA/UltimateShamanKing/Screens/GameOverView.h">
+			<Option target="Ultimate_Shaman_King_unity"/>
+			<Option target="Ultimate_Shaman_King"/>
+		</Unit>
+		<Unit filename="/home/relz/workspace/Clion/BPA/UltimateShamanKing/Screens/Menu.cpp">
+			<Option target="Ultimate_Shaman_King"/>
+		</Unit>
+		<Unit filename="/home/relz/workspace/Clion/BPA/UltimateShamanKing/Screens/Menu.h">
+			<Option target="Ultimate_Shaman_King_unity"/>
+			<Option target="Ultimate_Shaman_King"/>
+		</Unit>
+		<Unit filename="/home/relz/workspace/Clion/BPA/UltimateShamanKing/Screens/MenuBackground.cpp">
+			<Option target="Ultimate_Shaman_King"/>
+		</Unit>
+		<Unit filename="/home/relz/workspace/Clion/BPA/UltimateShamanKing/Screens/MenuBackground.h">
+			<Option target="Ultimate_Shaman_King_unity"/>
+			<Option target="Ultimate_Shaman_King"/>
+		</Unit>
+		<Unit filename="/home/relz/workspace/Clion/BPA/UltimateShamanKing/Screens/MenuView.cpp">
+			<Option target="Ultimate_Shaman_King"/>
+		</Unit>
+		<Unit filename="/home/relz/workspace/Clion/BPA/UltimateShamanKing/Screens/MenuView.h">
+			<Option target="Ultimate_Shaman_King_unity"/>
+			<Option target="Ultimate_Shaman_King"/>
+		</Unit>
+		<Unit filename="/home/relz/workspace/Clion/BPA/UltimateShamanKing/Shield.cpp">
+			<Option target="Ultimate_Shaman_King"/>
+		</Unit>
+		<Unit filename="/home/relz/workspace/Clion/BPA/UltimateShamanKing/Shield.h">
+			<Option target="Ultimate_Shaman_King_unity"/>
+			<Option target="Ultimate_Shaman_King"/>
+		</Unit>
+		<Unit filename="/home/relz/workspace/Clion/BPA/UltimateShamanKing/Skill.cpp">
+			<Option target="Ultimate_Shaman_King"/>
+		</Unit>
+		<Unit filename="/home/relz/workspace/Clion/BPA/UltimateShamanKing/Skill.h">
+			<Option target="Ultimate_Shaman_King_unity"/>
+			<Option target="Ultimate_Shaman_King"/>
+		</Unit>
+		<Unit filename="/home/relz/workspace/Clion/BPA/UltimateShamanKing/SkillPanel.cpp">
+			<Option target="Ultimate_Shaman_King"/>
+		</Unit>
+		<Unit filename="/home/relz/workspace/Clion/BPA/UltimateShamanKing/SkillPanel.h">
+			<Option target="Ultimate_Shaman_King_unity"/>
+			<Option target="Ultimate_Shaman_King"/>
+		</Unit>
+		<Unit filename="/home/relz/workspace/Clion/BPA/UltimateShamanKing/Snowball.cpp">
+			<Option target="Ultimate_Shaman_King"/>
+		</Unit>
+		<Unit filename="/home/relz/workspace/Clion/BPA/UltimateShamanKing/Snowball.h">
+			<Option target="Ultimate_Shaman_King_unity"/>
+			<Option target="Ultimate_Shaman_King"/>
+		</Unit>
+		<Unit filename="/home/relz/workspace/Clion/BPA/UltimateShamanKing/TmxLevel.cpp">
+			<Option target="Ultimate_Shaman_King"/>
+		</Unit>
+		<Unit filename="/home/relz/workspace/Clion/BPA/UltimateShamanKing/TmxLevel.h">
+			<Option target="Ultimate_Shaman_King_unity"/>
+			<Option target="Ultimate_Shaman_King"/>
+		</Unit>
+		<Unit filename="/home/relz/workspace/Clion/BPA/UltimateShamanKing/Units/Beloved.cpp">
+			<Option target="Ultimate_Shaman_King"/>
+		</Unit>
+		<Unit filename="/home/relz/workspace/Clion/BPA/UltimateShamanKing/Units/Beloved.h">
+			<Option target="Ultimate_Shaman_King_unity"/>
+			<Option target="Ultimate_Shaman_King"/>
+		</Unit>
+		<Unit filename="/home/relz/workspace/Clion/BPA/UltimateShamanKing/Units/Enemy.cpp">
+			<Option target="Ultimate_Shaman_King"/>
+		</Unit>
+		<Unit filename="/home/relz/workspace/Clion/BPA/UltimateShamanKing/Units/Enemy.h">
+			<Option target="Ultimate_Shaman_King_unity"/>
+			<Option target="Ultimate_Shaman_King"/>
+		</Unit>
+		<Unit filename="/home/relz/workspace/Clion/BPA/UltimateShamanKing/Units/Player.cpp">
+			<Option target="Ultimate_Shaman_King"/>
+		</Unit>
+		<Unit filename="/home/relz/workspace/Clion/BPA/UltimateShamanKing/Units/Player.h">
+			<Option target="Ultimate_Shaman_King_unity"/>
+			<Option target="Ultimate_Shaman_King"/>
+		</Unit>
+		<Unit filename="/home/relz/workspace/Clion/BPA/UltimateShamanKing/Units/Unit.cpp">
+			<Option target="Ultimate_Shaman_King"/>
+		</Unit>
+		<Unit filename="/home/relz/workspace/Clion/BPA/UltimateShamanKing/Units/Unit.h">
+			<Option target="Ultimate_Shaman_King_unity"/>
+			<Option target="Ultimate_Shaman_King"/>
+		</Unit>
+		<Unit filename="/home/relz/workspace/Clion/BPA/UltimateShamanKing/Units/Villain.cpp">
+			<Option target="Ultimate_Shaman_King"/>
+		</Unit>
+		<Unit filename="/home/relz/workspace/Clion/BPA/UltimateShamanKing/Units/Villain.h">
+			<Option target="Ultimate_Shaman_King_unity"/>
+			<Option target="Ultimate_Shaman_King"/>
+		</Unit>
+		<Unit filename="/home/relz/workspace/Clion/BPA/UltimateShamanKing/Units/VillainSpirit.cpp">
+			<Option target="Ultimate_Shaman_King"/>
+		</Unit>
+		<Unit filename="/home/relz/workspace/Clion/BPA/UltimateShamanKing/Units/VillainSpirit.h">
+			<Option target="Ultimate_Shaman_King_unity"/>
+			<Option target="Ultimate_Shaman_King"/>
+		</Unit>
+		<Unit filename="/home/relz/workspace/Clion/BPA/UltimateShamanKing/constant.cpp">
+			<Option target="Ultimate_Shaman_King"/>
+		</Unit>
+		<Unit filename="/home/relz/workspace/Clion/BPA/UltimateShamanKing/constant.h">
+			<Option target="Ultimate_Shaman_King_unity"/>
+			<Option target="Ultimate_Shaman_King"/>
+		</Unit>
+		<Unit filename="/home/relz/workspace/Clion/BPA/UltimateShamanKing/lib/tinyxml2/tinyxml2.cpp">
+			<Option target="Ultimate_Shaman_King"/>
+		</Unit>
+		<Unit filename="/home/relz/workspace/Clion/BPA/UltimateShamanKing/lib/tinyxml2/tinyxml2.h">
+			<Option target="Ultimate_Shaman_King_unity"/>
+			<Option target="Ultimate_Shaman_King"/>
+		</Unit>
+		<Unit filename="/home/relz/workspace/Clion/BPA/UltimateShamanKing/main.cpp">
+			<Option target="Ultimate_Shaman_King"/>
+		</Unit>
+		<Unit filename="/home/relz/workspace/Clion/BPA/UltimateShamanKing/stdafx.cpp">
+			<Option target="Ultimate_Shaman_King"/>
+		</Unit>
+		<Unit filename="/home/relz/workspace/Clion/BPA/UltimateShamanKing/stdafx.h">
+			<Option target="Ultimate_Shaman_King_unity"/>
+			<Option target="Ultimate_Shaman_King"/>
+		</Unit>
+		<Unit filename="/home/relz/workspace/Clion/BPA/UltimateShamanKing/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+		<Unit filename="/home/relz/workspace/Clion/BPA/UltimateShamanKing/cmake_modules/FindSFML.cmake">
+			<Option virtualFolder="CMake Files\cmake_modules\"/>
+		</Unit>
+		<Unit filename="/home/relz/workspace/Clion/BPA/UltimateShamanKing/cmake_modules/PVS-Studio.cmake">
+			<Option virtualFolder="CMake Files\cmake_modules\"/>
+		</Unit>
+		<Unit filename="/home/relz/workspace/Clion/BPA/UltimateShamanKing/cmake_modules/cotire.cmake">
+			<Option virtualFolder="CMake Files\cmake_modules\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

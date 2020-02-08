@@ -5,10 +5,7 @@
 
 CGameScene::CGameScene()
 {
-	if (!m_level.LoadFromFile(TMX_PATH))
-	{
-		throw std::invalid_argument("Failed to load \"" + TMX_PATH + "\"");
-	}
+	LoadLevelFromTmx(TMX_PATH_LEVEL_0);
 	player.SetSprite("../res/Images/Sprites/yoh.png", {6, 2, 30, 42}, 5);
 	player.SetDialogAvatarNormal("../res/Images/Avatars/yoh_normal.png", 3);
 	player.SetDialogAvatarAngry("../res/Images/Avatars/yoh_angry.png", 1);
@@ -20,11 +17,6 @@ CGameScene::CGameScene()
 	villain.SetDialogAvatarNormal("../res/Images/Avatars/hao.png", 5);
 	villainSpirit.SetSprite("../res/Images/spirit_of_fire.png", 2.5);
 	fire.SetSprite("../res/Images/Sprites/fire.png", {0, 0, 256, 248}, 4);
-	collisionBlocks = m_level.GetAllObjectsByType(TMX_COLLISION_BLOCK_TYPE);
-	environmentObjects = m_level.GetAllObjectsByType(TMX_ENVIRONMENT_TYPE);
-	deadLines = m_level.GetAllObjectsByType(TMX_DEAD_LINE_TYPE);
-	mapLeftBorder = m_level.GetMapLeftBorder();
-	mapRightBorder = m_level.GetMapRightBorder();
 	skillPanel.SetOffsetY(5);
 	skillPanel.SetSkills(new std::vector<CSkill*>
 			{
@@ -103,4 +95,17 @@ void CGameScene::InitCoins(const std::vector<TmxObject> & coins)
 void CGameScene::DrawTiles(sf::RenderTarget &target) const
 {
 	m_level.Draw(target);
+}
+
+void CGameScene::LoadLevelFromTmx(const std::string & tmxPath)
+{
+	if (!m_level.LoadFromFile(tmxPath))
+	{
+		throw std::invalid_argument("Failed to load \"" + tmxPath + "\"");
+	}
+	collisionBlocks = m_level.GetAllObjectsByType(TMX_COLLISION_BLOCK_TYPE);
+	environmentObjects = m_level.GetAllObjectsByType(TMX_ENVIRONMENT_TYPE);
+	deadLines = m_level.GetAllObjectsByType(TMX_DEAD_LINE_TYPE);
+	mapLeftBorder = m_level.GetMapLeftBorder();
+	mapRightBorder = m_level.GetMapRightBorder();
 }

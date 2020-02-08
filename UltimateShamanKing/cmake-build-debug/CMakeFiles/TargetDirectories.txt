@@ -1,0 +1,9 @@
+/home/relz/workspace/Clion/BPA/UltimateShamanKing/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/relz/workspace/Clion/BPA/UltimateShamanKing/cmake-build-debug/CMakeFiles/all_pch.dir
+/home/relz/workspace/Clion/BPA/UltimateShamanKing/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/relz/workspace/Clion/BPA/UltimateShamanKing/cmake-build-debug/CMakeFiles/all_unity.dir
+/home/relz/workspace/Clion/BPA/UltimateShamanKing/cmake-build-debug/CMakeFiles/Ultimate_Shaman_King_pch.dir
+/home/relz/workspace/Clion/BPA/UltimateShamanKing/cmake-build-debug/CMakeFiles/Ultimate_Shaman_King_unity.dir
+/home/relz/workspace/Clion/BPA/UltimateShamanKing/cmake-build-debug/CMakeFiles/clean_cotire.dir
+/home/relz/workspace/Clion/BPA/UltimateShamanKing/cmake-build-debug/CMakeFiles/analyze.dir
+/home/relz/workspace/Clion/BPA/UltimateShamanKing/cmake-build-debug/CMakeFiles/Ultimate_Shaman_King.dir

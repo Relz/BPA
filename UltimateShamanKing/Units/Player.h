@@ -39,6 +39,7 @@ public:
 	void UseSkill(const std::string skillName, float spReduce);
 	float GetMoney() const;
 	void IncreaseMoney(float value);
+	void Die() override;
 
 private:
 	void UpdateDirection();

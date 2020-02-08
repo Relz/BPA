@@ -69,6 +69,10 @@ sf::Color ParseColor(const std::string &hexRGB)
 
 bool TmxLevel::LoadFromFile(const std::string &filepath)
 {
+	m_objects.clear();
+	m_layers.clear();
+	m_environmentObjects.clear();
+
 	XMLDocument levelFile;
 
 	if(levelFile.LoadFile(filepath.c_str()) != XML_SUCCESS)

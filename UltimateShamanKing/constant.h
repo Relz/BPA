@@ -17,7 +17,9 @@ static const float MONSTER_SPEED_DOWN = 2;
 
 static const std::string WINDOW_TITLE = "Ultimate Shaman King";
 
-static const std::string TMX_PATH = "../res/level0.tmx";
+static const std::string TMX_PATH_LEVEL_0 = "../res/level0.tmx";
+static const std::string TMX_PATH_LEVEL_1 = "../res/level1.tmx";
+static const std::string TMX_PATH_LEVEL_2 = "../res/level2.tmx";
 static const std::string TMX_TILES = "Тайлы";
 static const std::string TMX_ENVIRONMENT_TYPE = "Окружение";
 static const std::string TMX_PLAYER_NAME = "Игрок";

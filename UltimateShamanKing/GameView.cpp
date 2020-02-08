@@ -127,7 +127,10 @@ void CGameView::UpdateGameScene()
 			RunAction(dialog.GetActionAfterDialogClosing());
 		}
 		TryPlayerToUseSkill(player.GetUsingSkill());
+		TryPlayerToFinishLevel(player);
 		UpdatePlayerCamera(player);
+		UpdateSkillPanel();
+		UpdateMoneyPanel(player.GetMoney());
 	}
 	FireState fireState = FireState::SLEEP;
 	fire.Process(fireState);
@@ -135,8 +138,6 @@ void CGameView::UpdateGameScene()
 	{
 		RunAction(fire.GetActionAfterProcessing());
 	}
-	UpdateSkillPanel();
-	UpdateMoneyPanel(player.GetMoney());
 }
 
 void CGameView::DrawGameScene()
@@ -507,5 +508,15 @@ void CGameView::TryPlayerToUseSkill(int usingSkill)
 	if (player.IsWithSpirit() || !skill->IsCanBeUsedOnlyWithSpirit())
 	{
 		player.UseSkill(skill->GetName(), skill->GetSpReduce());
+	}
+}
+
+void CGameView::TryPlayerToFinishLevel(CPlayer & player)
+{
+	sf::FloatRect playerRect = player.GetFutureSpriteRect();
+	if (playerRect.left + playerRect.width > m_gameScene.mapRightBorder)
+	{
+		m_gameScene.LoadLevelFromTmx(TMX_PATH_LEVEL_0);
+		m_gameScene.Init();
 	}
 }

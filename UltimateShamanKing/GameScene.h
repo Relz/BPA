@@ -23,6 +23,7 @@ public:
 	void InitEnemies(const std::vector<TmxObject> & enemies);
 	void InitCoins(const std::vector<TmxObject> & coins);
 	void DrawTiles(sf::RenderTarget &target) const;
+	void LoadLevelFromTmx(const std::string & tmxPath);
 
 	CPlayer player;
 	CBeloved beloved;

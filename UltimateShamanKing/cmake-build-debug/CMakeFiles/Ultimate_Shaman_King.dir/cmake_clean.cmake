@@ -1,0 +1,39 @@
+file(REMOVE_RECURSE
+  "cotire/Ultimate_Shaman_King_CXX_prefix.hxx.gch"
+  "cotire/Ultimate_Shaman_King_CXX_prefix.hxx"
+  "cotire/Ultimate_Shaman_King_CXX_prefix.cxx"
+  "CMakeFiles/Ultimate_Shaman_King.dir/main.cpp.o"
+  "CMakeFiles/Ultimate_Shaman_King.dir/stdafx.cpp.o"
+  "CMakeFiles/Ultimate_Shaman_King.dir/constant.cpp.o"
+  "CMakeFiles/Ultimate_Shaman_King.dir/TmxLevel.cpp.o"
+  "CMakeFiles/Ultimate_Shaman_King.dir/GameView.cpp.o"
+  "CMakeFiles/Ultimate_Shaman_King.dir/GameScene.cpp.o"
+  "CMakeFiles/Ultimate_Shaman_King.dir/Units/Player.cpp.o"
+  "CMakeFiles/Ultimate_Shaman_King.dir/lib/tinyxml2/tinyxml2.cpp.o"
+  "CMakeFiles/Ultimate_Shaman_King.dir/Units/Unit.cpp.o"
+  "CMakeFiles/Ultimate_Shaman_King.dir/Units/Enemy.cpp.o"
+  "CMakeFiles/Ultimate_Shaman_King.dir/Snowball.cpp.o"
+  "CMakeFiles/Ultimate_Shaman_King.dir/Screens/GameOverView.cpp.o"
+  "CMakeFiles/Ultimate_Shaman_King.dir/Screens/MenuView.cpp.o"
+  "CMakeFiles/Ultimate_Shaman_King.dir/Screens/MenuBackground.cpp.o"
+  "CMakeFiles/Ultimate_Shaman_King.dir/Screens/Menu.cpp.o"
+  "CMakeFiles/Ultimate_Shaman_King.dir/Units/Beloved.cpp.o"
+  "CMakeFiles/Ultimate_Shaman_King.dir/Units/Villain.cpp.o"
+  "CMakeFiles/Ultimate_Shaman_King.dir/Units/VillainSpirit.cpp.o"
+  "CMakeFiles/Ultimate_Shaman_King.dir/Fire.cpp.o"
+  "CMakeFiles/Ultimate_Shaman_King.dir/Dialog.cpp.o"
+  "CMakeFiles/Ultimate_Shaman_King.dir/Replica.cpp.o"
+  "CMakeFiles/Ultimate_Shaman_King.dir/Line.cpp.o"
+  "CMakeFiles/Ultimate_Shaman_King.dir/SkillPanel.cpp.o"
+  "CMakeFiles/Ultimate_Shaman_King.dir/Skill.cpp.o"
+  "CMakeFiles/Ultimate_Shaman_King.dir/Shield.cpp.o"
+  "CMakeFiles/Ultimate_Shaman_King.dir/Coin.cpp.o"
+  "CMakeFiles/Ultimate_Shaman_King.dir/MoneyPanel.cpp.o"
+  "Ultimate_Shaman_King.pdb"
+  "Ultimate_Shaman_King"
+)
+
+# Per-language clean rules from dependency scanning.
+foreach(lang CXX)
+  include(CMakeFiles/Ultimate_Shaman_King.dir/cmake_clean_${lang}.cmake OPTIONAL)
+endforeach()
